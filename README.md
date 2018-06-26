@@ -13,9 +13,13 @@
 
   ## 快速上手
 
-  ### 先npm下载插件  
-   `npm install el-tree-transfer --save`  
-   或 `npm i el-tree-transfer -S`
+  > 先npm下载插件  
+
+  `npm install el-tree-transfer --save` 
+
+   或 
+
+  `npm i el-tree-transfer -S`
 
 >然后你可以像使用普通组件一样使用el-tree-transfer
 

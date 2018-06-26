@@ -1,6 +1,6 @@
 {
   "name": "el-tree-transfer",
-  "version": "1.0.6",
+  "version": "1.1.7",
   "description": "A tree shaped shuttle box assembly based on Vue and element-ui",
   "main": "dist/treeTransfer.min.js",
   "scripts": {
