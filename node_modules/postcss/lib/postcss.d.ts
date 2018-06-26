@@ -1,3 +1,5 @@
+import * as mozilla from 'source-map';
+
 /**
  * @param plugins Can also be included with the Processor#use method.
  * @returns A processor that will apply plugins as CSS processors.
@@ -139,7 +141,7 @@ declare namespace postcss {
      * @param defaults Properties for the new Root node.
      * @returns The new node.
      */
-    function root(defaults?: Object): Root;
+    function root(defaults?: object): Root;
     interface SourceMapOptions {
         /**
          * Indicates that the source map should be embedded in the output CSS as a
@@ -399,21 +401,7 @@ declare namespace postcss {
          * @param mapping
          * @returns {}
          */
-        addMapping(mapping: {
-            generated: {
-                line: number;
-                column: number;
-            };
-            original: {
-                line: number;
-                column: number;
-            };
-            /**
-             * The original source file (relative to the sourceRoot).
-             */
-            source: string;
-            name?: string;
-        }): void;
+        addMapping(mapping: mozilla.Mapping): void;
         /**
          * Set the source content for an original source file.
          * @param sourceFile The URL of the original source file.
@@ -436,11 +424,15 @@ declare namespace postcss {
          * If omitted, it is assumed that both SourceMaps are in the same directory;
          * thus, not needing any rewriting (Supplying '.' has the same effect).
          */
-        applySourceMap(sourceMapConsumer: any, sourceFile?: string, sourceMapPath?: string): void;
+        applySourceMap(
+            sourceMapConsumer: mozilla.SourceMapConsumer,
+            sourceFile?: string,
+            sourceMapPath?: string
+        ): void;
         /**
          * Renders the source map being generated to JSON.
          */
-        toJSON: () => any;
+        toJSON: () => mozilla.RawSourceMap;
         /**
          * Renders the source map being generated to a string.
          */
@@ -573,12 +565,15 @@ declare namespace postcss {
         text: string;
         file: string;
         constructor(css: any, opts: any);
-        consumer(): any;
+        consumer(): mozilla.SourceMapConsumer;
         withContent(): boolean;
-        startWith(string: any, start: any): boolean;
-        loadAnnotation(css: any): void;
-        decodeInline(text: any): any;
-        loadMap(file: any, prev: any): any;
+        startWith(string: string, start: string): boolean;
+        loadAnnotation(css: string): void;
+        decodeInline(text: string): string;
+        loadMap(
+            file: any,
+            prev: string | Function | mozilla.SourceMapConsumer | mozilla.SourceMapGenerator | mozilla.RawSourceMap
+        ): string;
         isMap(map: any): boolean;
     }
     /**
@@ -611,16 +606,9 @@ declare namespace postcss {
          */
         origin(line: number, column: number): InputOrigin;
     }
-    interface Node {
-        /**
-         * Returns a string representing the node's type. Possible values are
-         * root, atrule, rule, decl or comment.
-         */
-        type: string;
-        /**
-         * Returns the node's parent node.
-         */
-        parent: Container;
+    type ChildNode = AtRule | Rule | Declaration | Comment;
+    type Node = Root | ChildNode;
+    interface NodeBase {
         /**
          * Returns the input source of the node. The property is used in source
          * map generation. If you create a node manually
@@ -666,12 +654,34 @@ declare namespace postcss {
          * @returns The next child of the node's parent; or, returns undefined if
          * the current node is the last child.
          */
-        next(): Node;
+        next(): ChildNode | void;
         /**
          * @returns The previous child of the node's parent; or, returns undefined
          * if the current node is the first child.
          */
-        prev(): Node;
+        prev(): ChildNode | void;
+		/**
+		 * Insert new node before current node to current node’s parent.
+		 *
+		 * Just an alias for `node.parent.insertBefore(node, newNode)`.
+		 *
+		 * @returns this node for method chaining.
+		 *
+		 * @example
+		 * decl.before('content: ""');
+		 */
+        before(newNode: Node | object | string | Node[]): this;
+		/**
+		 * Insert new node after current node to current node’s parent.
+		 *
+		 * Just an alias for `node.parent.insertAfter(node, newNode)`.
+		 *
+		 * @returns this node for method chaining.
+		 *
+		 * @example
+		 * decl.after('color: black');
+		 */
+        after(newNode: Node | object | string | Node[]): this;
         /**
          * @returns The Root instance of the node's tree.
          */
@@ -686,52 +696,27 @@ declare namespace postcss {
          * Inserts node(s) before the current node and removes the current node.
          * @returns This node for chaining.
          */
-        replaceWith(...nodes: (Node | Object)[]): this;
+        replaceWith(...nodes: (Node | object)[]): this;
         /**
          * @param overrides New properties to override in the clone.
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
         /**
          * Shortcut to clone the node and insert the resulting cloned node before
          * the current node.
          * @param overrides New Properties to override in the clone.
          * @returns The cloned node.
          */
-        cloneBefore(overrides?: Object): this;
+        cloneBefore(overrides?: object): this;
         /**
          * Shortcut to clone the node and insert the resulting cloned node after
          * the current node.
          * @param overrides New Properties to override in the clone.
          * @returns The cloned node.
          */
-        cloneAfter(overrides?: Object): this;
-        /**
-         * Removes the node from its current parent and inserts it at the end of
-         * newParent. This will clean the before and after code style properties
-         * from the node and replace them with the indentation style of newParent.
-         * It will also clean the between property if newParent is in another Root.
-         * @param newParent Where the current node will be moved.
-         * @returns This node for chaining.
-         */
-        moveTo(newParent: Container): this;
-        /**
-         * Removes the node from its current parent and inserts it into a new
-         * parent before otherNode. This will also clean the node's code style
-         * properties just as it would in node.moveTo(newParent).
-         * @param otherNode Will be after the current node after moving.
-         * @returns This node for chaining.
-         */
-        moveBefore(otherNode: Node): this;
-        /**
-         * Removes the node from its current parent and inserts it into a new
-         * parent after otherNode. This will also clean the node's code style
-         * properties just as it would in node.moveTo(newParent).
-         * @param otherNode Will be before the current node after moving.
-         * @returns This node for chaining.
-         */
-        moveAfter(otherNode: Node): this;
+        cloneAfter(overrides?: object): this;
         /**
          * @param prop Name or code style property.
          * @param defaultType Name of default value. It can be easily missed if the
@@ -744,6 +729,7 @@ declare namespace postcss {
         raw(prop: string, defaultType?: string): any;
     }
     interface NodeNewProps {
+        source?: NodeSource;
         raws?: NodeRaws;
     }
     interface NodeRaws {
@@ -842,38 +828,35 @@ declare namespace postcss {
          */
         raws?: NodeRaws;
     }
+    type Container = Root | AtRule | Rule;
     /**
      * Containers can store any content. If you write a rule inside a rule,
      * PostCSS will parse it.
      */
-    interface Container extends Node {
-        /**
-         * Returns the container's parent node.
-         */
-        parent: Container;
+    interface ContainerBase extends NodeBase {
         /**
          * Contains the container's children.
          */
-        nodes?: Node[];
+        nodes?: ChildNode[];
         /**
          * @returns The container's first child.
          */
-        first?: Node;
+        first?: ChildNode;
         /**
          * @returns The container's last child.
          */
-        last?: Node;
+        last?: ChildNode;
         /**
          * @param overrides New properties to override in the clone.
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
         /**
          * @param child Child of the current container.
          * @returns The child's index within the container's "nodes" array.
          */
-        index(child: Node | number): number;
+        index(child: ChildNode | number): number;
         /**
          * Determines whether all child nodes satisfy the specified test.
          * @param callback A function that accepts up to three arguments. The
@@ -882,7 +865,7 @@ declare namespace postcss {
          * @returns True if the callback returns true for all of the container's
          * children.
          */
-        every(callback: (node: Node, index: number, nodes: Node[]) => any, thisArg?: any): boolean;
+        every(callback: (node: ChildNode, index: number, nodes: ChildNode[]) => any, thisArg?: any): boolean;
         /**
          * Determines whether the specified callback returns true for any child node.
          * @param callback A function that accepts up to three arguments. The some
@@ -894,7 +877,7 @@ declare namespace postcss {
          * @returns True if callback returns true for (at least) one of the
          * container's children.
          */
-        some(callback: (node: Node, index: number, nodes: Node[]) => boolean, thisArg?: any): boolean;
+        some(callback: (node: ChildNode, index: number, nodes: ChildNode[]) => boolean, thisArg?: any): boolean;
         /**
          * Iterates through the container's immediate children, calling the
          * callback function for each child. If you need to recursively iterate
@@ -906,7 +889,7 @@ declare namespace postcss {
          * will adjust the current index to match the mutations.
          * @returns False if the callback returns false during iteration.
          */
-        each(callback: (node: Node, index: number) => any): boolean | void;
+        each(callback: (node: ChildNode, index: number) => any): boolean | void;
         /**
          * Traverses the container's descendant nodes, calling `callback` for each
          * node. Like container.each(), this method is safe to use if you are
@@ -914,7 +897,7 @@ declare namespace postcss {
          * the container's immediate children, use container.each().
          * @param callback Iterator.
          */
-        walk(callback: (node: Node, index: number) => any): boolean | void;
+        walk(callback: (node: ChildNode, index: number) => any): boolean | void;
         /**
          * Traverses the container's descendant nodes, calling `callback` for each
          * declaration. Like container.each(), this method is safe to use if you
@@ -1003,7 +986,7 @@ declare namespace postcss {
          * @param nodes New nodes.
          * @returns This container for chaining.
          */
-        prepend(...nodes: (Node | Object | string)[]): this;
+        prepend(...nodes: (Node | object | string)[]): this;
         /**
          * Inserts new nodes to the end of the container.
          * Because each node class is identifiable by unique properties, use the
@@ -1019,19 +1002,19 @@ declare namespace postcss {
          * @param nodes New nodes.
          * @returns This container for chaining.
          */
-        append(...nodes: (Node | Object | string)[]): this;
+        append(...nodes: (Node | object | string)[]): this;
         /**
          * Insert newNode before oldNode within the container.
          * @param oldNode Child or child's index.
          * @returns This container for chaining.
          */
-        insertBefore(oldNode: Node | number, newNode: Node | Object | string): this;
+        insertBefore(oldNode: ChildNode | number, newNode: ChildNode | object | string): this;
         /**
          * Insert newNode after oldNode within the container.
          * @param oldNode Child or child's index.
          * @returns This container for chaining.
          */
-        insertAfter(oldNode: Node | number, newNode: Node | Object | string): this;
+        insertAfter(oldNode: ChildNode | number, newNode: ChildNode | object | string): this;
         /**
          * Removes the container from its parent and cleans the parent property in the
          * container and its children.
@@ -1044,7 +1027,7 @@ declare namespace postcss {
          * @param child Child or child's index.
          * @returns This container for chaining.
          */
-        removeChild(child: Node | number): this;
+        removeChild(child: ChildNode | number): this;
         /**
          * Removes all children from the container and cleans their parent
          * properties.
@@ -1056,7 +1039,7 @@ declare namespace postcss {
         /**
          * Contains the container's children.
          */
-        nodes?: Node[];
+        nodes?: ChildNode[];
         raws?: ContainerRaws;
     }
     interface ContainerRaws extends NodeRaws {
@@ -1066,30 +1049,31 @@ declare namespace postcss {
         /**
          * Contains the container's children.
          */
-        nodes?: Node[];
+        nodes?: ChildNode[];
         /**
          * @returns The container's first child.
          */
-        first?: Node;
+        first?: ChildNode;
         /**
          * @returns The container's last child.
          */
-        last?: Node;
+        last?: ChildNode;
     }
     /**
      * Represents a CSS file and contains all its parsed nodes.
      */
-    interface Root extends Container {
+    interface Root extends ContainerBase {
+        type: 'root';
         /**
          * Inherited from Container. Should always be undefined for a Root node.
          */
-        parent: Container;
+        parent: void;
         /**
          * @param overrides New properties to override in the clone.
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
         /**
          * @returns A Result instance representing the root's CSS.
          */
@@ -1102,16 +1086,12 @@ declare namespace postcss {
             map?: SourceMapOptions;
         }): Result;
         /**
-         * Deprecated. Use Root#removeChild.
-         */
-        remove(child?: Node | number): this;
-        /**
          * Removes child from the root node, and the parent properties of node and
          * its children.
          * @param child Child or child's index.
          * @returns This root node for chaining.
          */
-        removeChild(child: Node | number): this;
+        removeChild(child: ChildNode | number): this;
     }
     interface RootNewProps extends ContainerNewProps {
     }
@@ -1121,7 +1101,12 @@ declare namespace postcss {
      * Represents an at-rule. If it's followed in the CSS by a {} block, this
      * node will have a nodes property representing its children.
      */
-    interface AtRule extends Container {
+    interface AtRule extends ContainerBase {
+        type: 'atrule';
+        /**
+         * Returns the atrule's parent node.
+         */
+        parent: Container;
         /**
          * The identifier that immediately follows the @.
          */
@@ -1136,7 +1121,7 @@ declare namespace postcss {
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
     }
     interface AtRuleNewProps extends ContainerNewProps {
         /**
@@ -1167,7 +1152,8 @@ declare namespace postcss {
     /**
      * Represents a CSS rule: a selector followed by a declaration block.
      */
-    interface Rule extends Container {
+    interface Rule extends ContainerBase {
+        type: 'rule';
         /**
          * Returns the rule's parent node.
          */
@@ -1187,7 +1173,7 @@ declare namespace postcss {
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
     }
     interface RuleNewProps extends ContainerNewProps {
         /**
@@ -1224,7 +1210,12 @@ declare namespace postcss {
     /**
      * Represents a CSS declaration.
      */
-    interface Declaration extends Node {
+    interface Declaration extends NodeBase {
+        type: 'decl';
+        /**
+         * Returns the declaration's parent node.
+         */
+        parent: Container;
         /**
          * The declaration's property name.
          */
@@ -1245,7 +1236,7 @@ declare namespace postcss {
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
     }
     interface DeclarationNewProps {
         /**
@@ -1281,7 +1272,12 @@ declare namespace postcss {
      * Comments inside selectors, at-rule parameters, or declaration values will
      * be stored in the Node#raws properties.
      */
-    interface Comment extends Node {
+    interface Comment extends NodeBase {
+        type: 'comment';
+        /**
+         * Returns the comment's parent node.
+         */
+        parent: Container;
         /**
          * The comment's text.
          */
@@ -1291,7 +1287,7 @@ declare namespace postcss {
          * @returns A clone of this node. The node and its (cloned) children will
          * have a clean parent and code style properties.
          */
-        clone(overrides?: Object): this;
+        clone(overrides?: object): this;
     }
     interface CommentNewProps {
         /**

@@ -1,5 +1,4 @@
-AST Types
-===
+# AST Types [![Build Status](https://travis-ci.org/benjamn/ast-types.svg?branch=master)](https://travis-ci.org/benjamn/ast-types) [![Greenkeeper badge](https://badges.greenkeeper.io/benjamn/ast-types.svg)](https://greenkeeper.io/)
 
 This module provides an efficient, modular,
 [Esprima](https://github.com/ariya/esprima)-compatible implementation of
@@ -7,8 +6,6 @@ the [abstract syntax
 tree](http://en.wikipedia.org/wiki/Abstract_syntax_tree) type hierarchy
 pioneered by the [Mozilla Parser
 API](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Parser_API).
-
-[![Build Status](https://travis-ci.org/benjamn/ast-types.png?branch=master)](https://travis-ci.org/benjamn/ast-types)
 
 Installation
 ---
