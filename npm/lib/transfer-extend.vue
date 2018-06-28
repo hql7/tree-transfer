@@ -9,7 +9,7 @@
       <!-- 内容区 -->
       <div class="transfer-main">
         <!-- <slot name="from"></slot> -->
-        <el-tree ref='from-tree' :data="self_from_data" show-checkbox node-key="id" @check='fromTreeChecked'>
+        <el-tree ref='from-tree' :data="self_from_data" show-checkbox node-key="id" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys">
         </el-tree>
       </div>
     </div>
@@ -44,7 +44,7 @@
       <!-- 内容区 -->
       <div class="transfer-main">
         <!-- <slot name='to'></slot> -->
-        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox node-key="id" @check='toTreeChecked'>
+        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox node-key="id" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys">
         </el-tree>
       </div>
     </div>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { cloneDeepWith, flattenDeep } from "lodash";
+import { cloneDeepWith } from "lodash";
 export default {
   data() {
     return {
@@ -60,6 +60,8 @@ export default {
       from_check_all: false, // 源数据是否全选
       to_is_indeterminate: false, // 目标数据是否半选
       to_check_all: false, // 目标数据是否全选
+      from_expanded_keys: [], // 源数据展开节点
+      to_expanded_keys: [], // 目标数据展开节点
       self_from_data: [...this.from_data], // 左侧数据
       self_to_data: [...this.to_data], // 右侧数据
       from_disabled: true, // 添加按钮是否禁用
@@ -206,6 +208,9 @@ export default {
       // 处理完毕按钮恢复禁用状态
       this.from_check_keys = [];
 
+      // 目标数据节点展开
+      this.to_expanded_keys = keys;
+
       // 传递信息给父组件
       this.$emit("addBtn", keys);
     },
@@ -316,6 +321,9 @@ export default {
 
       // 处理完毕按钮恢复禁用状态
       this.to_check_keys = [];
+
+      // 目标数据节点展开
+      this.from_expanded_keys = keys;
 
       // 传递信息给父组件
       this.$emit("removeBtn", keys);
