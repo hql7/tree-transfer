@@ -1,0 +1,51 @@
+body {
+  line-height: 1.666;
+  color: #666;
+  font-size: 14px; }
+
+body, input {
+  font-family: "verdana"; }
+
+body, h1, h2, h3, h4, h5, h6, ul, ol, li, p, dl, dt, dd, table, th, td {
+  margin: 0;
+  padding: 0; }
+
+table, th, td, img {
+  border: 0; }
+
+em, i, th {
+  font-style: normal;
+  text-decoration: none; }
+
+h1, h2, h3, h4, h5, h6, th, strong {
+  font-size: 100%;
+  font-weight: normal; }
+
+input, select, button, textarea, table {
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%; }
+
+input, button {
+  outline: none; }
+
+ul, ol {
+  list-style: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+th, caption {
+  text-align: left; }
+
+a {
+  color: #666;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent; }
+
+select {
+  background-color: #fff; }
+
+/*# sourceMappingURL=clear.css.map */
