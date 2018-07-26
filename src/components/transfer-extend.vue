@@ -192,8 +192,10 @@ export default {
       // 递归查询data内是否存在item函数
       function inquireIsExist(item, strData = self_to_data) {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
-        let strItem = `"${id__}":"${item[id__]}"`;
-        let reg = RegExp(strItem);
+        let strItem =
+          typeof item[id__] == "number"
+            ? `"${id__}":${item[id__]}`
+            : `"${id__}":"${item[id__]}"`;
         let existed = reg.test(strData);
         /*  for (let i of data) {
           if (item.id == i.id) {
@@ -315,7 +317,10 @@ export default {
       // 递归查询data内是否存在item函数
       function inquireIsExist(item, strData = self_from_data) {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
-        let strItem = `"${id__}":"${item[id__]}"`;
+        let strItem =
+          typeof item[id__] == "number"
+            ? `"${id__}":${item[id__]}`
+            : `"${id__}":"${item[id__]}"`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {

@@ -40,7 +40,11 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
-  ### 注意！第一层数据的pid请设定为0！！
+ ### 注意！
+
+>第一层数据的 pid 请设定为 0！！
+
+>id推荐为string，但也可以是number，请不要混用
 
   ## 快速上手
 
@@ -149,6 +153,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 11. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`data为选中节点id`
 
 ## 版本说明
+
+> 1.4.8 版本修复了id为number类型时无法通过重复校验函数的问题，但仍然推荐id使用string型
 
 > 1.4.7 版本增加了`defaultProps`参数，`node_key`参数，`pid`参数，主要作用为可以自定义一些重要字段名，来提高数据灵活性，避免和后台因为字段名不同而被祭天
 
