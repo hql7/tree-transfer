@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { cloneDeepWith, flattenDeep } from "lodash";
+// import { cloneDeepWith } from "lodash";
 export default {
   data() {
     return {
@@ -119,7 +119,9 @@ export default {
       // let不存在状态提升 因此在函数调用之前赋值 并递归为以为数组！
       let self_to_data = JSON.stringify(this.self_to_data);
       // 第一步
-      let skeletonHalfCheckedNodes = cloneDeepWith(arrayHalfCheckedNodes); // 深拷贝数据 - 半选节点
+      let skeletonHalfCheckedNodes = JSON.parse(
+        JSON.stringify(arrayHalfCheckedNodes)
+      ); // 深拷贝数据 - 半选节点
       // 筛选目标树不存在的骨架节点 - 半选内的节点
       let newSkeletonHalfCheckedNodes = [];
       skeletonHalfCheckedNodes.forEach(item => {
@@ -138,7 +140,9 @@ export default {
       });
 
       // 第二步
-      let cloneSkeletonCheckedNodes = cloneDeepWith(arrayCheckedNodes); // 深拷贝数据 -选中节点
+      let cloneSkeletonCheckedNodes = JSON.parse(
+        JSON.stringify(arrayCheckedNodes)
+      ); // 深拷贝数据 -选中节点
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
       cloneSkeletonCheckedNodes.forEach(item => {
@@ -233,7 +237,9 @@ export default {
       // let不存在状态提升 因此在函数调用之前赋值 并递归为以为数组！
       let self_from_data = JSON.stringify(this.self_from_data);
       // 第一步
-      let skeletonHalfCheckedNodes = cloneDeepWith(arrayHalfCheckedNodes); // 深拷贝数据 - 半选节点
+      let skeletonHalfCheckedNodes = JSON.parse(
+        JSON.stringify(arrayHalfCheckedNodes)
+      ); // 深拷贝数据 - 半选节点
       // 筛选目标树不存在的骨架节点 - 半选内的节点
       let newSkeletonHalfCheckedNodes = [];
       skeletonHalfCheckedNodes.forEach(item => {
@@ -252,7 +258,9 @@ export default {
       });
 
       // 第二步
-      let cloneSkeletonCheckedNodes = cloneDeepWith(arrayCheckedNodes); // 深拷贝数据 -选中节点
+      let cloneSkeletonCheckedNodes = JSON.parse(
+        JSON.stringify(arrayCheckedNodes)
+      ); // 深拷贝数据 -选中节点
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
       cloneSkeletonCheckedNodes.forEach(item => {

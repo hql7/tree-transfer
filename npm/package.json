@@ -1,7 +1,7 @@
 {
   "name": "el-tree-transfer",
-  "version": "1.1.7",
-  "description": "A tree shaped shuttle box assembly based on Vue and element-ui",
+  "version": "1.3.7",
+  "description": "A tree shaped shuttle box assembly based on Vue and element-ui 一个基于vue.js和element-ui的树形穿梭框",
   "main": "dist/treeTransfer.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-plugin-component": "^1.1.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
