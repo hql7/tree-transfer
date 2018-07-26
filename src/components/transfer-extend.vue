@@ -9,7 +9,7 @@
       <!-- 内容区 -->
       <div class="transfer-main">
         <!-- <slot name="from"></slot> -->
-        <el-tree ref='from-tree' :data="self_from_data" show-checkbox node-key="id" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys">
+        <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps">
         </el-tree>
       </div>
     </div>
@@ -44,7 +44,7 @@
       <!-- 内容区 -->
       <div class="transfer-main">
         <!-- <slot name='to'></slot> -->
-        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox node-key="id" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys">
+        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps">
         </el-tree>
       </div>
     </div>
@@ -97,6 +97,23 @@ export default {
     to_data: {
       type: Array,
       default: () => []
+    },
+    // el-tree 配置项
+    defaultProps: {
+      type: Object,
+      default: () => {
+        return { label: "label", children: "children" };
+      }
+    },
+    // el-tree node-key 必须唯一
+    node_key: {
+      type: String,
+      default: "id"
+    },
+    // 自定义 pid参数名
+    pid: {
+      type: String,
+      default: "pid"
     }
   },
   methods: {
@@ -108,6 +125,11 @@ export default {
       let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes();
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["from-tree"].getHalfCheckedNodes();
+
+      // 自定义参数读取设置
+      let children__ = this.defaultProps.children || "children";
+      let pid__ = this.pid || "pid";
+      let id__ = this.node_key || "id";
 
       /*
        * 先整合目标树没有父节点的叶子节点选中，需要整理出来此叶子节点的父节点直到根节点路径 - 此时所有骨架节点已有
@@ -132,10 +154,10 @@ export default {
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 半选节点
       newSkeletonHalfCheckedNodes.forEach(item => {
         item.children = [];
-        if (item.pid == 0) {
+        if (item[pid__] == 0) {
           this.$refs["to-tree"].append(item);
         } else {
-          this.$refs["to-tree"].append(item, item.pid);
+          this.$refs["to-tree"].append(item, item[pid__]);
         }
       });
 
@@ -152,25 +174,25 @@ export default {
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 全选节点
       newSkeletonCheckedNodes.forEach(item => {
-        if (item.children.length > 0) {
-          item.children = [];
-          this.$refs["to-tree"].append(item, item.pid);
+        if (item[children__].length > 0) {
+          item[children__] = [];
+          this.$refs["to-tree"].append(item, item[pid__]);
         }
       });
 
       // 第三步 处理末端叶子元素 - 声明新盒子筛选出所有末端叶子节点
       let leafCheckedNodes = arrayCheckedNodes.filter(
-        item => item.children.length == 0
+        item => item[children__].length == 0
       );
       // 末端叶子直接插入目标树
       leafCheckedNodes.forEach(item => {
-        this.$refs["to-tree"].append(item, item.pid);
+        this.$refs["to-tree"].append(item, item[pid__]);
       });
 
       // 递归查询data内是否存在item函数
       function inquireIsExist(item, strData = self_to_data) {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
-        let strItem = `"id":"${item.id}"`;
+        let strItem = `"${id__}":"${item[id__]}"`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {
@@ -227,6 +249,11 @@ export default {
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["to-tree"].getHalfCheckedNodes();
 
+      // 自定义参数读取设置
+      let children__ = this.defaultProps.children || "children";
+      let pid__ = this.pid || "pid";
+      let id__ = this.node_key || "id";
+
       /*
        * 先整合目标树没有父节点的叶子节点选中，需要整理出来此叶子节点的父节点直到根节点路径 - 此时所有骨架节点已有
        * 再将所有末端叶子节点根据pid直接推入目标树即可
@@ -250,10 +277,10 @@ export default {
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 半选节点
       newSkeletonHalfCheckedNodes.forEach(item => {
         item.children = [];
-        if (item.pid == 0) {
+        if (item[pid__] == 0) {
           this.$refs["from-tree"].append(item);
         } else {
-          this.$refs["from-tree"].append(item, item.pid);
+          this.$refs["from-tree"].append(item, item[pid__]);
         }
       });
 
@@ -270,25 +297,25 @@ export default {
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 全选节点
       newSkeletonCheckedNodes.forEach(item => {
-        if (item.children.length > 0) {
-          item.children = [];
-          this.$refs["from-tree"].append(item, item.pid);
+        if (item[children__].length > 0) {
+          item[children__] = [];
+          this.$refs["from-tree"].append(item, item[pid__]);
         }
       });
 
       // 第三步 处理末端叶子元素 - 声明新盒子筛选出所有末端叶子节点
       let leafCheckedNodes = arrayCheckedNodes.filter(
-        item => item.children.length == 0
+        item => item[children__].length == 0
       );
       // 末端叶子直接插入目标树
       leafCheckedNodes.forEach(item => {
-        this.$refs["from-tree"].append(item, item.pid);
+        this.$refs["from-tree"].append(item, item[pid__]);
       });
 
       // 递归查询data内是否存在item函数
       function inquireIsExist(item, strData = self_from_data) {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
-        let strItem = `"id":"${item.id}"`;
+        let strItem = `"${id__}":"${item[id__]}"`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {
