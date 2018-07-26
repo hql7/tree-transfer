@@ -23,13 +23,7 @@ export default {
           lv: 0,
           label: "一级 1",
           children: [
-            {
-              id: "1-1",
-              pid: "1",
-              lv: 1,
-              label: "二级 1-1",
-              children: []
-            },
+
             {
               id: "1-2",
               pid: "1",
