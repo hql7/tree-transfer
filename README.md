@@ -40,6 +40,8 @@ npm test
 
   ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
+  ### 注意！第一层数据的pid请设定为0！！
+
   ## 快速上手
 
 >先npm下载插件  
