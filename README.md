@@ -40,7 +40,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
-## 快速上手
+  ### 注意！第一层数据的pid请设定为0！！
+
+  ## 快速上手
 
 > 先 npm 下载插件
 
