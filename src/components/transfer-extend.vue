@@ -196,6 +196,7 @@ export default {
           typeof item[id__] == "number"
             ? `"${id__}":${item[id__]}`
             : `"${id__}":"${item[id__]}"`;
+        let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {
           if (item.id == i.id) {
