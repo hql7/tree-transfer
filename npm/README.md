@@ -84,12 +84,12 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
         },
         methods:{
           // 监听穿梭框组件添加
-          add(data){
-            conlose.log(data)
+          add(keys,nodes){
+            conlose.log(keys,nodes)
           },
           // 监听穿梭框组件移除
-          remove(data){
-            conlose.log(data)
+          remove(keys,nodes){
+            conlose.log(keys,nodes)
           }
         },
         comporents:{ treeTransfer } // 注册
