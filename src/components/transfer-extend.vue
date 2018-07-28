@@ -121,11 +121,12 @@ export default {
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["from-tree"].getCheckedKeys();
+      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let nodes = this.$refs["from-tree"].getCheckedNodes();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes();
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["from-tree"].getHalfCheckedNodes();
-
       // 自定义参数读取设置
       let children__ = this.defaultProps.children || "children";
       let pid__ = this.pid || "pid";
@@ -241,17 +242,18 @@ export default {
       this.to_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("addBtn", keys);
+      this.$emit("addBtn", keys, nodes);
     },
     // 移除按钮
     removeToSource() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["to-tree"].getCheckedKeys();
+      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let nodes = this.$refs["to-tree"].getCheckedNodes();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes();
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["to-tree"].getHalfCheckedNodes();
-
       // 自定义参数读取设置
       let children__ = this.defaultProps.children || "children";
       let pid__ = this.pid || "pid";
@@ -367,7 +369,7 @@ export default {
       this.from_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("removeBtn", keys);
+      this.$emit("removeBtn", keys, nodes);
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {

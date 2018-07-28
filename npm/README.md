@@ -14,9 +14,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### 注意！
 
->第一层数据的 pid 请设定为 0！！
+> 第一层数据的 pid 请设定为 0！！
 
->id推荐为string，但也可以是number，请不要混用
+> id 推荐为 string，但也可以是 number，请不要混用
 
 ## 快速上手
 
@@ -120,13 +120,15 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 9.  参数：`pid` 说明：`自定义pid的参数名，默认为"pid"` 必填：`false` 补充：`有网友提出后台给的字段名不叫pid，因此增加自定义支持`
 
-10. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`data为选中节点id`
+10. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
 
-11. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`data为选中节点id`
+11. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
 
 ## 版本说明
 
-> 1.4.8 版本修复了id为number类型时无法通过重复校验函数的问题，但仍然推荐id使用string型
+> 1.4.9版本增加了添加和移除按钮的回调参数，function(keys,nodes)第一个参数为选中节点node-key值，第二个参数为选中节点node
+
+> 1.4.8 版本修复了 id 为 number 类型时无法通过重复校验函数的问题，但仍然推荐 id 使用 string 型
 
 > 1.4.7 版本增加了`defaultProps`参数，`node_key`参数，`pid`参数，主要作用为可以自定义一些重要字段名，来提高数据灵活性，避免和后台因为字段名不同而被祭天
 

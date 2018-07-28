@@ -3,7 +3,7 @@
     <img src="./assets/logo.png">
     <router-view/>
     <div class="box">
-      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}"></tree-transfer>
+      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove'></tree-transfer>
     </div>
   </div>
 </template>
@@ -58,6 +58,14 @@ export default {
       ], // 穿梭框 - 源数据 - 树形
       toData: [] // 穿梭框 - 目标数据 - 树形
     };
+  },
+  methods: {
+    add(keys, nodes) {
+      console.log(keys, nodes);
+    },
+    remove(keys, nodes) {
+      console.log(keys, nodes);
+    }
   },
   components: { treeTransfer }
 };
