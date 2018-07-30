@@ -62,8 +62,10 @@ export default {
       to_check_all: false, // 目标数据是否全选
       from_expanded_keys: [], // 源数据展开节点
       to_expanded_keys: [], // 目标数据展开节点
-      self_from_data: [...this.from_data], // 左侧数据
-      self_to_data: [...this.to_data], // 右侧数据
+      // self_from_data: [...this.from_data], // 左侧数据
+      // self_to_data: [...this.to_data], // 右侧数据
+      self_from: [], // 子组件左侧数据
+      self_to: [], // 子组件右侧数据
       from_disabled: true, // 添加按钮是否禁用
       to_disabled: true, // 移除按钮是否禁用
       from_check_keys: [], // 源数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
@@ -121,16 +123,15 @@ export default {
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["from-tree"].getCheckedKeys();
-      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
-      let nodes = this.$refs["from-tree"].getCheckedNodes();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes();
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["from-tree"].getHalfCheckedNodes();
+
       // 自定义参数读取设置
       let children__ = this.defaultProps.children || "children";
       let pid__ = this.pid || "pid";
-      let id__ = this.node_key || "id";
+      let id__ = this["node_key"] || "id";
 
       /*
        * 先整合目标树没有父节点的叶子节点选中，需要整理出来此叶子节点的父节点直到根节点路径 - 此时所有骨架节点已有
@@ -154,7 +155,7 @@ export default {
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 半选节点
       newSkeletonHalfCheckedNodes.forEach(item => {
-        item.children = [];
+        item[children__] = [];
         if (item[pid__] == 0) {
           this.$refs["to-tree"].append(item);
         } else {
@@ -175,7 +176,7 @@ export default {
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 全选节点
       newSkeletonCheckedNodes.forEach(item => {
-        if (item[children__].length > 0) {
+        if (item[children__] && item[children__].length > 0) {
           item[children__] = [];
           this.$refs["to-tree"].append(item, item[pid__]);
         }
@@ -183,7 +184,7 @@ export default {
 
       // 第三步 处理末端叶子元素 - 声明新盒子筛选出所有末端叶子节点
       let leafCheckedNodes = arrayCheckedNodes.filter(
-        item => item[children__].length == 0
+        item => !item[children__] || item[children__].length == 0
       );
       // 末端叶子直接插入目标树
       leafCheckedNodes.forEach(item => {
@@ -199,6 +200,7 @@ export default {
             : `"${id__}":"${item[id__]}"`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
+
         /*  for (let i of data) {
           if (item.id == i.id) {
             existed = true;
@@ -242,22 +244,21 @@ export default {
       this.to_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("addBtn", keys, nodes);
+      this.$emit("addBtn", keys);
     },
     // 移除按钮
     removeToSource() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["to-tree"].getCheckedKeys();
-      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
-      let nodes = this.$refs["to-tree"].getCheckedNodes();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes();
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["to-tree"].getHalfCheckedNodes();
+
       // 自定义参数读取设置
       let children__ = this.defaultProps.children || "children";
       let pid__ = this.pid || "pid";
-      let id__ = this.node_key || "id";
+      let id__ = this["node_key"] || "id";
 
       /*
        * 先整合目标树没有父节点的叶子节点选中，需要整理出来此叶子节点的父节点直到根节点路径 - 此时所有骨架节点已有
@@ -281,7 +282,7 @@ export default {
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 半选节点
       newSkeletonHalfCheckedNodes.forEach(item => {
-        item.children = [];
+        item[children__] = [];
         if (item[pid__] == 0) {
           this.$refs["from-tree"].append(item);
         } else {
@@ -302,7 +303,7 @@ export default {
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 全选节点
       newSkeletonCheckedNodes.forEach(item => {
-        if (item[children__].length > 0) {
+        if (item[children__] && item[children__].length > 0) {
           item[children__] = [];
           this.$refs["from-tree"].append(item, item[pid__]);
         }
@@ -310,7 +311,7 @@ export default {
 
       // 第三步 处理末端叶子元素 - 声明新盒子筛选出所有末端叶子节点
       let leafCheckedNodes = arrayCheckedNodes.filter(
-        item => item[children__].length == 0
+        item => !item[children__] || item[children__].length == 0
       );
       // 末端叶子直接插入目标树
       leafCheckedNodes.forEach(item => {
@@ -369,7 +370,7 @@ export default {
       this.from_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("removeBtn", keys, nodes);
+      this.$emit("removeBtn", keys);
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
@@ -381,6 +382,9 @@ export default {
     },
     // 源数据 总全选checkbox
     fromAllBoxChange(val) {
+      if (this.self_from_data.length == 0) {
+        return;
+      }
       if (val) {
         // let array = [...this.from_data];
         this.from_check_keys = this.self_from_data;
@@ -392,6 +396,9 @@ export default {
     },
     // 目标数据 总全选checkbox
     toAllBoxChange(val) {
+      if (this.self_to_data.length == 0) {
+        return;
+      }
       if (val) {
         this.to_check_keys = this.self_to_data;
         this.$refs["to-tree"].setCheckedNodes(this.self_to_data);
@@ -402,6 +409,22 @@ export default {
     }
   },
   computed: {
+    // 左侧数据
+    self_from_data() {
+      let from_array = [...this.from_data, ...this.self_from];
+      from_array.forEach(item => {
+        item[this.pid] = 0;
+      });
+      return from_array;
+    },
+    // 右侧数据
+    self_to_data() {
+      let to_array = [...this.to_data, ...this.self_to];
+      to_array.forEach(item => {
+        item[this.pid] = 0;
+      });
+      return to_array;
+    },
     // 左侧菜单名
     fromTitle() {
       let [text] = this.title;
@@ -440,7 +463,7 @@ export default {
         this.from_is_indeterminate = true;
 
         // 总全选是否开启 - 根据选中节点中为根节点的数量是否和源数据长度相等
-        let allCheck = val.filter(item => item.pid == 0);
+        let allCheck = val.filter(item => item[this.pid] == 0);
         if (allCheck.length == this.self_from_data.length) {
           // 关闭半选 开启全选
           this.from_is_indeterminate = false;
@@ -464,7 +487,7 @@ export default {
         this.to_is_indeterminate = true;
 
         // 总全选是否开启 - 根据选中节点中为根节点的数量是否和源数据长度相等
-        let allCheck = val.filter(item => item.pid == 0);
+        let allCheck = val.filter(item => item[this.pid] == 0);
         if (allCheck.length == this.self_to_data.length) {
           // 关闭半选 开启全选
           this.to_is_indeterminate = false;
