@@ -59,12 +59,17 @@ export default {
       toData: [] // 穿梭框 - 目标数据 - 树形
     };
   },
+  created() {
+    this.axios.get("../static/data.json").then(res => {
+      // this.fromData = res.data;
+    });
+  },
   methods: {
     add(keys, nodes) {
-      console.log(keys, nodes);
+      // console.log(keys, nodes);
     },
     remove(keys, nodes) {
-      console.log(keys, nodes);
+      // console.log(keys, nodes);
     }
   },
   components: { treeTransfer }

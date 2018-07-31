@@ -1,0 +1,718 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "id": "29",
+            "label": "王五",
+            "lev": "3",
+            "pid": 2,
+            "children": []
+          }
+        ],
+        "id": "2",
+        "label": "www(产品)",
+        "lev": "2",
+        "pid": 1
+      },
+      {
+        "children": [
+          {
+            "id": "33",
+            "label": "赵晨",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "58",
+            "label": "赵小江",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "92",
+            "label": "七七",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "85",
+            "label": "我去额",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "91",
+            "label": "六六",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "88",
+            "label": "三三",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "87",
+            "label": "二二",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "86",
+            "label": "一一",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "89",
+            "label": "四四",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "90",
+            "label": "五五",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "84",
+            "label": "一",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          },
+          {
+            "id": "69",
+            "label": "rng",
+            "lev": "3",
+            "pid": 61,
+            "children": []
+          }
+        ],
+        "id": "61",
+        "label": "ii敌贷(产品)",
+        "lev": "2",
+        "pid": 1
+      },
+      {
+        "children": [
+          {
+            "id": "31",
+            "label": " 张三 ",
+            "lev": "3",
+            "pid": 52,
+            "children": []
+          }
+        ],
+        "id": "52",
+        "label": "超级无敌贷(产品)",
+        "lev": "2",
+        "pid": 1
+      }
+    ],
+    "id": "1",
+    "label": "全超金融超市（龙华店）(机构)",
+    "lev": "1",
+    "pid": 0
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "id": "52",
+            "label": "1515",
+            "lev": "3",
+            "pid": 1,
+            "children": []
+          },
+          {
+            "id": "30",
+            "label": "赵六",
+            "lev": "3",
+            "pid": 1,
+            "children": []
+          }
+        ],
+        "id": "1",
+        "label": "产四11(产品)",
+        "lev": "2",
+        "pid": 2
+      },
+      {
+        "children": [
+          {
+            "id": "82",
+            "label": "laibul12",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "81",
+            "label": "laibul11",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "80",
+            "label": "laibul0",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "83",
+            "label": "科比",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "78",
+            "label": "laibul8",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "79",
+            "label": "laibul9",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "72",
+            "label": "laibul2",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "75",
+            "label": "laibul5",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "73",
+            "label": "laibul3",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          },
+          {
+            "id": "74",
+            "label": "laibul4",
+            "lev": "3",
+            "pid": 53,
+            "children": []
+          }
+        ],
+        "id": "53",
+        "label": "1(产品)",
+        "lev": "2",
+        "pid": 2
+      }
+    ],
+    "id": "2",
+    "label": "二点科技(机构)",
+    "lev": "1",
+    "pid": 0
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "id": "30",
+            "label": "赵六",
+            "lev": "3",
+            "pid": 76,
+            "children": []
+          }
+        ],
+        "id": "76",
+        "label": "12312(产品)",
+        "lev": "2",
+        "pid": 55
+      }
+    ],
+    "id": "55",
+    "label": "1(机构)",
+    "lev": "1",
+    "pid": 0
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "id": "83",
+            "label": "科比",
+            "lev": "3",
+            "pid": 80,
+            "children": []
+          }
+        ],
+        "id": "80",
+        "label": "rng(产品)",
+        "lev": "2",
+        "pid": 56
+      },
+      {
+        "children": [
+          {
+            "id": "92",
+            "label": "七七",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "85",
+            "label": "我去额",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "91",
+            "label": "六六",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "88",
+            "label": "三三",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "87",
+            "label": "二二",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "86",
+            "label": "一一",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "89",
+            "label": "四四",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "90",
+            "label": "五五",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          },
+          {
+            "id": "84",
+            "label": "一",
+            "lev": "3",
+            "pid": 86,
+            "children": []
+          }
+        ],
+        "id": "86",
+        "label": "8(产品)",
+        "lev": "2",
+        "pid": 56
+      },
+      {
+        "children": [
+          {
+            "id": "82",
+            "label": "laibul12",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "81",
+            "label": "laibul11",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "80",
+            "label": "laibul0",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "78",
+            "label": "laibul8",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "79",
+            "label": "laibul9",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "72",
+            "label": "laibul2",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "75",
+            "label": "laibul5",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "73",
+            "label": "laibul3",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "74",
+            "label": "laibul4",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          },
+          {
+            "id": "69",
+            "label": "rng",
+            "lev": "3",
+            "pid": 79,
+            "children": []
+          }
+        ],
+        "id": "79",
+        "label": "2134(产品)",
+        "lev": "2",
+        "pid": 56
+      },
+      {
+        "children": [
+          {
+            "id": "82",
+            "label": "laibul12",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "81",
+            "label": "laibul11",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "80",
+            "label": "laibul0",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "83",
+            "label": "科比",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "78",
+            "label": "laibul8",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "79",
+            "label": "laibul9",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "72",
+            "label": "laibul2",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "73",
+            "label": "laibul3",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "74",
+            "label": "laibul4",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          },
+          {
+            "id": "69",
+            "label": "rng",
+            "lev": "3",
+            "pid": 87,
+            "children": []
+          }
+        ],
+        "id": "87",
+        "label": "9(产品)",
+        "lev": "2",
+        "pid": 56
+      }
+    ],
+    "id": "56",
+    "label": "z'c(机构)",
+    "lev": "1",
+    "pid": 0
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "id": "80",
+            "label": "laibul0",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "58",
+            "label": "赵小江",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "85",
+            "label": "我去额",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "91",
+            "label": "六六",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "83",
+            "label": "科比",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "69",
+            "label": "rng",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "81",
+            "label": "laibul11",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "92",
+            "label": "七七",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "88",
+            "label": "三三",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "79",
+            "label": "laibul9",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "75",
+            "label": "laibul5",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "73",
+            "label": "laibul3",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "30",
+            "label": "赵六",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "84",
+            "label": "一",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "52",
+            "label": "1515",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "87",
+            "label": "二二",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "89",
+            "label": "四四",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "90",
+            "label": "五五",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "31",
+            "label": " 张三 ",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "53",
+            "label": "罗伊斯",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "29",
+            "label": "王五",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "33",
+            "label": "赵晨",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "82",
+            "label": "laibul12",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "78",
+            "label": "laibul8",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "72",
+            "label": "laibul2",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "74",
+            "label": "laibul4",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          },
+          {
+            "id": "86",
+            "label": "一一",
+            "lev": "3",
+            "pid": 90,
+            "children": []
+          }
+        ],
+        "id": "90",
+        "label": "1(产品)",
+        "lev": "2",
+        "pid": 63
+      }
+    ],
+    "id": "63",
+    "label": "问天网(机构)",
+    "lev": "1",
+    "pid": 0
+  }
+]

@@ -123,6 +123,8 @@ export default {
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["from-tree"].getCheckedKeys();
+      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let nodes = this.$refs["from-tree"].getCheckedNodes();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes();
       // 半选中节点数据
@@ -244,12 +246,14 @@ export default {
       this.to_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("addBtn", keys);
+      this.$emit("addBtn", keys, nodes);
     },
     // 移除按钮
     removeToSource() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["to-tree"].getCheckedKeys();
+      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let nodes = this.$refs["to-tree"].getCheckedNodes();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes();
       // 半选中节点数据
@@ -370,7 +374,7 @@ export default {
       this.from_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("removeBtn", keys);
+      this.$emit("removeBtn", keys, nodes);
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
@@ -386,7 +390,6 @@ export default {
         return;
       }
       if (val) {
-        // let array = [...this.from_data];
         this.from_check_keys = this.self_from_data;
         this.$refs["from-tree"].setCheckedNodes(this.self_from_data);
       } else {
