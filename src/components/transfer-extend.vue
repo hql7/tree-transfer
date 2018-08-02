@@ -116,17 +116,24 @@ export default {
     pid: {
       type: String,
       default: "pid"
+    },
+    // 是否只返回叶子节点
+    leafOnly: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
     // 添加按钮
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
-      let keys = this.$refs["from-tree"].getCheckedKeys();
-      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
-      let nodes = this.$refs["from-tree"].getCheckedNodes();
+      let keys = this.$refs["from-tree"].getCheckedKeys(this.leafOnly);
       // 选中节点数据
-      let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes();
+      let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes(
+        this.leafOnly
+      );
+      // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let nodes = JSON.parse(JSON.stringify(arrayCheckedNodes));
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["from-tree"].getHalfCheckedNodes();
 
@@ -251,11 +258,13 @@ export default {
     // 移除按钮
     removeToSource() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
-      let keys = this.$refs["to-tree"].getCheckedKeys();
+      let keys = this.$refs["to-tree"].getCheckedKeys(this.leafOnly);
+      // 获取选中通过穿梭框的nodes 选中节点数据
+      let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes(
+        this.leafOnly
+      );
       // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
-      let nodes = this.$refs["to-tree"].getCheckedNodes();
-      // 选中节点数据
-      let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes();
+      let nodes = JSON.parse(JSON.stringify(arrayCheckedNodes));
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["to-tree"].getHalfCheckedNodes();
 
@@ -390,6 +399,7 @@ export default {
         return;
       }
       if (val) {
+        // let array = [...this.from_data];
         this.from_check_keys = this.self_from_data;
         this.$refs["from-tree"].setCheckedNodes(this.self_from_data);
       } else {
@@ -510,7 +520,7 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/clear.css";
+@import "./clear.css";
 
 .transfer {
   position: relative;

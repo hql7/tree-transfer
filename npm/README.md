@@ -12,11 +12,11 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
-### 注意！ 1.5及以上版本已自动做处理
+### 注意！ (1.5及以上版本已自动做处理)
 
 > 第一层数据的 pid 请设定为 0！！
 
-> id 推荐为 string，但也可以是 number，请不要混用
+> id 推荐为 string，但也可以是 number，请不要混用，id不要重复！！！
 
 ## 快速上手
 
@@ -120,11 +120,15 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 9.  参数：`pid` 说明：`自定义pid的参数名，默认为"pid"` 必填：`false` 补充：`有网友提出后台给的字段名不叫pid，因此增加自定义支持`
 
-10. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+10. 参数：`leafOnly` 说明：`是否只返回叶子节点` 类型：`Boolean` 必填：`false` 补充：`默认false，如果你只需要返回的末端子节点可使用此参数`
 
-11. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+11. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+
+12. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
 
 ## 版本说明
+
+> 1.5.9版本增加`leafOnly`参数，来设置是否只返回树的末端叶子节点
 
 > 1.5.8版本恢复上个版本莫名删掉的返回` nodes `的代码，如果您的项目只需要穿梭的node-key值则无需更新！道歉ing。。。
 
