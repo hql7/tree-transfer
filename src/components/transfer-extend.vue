@@ -9,7 +9,9 @@
       <!-- 内容区 -->
       <div class="transfer-main">
         <!-- <slot name="from"></slot> -->
-        <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps">
+        <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
+        </el-input>
+        <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll">
         </el-tree>
       </div>
     </div>
@@ -44,7 +46,9 @@
       <!-- 内容区 -->
       <div class="transfer-main">
         <!-- <slot name='to'></slot> -->
-        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps">
+        <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterTo" size="small" class="filter-tree">
+        </el-input>
+        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll">
         </el-tree>
       </div>
     </div>
@@ -69,7 +73,9 @@ export default {
       from_disabled: true, // 添加按钮是否禁用
       to_disabled: true, // 移除按钮是否禁用
       from_check_keys: [], // 源数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
-      to_check_keys: [] // 目标数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
+      to_check_keys: [], // 目标数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
+      filterFrom: "", // 源数据筛选
+      filterTo: "" // 目标数据筛选
     };
   },
   props: {
@@ -119,6 +125,16 @@ export default {
     },
     // 是否只返回叶子节点
     leafOnly: {
+      type: Boolean,
+      default: false
+    },
+    // 是否启用筛选
+    filter: {
+      type: Boolean,
+      default: false
+    },
+    // 是否展开所有节点
+    openAll: {
       type: Boolean,
       default: false
     }
@@ -419,6 +435,16 @@ export default {
         this.$refs["to-tree"].setCheckedNodes([]);
         this.to_check_keys = [];
       }
+    },
+    // 源数据 筛选
+    filterNodeFrom(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    // 目标数据筛选
+    filterNodeTo(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
     }
   },
   computed: {
@@ -514,13 +540,25 @@ export default {
         this.to_is_indeterminate = false;
         this.to_check_all = false;
       }
+    },
+    // 左侧 数据筛选
+    filterFrom(val) {
+      this.$refs["from-tree"].filter(val);
+    },
+    // 右侧 数据筛选
+    filterTo(val) {
+      this.$refs["to-tree"].filter(val);
     }
   }
 };
 </script>
 
 <style scoped>
-@import "./clear.css";
+@import "../assets/clear.css";
+.el-tree {
+  min-width: 100%;
+  display: inline-block !important;
+}
 
 .transfer {
   position: relative;
@@ -582,6 +620,10 @@ export default {
 
 .transfer-title .el-checkbox {
   margin-right: 10px;
+}
+
+.filter-tree {
+  margin-bottom: 10px;
 }
 </style>
 

@@ -3,14 +3,16 @@
     <img src="./assets/logo.png">
     <router-view/>
     <div class="box">
-      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove'></tree-transfer>
+      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove'>
+      </tree-transfer>
     </div>
   </div>
 </template>
 
 <script>
-import treeTransfer from "el-tree-transfer";
-// import treeTransfer from "@/components/transfer-extend"; // 源码位置
+// import treeTransfer from "el-tree-transfer";
+import treeTransfer from "@/components/transfer-extend"; // 源码位置
+// import treeTransfer from "../npm/lib/transfer-extend"; // 源码位置
 
 export default {
   name: "App",
@@ -20,12 +22,12 @@ export default {
         {
           id: 1,
           pid: 0,
-          label: "11",
+          label: "测试",
           children: [
             {
               id: 2,
               pid: 1,
-              label: "11-2",
+              label: "水电费是打发斯蒂芬斯蒂芬gas噶水电费噶地方死光光",
               children: []
             },
             {

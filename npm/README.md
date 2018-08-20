@@ -12,11 +12,11 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
-### 注意！ (1.5及以上版本已自动做处理)
+### 注意！ (1.5 及以上版本已自动做处理)
 
 > 第一层数据的 pid 请设定为 0！！
 
-> id 推荐为 string，但也可以是 number，请不要混用，id不要重复！！！
+> id 推荐为 string，但也可以是 number，请不要混用，id 不要重复！！！
 
 ## 快速上手
 
@@ -37,7 +37,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
         // 使用树形穿梭框组件
         <tree-transfer :from_data = 'fromData' :to_data = 'toData' @addBtn='add' @removeBtn='remove'></tree-transfer>
       </div>
-    </template>  
+    </template>
 
     <script>
       import treeTransfer from 'el-tree-transfer' // 引入
@@ -122,19 +122,25 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 10. 参数：`leafOnly` 说明：`是否只返回叶子节点` 类型：`Boolean` 必填：`false` 补充：`默认false，如果你只需要返回的末端子节点可使用此参数`
 
-11. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+11. 参数：`filter` 说明：`是否开启筛选功能` 类型：`Boolean` 必填：`false`
 
-12. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+12. 参数：`openAll` 说明：`是否默认展开全部` 类型：`Boolean` 必填：`false`
+
+13. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+
+14. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
 
 ## 版本说明
 
-> 1.5.9版本增加`leafOnly`参数，来设置是否只返回树的末端叶子节点
+> 1.6.7 版本增加`filter,openAll`参数，来设置是否开启筛选和是否默认展开全部
 
-> 1.5.8版本恢复上个版本莫名删掉的返回` nodes `的代码，如果您的项目只需要穿梭的node-key值则无需更新！道歉ing。。。
+> 1.5.9 版本增加`leafOnly`参数，来设置是否只返回树的末端叶子节点
 
-> 1.5.7版本修复子组件异步数据有时不会更新的问题！修复了自定义参数名node_key,children时的一个错误，自动把第一层数据的pid替换为0
+> 1.5.8 版本恢复上个版本莫名删掉的返回`nodes`的代码，如果您的项目只需要穿梭的 node-key 值则无需更新！道歉 ing。。。
 
-> 1.4.9版本增加了添加和移除按钮的回调参数，function(keys,nodes)第一个参数为选中节点node-key值，第二个参数为选中节点node
+> 1.5.7 版本修复子组件异步数据有时不会更新的问题！修复了自定义参数名 node_key,children 时的一个错误，自动把第一层数据的 pid 替换为 0
+
+> 1.4.9 版本增加了添加和移除按钮的回调参数，function(keys,nodes)第一个参数为选中节点 node-key 值，第二个参数为选中节点 node
 
 > 1.4.8 版本修复了 id 为 number 类型时无法通过重复校验函数的问题，但仍然推荐 id 使用 string 型
 

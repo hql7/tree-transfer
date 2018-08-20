@@ -149,12 +149,17 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 9.  参数：`pid` 说明：`自定义pid的参数名，默认为"pid"` 必填：`false` 补充：`有网友提出后台给的字段名不叫pid，因此增加自定义支持`
 
 10. 参数：`leafOnly` 说明：`是否只返回叶子节点` 类型：`Boolean` 必填：`false` 补充：`默认false，如果你只需要返回的末端子节点可使用此参数`
+11. 参数：`filter` 说明：`是否开启筛选功能` 类型：`Boolean` 必填：`false`
 
-11. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+12. 参数：`openAll` 说明：`是否默认展开全部` 类型：`Boolean` 必填：`false`
 
-12. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+13. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+
+14. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
 
 ## 版本说明
+
+> 1.6.7 版本增加`filter,openAll`参数，来设置是否开启筛选和是否默认展开全部
 
 > 1.5.9版本增加`leafOnly`参数，来设置是否只返回树的末端叶子节点
 

@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "el-tree-transfer": "^1.5.8",
+    "el-tree-transfer": "^1.5.9",
     "element-ui": "^2.4.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
