@@ -12,7 +12,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
-### 注意！ (1.5 及以上版本已自动做处理)
+ ### 注意！ 1.7.7版本移动事件参数调整，直接返回移动后的fromData数据和toData数据。
+
+ ### 注意！ (1.5 及以上版本已自动做处理)
 
 > 第一层数据的 pid 请设定为 0！！
 
