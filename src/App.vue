@@ -3,7 +3,8 @@
     <img src="./assets/logo.png">
     <router-view/>
     <div class="box">
-      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove'>
+      <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
+      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' >
       </tree-transfer>
     </div>
   </div>
@@ -67,12 +68,29 @@ export default {
     });
   },
   methods: {
-    add(keys, nodes) {
-      console.log(keys, nodes);
+    // 添加按钮
+    add(fromData, toData, obj) {
+      console.log("fromData:", fromData);
+      console.log("toData:", toData);
+      console.log("obj:", obj);
     },
-    remove(keys, nodes) {
-      console.log(keys, nodes);
-    }
+    // 移除按钮
+    remove(fromData, toData, obj) {
+      console.log("fromData:", fromData);
+      console.log("toData:", toData);
+      console.log("obj:", obj);
+    },
+    // 自定义节点
+    renderContent(h, { node, data, store }){
+    return (
+          <span class="custom-tree-node">
+            <span>{node.label}</span>
+            <span>
+              <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
+              <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
+            </span>
+          </span>);
+      }
   },
   components: { treeTransfer }
 };

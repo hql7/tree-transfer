@@ -11,7 +11,7 @@
         <!-- <slot name="from"></slot> -->
         <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
         </el-input>
-        <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll">
+        <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
         </el-tree>
       </div>
     </div>
@@ -48,7 +48,7 @@
         <!-- <slot name='to'></slot> -->
         <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterTo" size="small" class="filter-tree">
         </el-input>
-        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll">
+        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
         </el-tree>
       </div>
     </div>
@@ -137,13 +137,17 @@ export default {
     openAll: {
       type: Boolean,
       default: false
-    }
+    },
+    // 自定义树节点
+    renderContent:Function
   },
   methods: {
     // 添加按钮
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["from-tree"].getCheckedKeys(this.leafOnly);
+      // 获取半选通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
+      let harfKeys = this.$refs["from-tree"].getHalfCheckedKeys();
       // 选中节点数据
       let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes(
         this.leafOnly
@@ -152,6 +156,8 @@ export default {
       let nodes = JSON.parse(JSON.stringify(arrayCheckedNodes));
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["from-tree"].getHalfCheckedNodes();
+      // 获取半选通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let halfNodes = JSON.parse(JSON.stringify(arrayHalfCheckedNodes));
 
       // 自定义参数读取设置
       let children__ = this.defaultProps.children || "children";
@@ -269,12 +275,14 @@ export default {
       this.to_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("addBtn", keys, nodes);
+      this.$emit("addBtn",this.self_from_data,this.self_to_data,{ keys, nodes, harfKeys, halfNodes});
     },
     // 移除按钮
     removeToSource() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["to-tree"].getCheckedKeys(this.leafOnly);
+      // 获取半选通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
+      let harfKeys = this.$refs["to-tree"].getHalfCheckedKeys();
       // 获取选中通过穿梭框的nodes 选中节点数据
       let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes(
         this.leafOnly
@@ -283,6 +291,8 @@ export default {
       let nodes = JSON.parse(JSON.stringify(arrayCheckedNodes));
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["to-tree"].getHalfCheckedNodes();
+      // 获取半选通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
+      let halfNodes = JSON.parse(JSON.stringify(arrayHalfCheckedNodes));
 
       // 自定义参数读取设置
       let children__ = this.defaultProps.children || "children";
@@ -399,7 +409,7 @@ export default {
       this.from_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("removeBtn", keys, nodes);
+      this.$emit("removeBtn",this.self_from_data,this.self_to_data,{ keys, nodes, harfKeys, halfNodes});
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
