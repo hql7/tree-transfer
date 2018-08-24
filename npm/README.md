@@ -12,9 +12,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/)
 
- ### 注意！ 1.7.7版本移动事件参数调整，直接返回移动后的fromData数据和toData数据。
+### 注意！ 1.7.7 版本移动事件参数调整，直接返回移动后的 fromData 数据和 toData 数据。
 
- ### 注意！ (1.5 及以上版本已自动做处理)
+### 注意！ (1.5 及以上版本已自动做处理)
 
 > 第一层数据的 pid 请设定为 0！！
 
@@ -53,34 +53,34 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
                 pid: 0,
                 label: "一级 1",
                 children: [
-              {
-                id: "1-1",
-                pid: "1",
-                label: "二级 1-1",
-                children: []
-              },
-              {
-                id: "1-2",
-                pid: "1",
-                label: "二级 1-2",
-                children: [
-                {
-                  id: "1-2-1",
-                  pid: "1-2",
-                  children: [],
-                  label: "二级 1-2-1"
-                },
-                {
-                  id: "1-2-2",
-                  pid: "1-2",
-                  children: [],
-                  label: "二级 1-2-2"
+                  {
+                    id: "1-1",
+                    pid: "1",
+                    label: "二级 1-1",
+                    children: []
+                  },
+                  {
+                    id: "1-2",
+                    pid: "1",
+                    label: "二级 1-2",
+                    children: [
+                      {
+                        id: "1-2-1",
+                        pid: "1-2",
+                        children: [],
+                        label: "二级 1-2-1"
+                      },
+                      {
+                        id: "1-2-2",
+                        pid: "1-2",
+                        children: [],
+                        label: "二级 1-2-2"
+                      }
+                    ]
                   }
                 ]
-              }
-            ]
-          },
-        ],
+              },
+            ],
             toData:[]
           }
         },
@@ -134,13 +134,13 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 13. 参数：`renderContent` 说明：`自定义树节点` 类型：`Function` 必填：`false` 补充：`用法同element-ui tree`
 
-14. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+14. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`(fromData,toData,obj),分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象`
 
-15. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`keys:data为选中节点id,nodes:data为选中节点`
+15. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`(fromData,toData,obj),分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象`
 
 ## 版本说明
 
-> 1.7.7 版本 `addBtn` 和 `removeBtn` 事件参数调整，返回三个参数，第一个参数是移动后的fromData数据，第二个参数是移动后的toData数据，第三个参数是{keys, nodes, harfKeys, harfNodes}对象。增加 `renderContent` 参数支持树节点自定义。
+> 1.7.7 版本 `addBtn` 和 `removeBtn` 事件参数调整，返回三个参数，第一个参数是移动后的 fromData 数据，第二个参数是移动后的 toData 数据，第三个参数是{keys, nodes, harfKeys, harfNodes}对象。增加 `renderContent` 参数支持树节点自定义。
 
 > 1.5.9 版本增加`leafOnly`参数，来设置是否只返回树的末端叶子节点
 
