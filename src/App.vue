@@ -1,11 +1,14 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img class="vue" src="./assets/logo.png">
     <router-view/>
-    <div>请打开f12查看移动数据</div>
+    <h4>
+      <label>请打开f12查看移动数据</label>
+      <el-button size="medium" type="info" @click="changeMode">当前模式：{{mode}}</el-button>
+    </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove'>
+      <tree-transfer :title="title" :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter openAll>
       </tree-transfer>
     </div>
   </div>
@@ -20,11 +23,12 @@ export default {
   name: "App",
   data() {
     return {
+      mode: "addressList", // transfer addressList
       fromData: [
         {
           id: 1,
           pid: 0,
-          label: "测试",
+          label: "测试左侧",
           children: [
             {
               id: 2,
@@ -69,6 +73,14 @@ export default {
     });
   },
   methods: {
+    // 切换模式
+    changeMode() {
+      if (this.mode == "transfer") {
+        this.mode = "addressList";
+      } else {
+        this.mode = "transfer";
+      }
+    },
     // 添加按钮
     add(fromData, toData, obj) {
       console.log("fromData:", fromData);
@@ -106,6 +118,15 @@ export default {
       );
     }
   },
+  computed: {
+    title() {
+      if (this.mode == "transfer") {
+        return ["源列表", "目标列表"];
+      } else {
+        return ["通讯录", "收件人", "抄送人", "密送人"];
+      }
+    }
+  },
   components: { treeTransfer }
 };
 </script>
@@ -117,12 +138,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 .box {
   width: 600px;
-  margin: 20px auto;
+  margin: 0 auto;
   text-align: left;
+}
+
+.btn {
+  border: 1px solid #ebeef5;
+  padding: 5px 10px;
+  background-color: #f5f7fa;
+  outline: none;
 }
 </style>
