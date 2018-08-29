@@ -1,3 +1,4 @@
+
 # el-tree-transfer
 
 ## 简介
@@ -10,11 +11,13 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 因为公司业务使用 vue 框架，ui 库使用的 element-ui。在市面上找到一个好用的 vue 树形穿梭框组件都很难，又不想仅仅因为一个穿梭框在 element-ui 之外引入其他重量级插件，因此就有了 el-tree-transfer。轻量，易用，无需投入其他学习成本。
 
-### [在线访问](http://tree-transfer.zhongxiang.shop/)
+### [在线访问](http://tree-transfer.zhongxiang.shop/) - [GitHub](https://github.com/hql7/tree-transfer) - [NPM](https://www.npmjs.com/package/el-tree-transfer) - [SegmentFault](https://segmentfault.com/a/1190000015553081) - [CSDN](https://blog.csdn.net/qq_15390381/article/details/80943549)- [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
 
-### 注意！ 1.7.7 版本移动事件参数调整，直接返回移动后的 fromData 数据和 toData 数据。
+#### 注意！ 1.8.7 版本增加通讯录模式，可通过 mode 字段配置模式
 
-### 注意！ (1.5 及以上版本已自动做处理)
+#### 注意！ 1.7.7 版本移动事件参数调整，直接返回移动后的 fromData 数据和 toData 数据。
+
+#### 注意！ 1.5 以上版本改为自动处理
 
 > 第一层数据的 pid 请设定为 0！！
 
@@ -37,7 +40,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
         // 你的代码
         ...
         // 使用树形穿梭框组件
-        <tree-transfer :from_data = 'fromData' :to_data = 'toData' @addBtn='add' @removeBtn='remove'></tree-transfer>
+        <tree-transfer :title="title" :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter openAll>
+      </tree-transfer>
       </div>
     </template>
 
@@ -47,6 +51,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
       export defult {
         data(){
           return:{
+            mode: "transfer", // transfer addressList
             fromData:[
               {
                 id: "1",
@@ -85,17 +90,29 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
           }
         },
         methods:{
+          // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList
+          changeMode() {
+            if (this.mode == "transfer") {
+              this.mode = "addressList";
+            } else {
+              this.mode = "transfer";
+            }
+          },
           // 监听穿梭框组件添加
           add(fromData,toData,obj){
-            conlose.log('fromData',fromData);
-            conlose.log('toData',toData);
-            conlose.log('obj',obj);
+            // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
+            // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
+            console.log("fromData:", fromData);
+            console.log("toData:", toData);
+            console.log("obj:", obj);
           },
           // 监听穿梭框组件移除
           remove(fromData,toData,obj){
-            conlose.log('fromData',fromData);
-            conlose.log('toData',toData);
-            conlose.log('obj',obj);
+            // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
+            // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
+            console.log("fromData:", fromData);
+            console.log("toData:", toData);
+            console.log("obj:", obj);
           }
         },
         comporents:{ treeTransfer } // 注册
@@ -134,13 +151,19 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 13. 参数：`renderContent` 说明：`自定义树节点` 类型：`Function` 必填：`false` 补充：`用法同element-ui tree`
 
-14. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`(fromData,toData,obj),分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象`
+14. 参数：`mode` 说明：`设置模式，字段可选值为transfer|addressList` 类型：`String` 必填：`false` 补充：`mode默认为transfer模式，即树形穿梭框模式，可配置字段为addressList改为通讯录模式，通讯录模式时按钮不可自定义名字，如要自定义标题名在title数组传入四个值即可，addressList模式时标题默认为通讯录、收件人、抄送人、密送人`
 
-15. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`(fromData,toData,obj),分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象`
+15. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
+
+16. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
 
 ## 版本说明
 
+> 1.8.7 版本增加通讯录模式，可通过 mode 字段配置模式，mode 字段可选值为`transfer`|`addressList`。
+
 > 1.7.7 版本 `addBtn` 和 `removeBtn` 事件参数调整，返回三个参数，第一个参数是移动后的 fromData 数据，第二个参数是移动后的 toData 数据，第三个参数是{keys, nodes, harfKeys, harfNodes}对象。增加 `renderContent` 参数支持树节点自定义。
+
+> 1.6.7 版本增加`filter,openAll`参数，来设置是否开启筛选和是否默认展开全部
 
 > 1.5.9 版本增加`leafOnly`参数，来设置是否只返回树的末端叶子节点
 

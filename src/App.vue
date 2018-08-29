@@ -15,15 +15,15 @@
 </template>
 
 <script>
-// import treeTransfer from "el-tree-transfer";
-import treeTransfer from "@/components/transfer-extend"; // 源码位置
+import treeTransfer from "el-tree-transfer";
+// import treeTransfer from "@/components/transfer-extend"; // 源码位置
 // import treeTransfer from "../npm/lib/transfer-extend"; // 源码位置
 
 export default {
   name: "App",
   data() {
     return {
-      mode: "addressList", // transfer addressList
+      mode: "transfer", // transfer addressList
       fromData: [
         {
           id: 1,
@@ -73,7 +73,7 @@ export default {
     });
   },
   methods: {
-    // 切换模式
+    // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList
     changeMode() {
       if (this.mode == "transfer") {
         this.mode = "addressList";
@@ -83,17 +83,21 @@ export default {
     },
     // 添加按钮
     add(fromData, toData, obj) {
+      // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
+      // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
       console.log("fromData:", fromData);
       console.log("toData:", toData);
       console.log("obj:", obj);
     },
     // 移除按钮
     remove(fromData, toData, obj) {
+      // 树形穿梭框模式transfer时，返回参数为左侧树移动后数据、右侧树移动后数据、移动的{keys,nodes,halfKeys,halfNodes}对象
+      // 通讯录模式addressList时，返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表
       console.log("fromData:", fromData);
       console.log("toData:", toData);
       console.log("obj:", obj);
     },
-    // 自定义节点
+    // 自定义节点 仅树形结构支持
     renderContent(h, { node, data, store }) {
       return (
         <span class="custom-tree-node">

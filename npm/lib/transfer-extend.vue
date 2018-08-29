@@ -1,57 +1,146 @@
 <template>
   <div class="transfer" :style="{width,height}">
-    <!-- 左侧穿梭框 原料框 -->
-    <div class="transfer-left">
-      <h3 class="transfer-title">
-        <el-checkbox :indeterminate="from_is_indeterminate" v-model="from_check_all" @change='fromAllBoxChange'></el-checkbox>
-        <span class="u-right">{{fromTitle}}</span>
-      </h3>
-      <!-- 内容区 -->
-      <div class="transfer-main">
-        <!-- <slot name="from"></slot> -->
-        <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
-        </el-input>
-        <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
-        </el-tree>
+    <template v-if="mode == 'transfer'">
+      <!-- 左侧穿梭框 原料框 -->
+      <div class="transfer-left">
+        <h3 class="transfer-title">
+          <el-checkbox :indeterminate="from_is_indeterminate" v-model="from_check_all" @change='fromAllBoxChange'></el-checkbox>
+          <span>{{fromTitle}}</span>
+        </h3>
+        <!-- 内容区 -->
+        <div class="transfer-main">
+          <!-- <slot name="from"></slot> -->
+          <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
+          </el-input>
+          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
+          </el-tree>
+        </div>
       </div>
-    </div>
-    <!-- 穿梭区 按钮框 -->
-    <div class="transfer-center">
-      <template v-if='button_text'>
-        <p class="transfer-center-item">
-          <el-button type="primary" @click="addTo" :disabled="from_disabled">
-            {{fromButton || '添加'}}
-            <i class="el-icon-arrow-right"></i>
-          </el-button>
-        </p>
-        <p class="transfer-center-item">
-          <el-button type="primary" @click='removeTo' :disabled="to_disabled" icon="el-icon-arrow-left">{{toButton || '移除'}}</el-button>
-        </p>
-      </template>
-      <template v-else>
-        <p class="transfer-center-item">
-          <el-button type="primary" @click="addToAims" icon="el-icon-arrow-right" circle :disabled="from_disabled"></el-button>
-        </p>
-        <p class="transfer-center-item">
-          <el-button type="primary" @click='removeToSource' :disabled="to_disabled" icon="el-icon-arrow-left" circle></el-button>
-        </p>
-      </template>
-    </div>
-    <!-- 右侧穿梭框 目标框 -->
-    <div class="transfer-right">
-      <h3 class="transfer-title">
-        <el-checkbox :indeterminate="to_is_indeterminate" v-model="to_check_all" @change="toAllBoxChange"></el-checkbox>
-        <span class="u-right">{{toTitle}}</span>
-      </h3>
-      <!-- 内容区 -->
-      <div class="transfer-main">
-        <!-- <slot name='to'></slot> -->
-        <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterTo" size="small" class="filter-tree">
-        </el-input>
-        <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
-        </el-tree>
+      <!-- 穿梭区 按钮框 -->
+      <div class="transfer-center">
+        <template v-if='button_text'>
+          <p class="transfer-center-item">
+            <el-button type="primary" @click="addTo" :disabled="from_disabled">
+              {{fromButton || '添加'}}
+              <i class="el-icon-arrow-right"></i>
+            </el-button>
+          </p>
+          <p class="transfer-center-item">
+            <el-button type="primary" @click='removeTo' :disabled="to_disabled" icon="el-icon-arrow-left">{{toButton || '移除'}}</el-button>
+          </p>
+        </template>
+        <template v-else>
+          <p class="transfer-center-item">
+            <el-button type="primary" @click="addToAims" icon="el-icon-arrow-right" circle :disabled="from_disabled"></el-button>
+          </p>
+          <p class="transfer-center-item">
+            <el-button type="primary" @click='removeToSource' :disabled="to_disabled" icon="el-icon-arrow-left" circle></el-button>
+          </p>
+        </template>
       </div>
-    </div>
+      <!-- 右侧穿梭框 目标框 -->
+      <div class="transfer-right">
+        <h3 class="transfer-title">
+          <el-checkbox :indeterminate="to_is_indeterminate" v-model="to_check_all" @change="toAllBoxChange"></el-checkbox>
+          <span>{{toTitle}}</span>
+        </h3>
+        <!-- 内容区 -->
+        <div class="transfer-main">
+          <!-- <slot name='to'></slot> -->
+          <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterTo" size="small" class="filter-tree">
+          </el-input>
+          <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
+          </el-tree>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="mode == 'addressList'">
+      <!-- 左侧穿梭框 原料框 -->
+      <div class="transfer-left">
+        <h3 class="transfer-title">
+          <el-checkbox :indeterminate="from_is_indeterminate" v-model="from_check_all" @change='fromAllBoxChange'></el-checkbox>
+          <span>{{fromTitle}}</span>
+        </h3>
+        <!-- 内容区 -->
+        <div class="transfer-main">
+          <!-- <slot name="from"></slot> -->
+          <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
+          </el-input>
+          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
+          </el-tree>
+        </div>
+      </div>
+      <!-- 穿梭区 按钮框 -->
+      <div class="transfer-center address-list-center">
+        <p class="transfer-center-item" v-show='!move_up'>
+          <el-button type="primary" @click="addressListTransfer(0)" icon="el-icon-arrow-right" circle :disabled="from_disabled"></el-button>
+        </p>
+        <p class="transfer-center-item">
+          <el-button type="primary" @click='addressListTransfer(1)' :disabled="from_disabled" icon="el-icon-arrow-right" circle></el-button>
+        </p>
+        <p class="transfer-center-item" v-show='move_up'>
+          <el-button type="primary" @click='addressListTransfer(2)' :disabled="from_disabled" icon="el-icon-arrow-right" circle></el-button>
+        </p>
+      </div>
+      <div class="transfer-right">
+        <div class="transfer-right-item" :class="{'transfer-right-small':move_up}">
+          <h3 class="transfer-title">
+            <span>{{toTitle}}</span>
+            <span class="u-clear" @click="clearList(0,'all')" v-if="!move_up">清空</span>
+            <img class="move_up_img move_down_img" v-else src="./shang.png" alt="" @click="moveUp('down')">
+          </h3>
+          <!-- 内容区 -->
+          <div class="transfer-main" v-if='!move_up'>
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListFirst" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="transfer-right-item">
+          <h3 class="transfer-title">
+            <span>{{toTitleSecond || '抄送人'}}</span>
+            <span class="u-clear" @click="clearList(1,'all')">清空</span>
+          </h3>
+          <!-- 内容区 -->
+          <div class="transfer-main">
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListSecond" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(1,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="transfer-right-item" :class="{'transfer-right-small':!move_up}">
+          <h3 class="transfer-title">
+            <span>{{toTitleThird || '密送人'}}</span>
+            <span class="u-clear" @click="clearList(2,'all')" v-if="move_up">清空</span>
+            <img class="move_up_img" v-else src="./shang.png" alt="" @click="moveUp('up')">
+          </h3>
+          <!-- 内容区 -->
+          <div class="transfer-main" v-if='move_up'>
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListThird" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -75,7 +164,17 @@ export default {
       from_check_keys: [], // 源数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
       to_check_keys: [], // 目标数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
       filterFrom: "", // 源数据筛选
-      filterTo: "" // 目标数据筛选
+      filterTo: "", // 目标数据筛选
+      filterListFirst: "", // 通讯录模式 右1筛选
+      filterListSecond: "", // 通讯录模式 右2筛选
+      filterListThird: "", // 通讯录模式 右3筛选
+      archiveFirst: [], // 存档右侧筛选前数据
+      archiveSecond: [], // 存档右侧筛选前数据
+      archiveThird: [], // 存档右侧筛选前数据
+      addressee: [], // 收件人列表
+      Cc: [], // 抄送人列表
+      secret_receiver: [], // 密送人列表
+      move_up: false // 通讯录模式 切换右侧
     };
   },
   props: {
@@ -139,7 +238,12 @@ export default {
       default: false
     },
     // 自定义树节点
-    renderContent:Function
+    renderContent: Function,
+    // 穿梭框模式
+    mode: {
+      type: String,
+      default: "transfer"
+    }
   },
   methods: {
     // 添加按钮
@@ -275,7 +379,12 @@ export default {
       this.to_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("addBtn",this.self_from_data,this.self_to_data,{ keys, nodes, harfKeys, halfNodes});
+      this.$emit("addBtn", this.self_from_data, this.self_to_data, {
+        keys,
+        nodes,
+        harfKeys,
+        halfNodes
+      });
     },
     // 移除按钮
     removeToSource() {
@@ -409,7 +518,12 @@ export default {
       this.from_expanded_keys = keys;
 
       // 传递信息给父组件
-      this.$emit("removeBtn",this.self_from_data,this.self_to_data,{ keys, nodes, harfKeys, halfNodes});
+      this.$emit("removeBtn", this.self_from_data, this.self_to_data, {
+        keys,
+        nodes,
+        harfKeys,
+        halfNodes
+      });
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
@@ -455,6 +569,93 @@ export default {
     filterNodeTo(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
+    },
+    // 通讯录模式 穿梭操作
+    addressListTransfer(type) {
+      // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
+      let keys = this.$refs["from-tree"].getCheckedKeys(true);
+      // 选中节点数据
+      let arrayCheckedNodes = this.$refs["from-tree"].getCheckedNodes(true);
+      // 去重筛选
+      let arrayDeWeighting = [];
+      switch (type) {
+        case 0:
+          arrayDeWeighting = arrayCheckedNodes.filter(item => {
+            if (
+              !this.addressee.some(
+                ite => ite[this.node_key] == item[this.node_key]
+              )
+            ) {
+              return item;
+            }
+          });
+          this.addressee = [...this.addressee, ...arrayDeWeighting];
+          break;
+        case 1:
+          arrayDeWeighting = arrayCheckedNodes.filter(item => {
+            if (
+              !this.Cc.some(ite => ite[this.node_key] == item[this.node_key])
+            ) {
+              return item;
+            }
+          });
+          this.Cc = [...this.Cc, ...arrayDeWeighting];
+          break;
+        case 2:
+          arrayDeWeighting = arrayCheckedNodes.filter(item => {
+            if (
+              !this.secret_receiver.some(
+                ite => ite[this.node_key] == item[this.node_key]
+              )
+            ) {
+              return item;
+            }
+          });
+          this.secret_receiver = [...this.secret_receiver, ...arrayDeWeighting];
+          break;
+      }
+
+      // 处理完毕取消选中
+      this.$refs["from-tree"].setCheckedKeys([]);
+
+      // 处理完毕按钮恢复禁用状态
+      this.from_check_keys = [];
+
+      // 传递信息给父组件
+      this.$emit("addBtn", this.addressee, this.Cc, this.secret_receiver);
+    },
+    // 清理 通讯录选中 数据
+    clearList(type, id) {
+      switch (type) {
+        case 0:
+          this.addressee =
+            id == "all"
+              ? []
+              : this.addressee.filter(item => item[this.node_key] != id);
+          break;
+        case 1:
+          this.Cc =
+            id == "all"
+              ? []
+              : this.Cc.filter(item => item[this.node_key] != id);
+          break;
+        case 2:
+          this.secret_receiver =
+            id == "all"
+              ? []
+              : this.secret_receiver.filter(item => item[this.node_key] != id);
+          break;
+      }
+      // 传递信息给父组件
+      this.$emit("removeBtn", this.addressee, this.Cc, this.secret_receiver);
+    },
+    // 右侧 通讯录 上下自动
+    moveUp(type) {
+      if (type == "up") {
+        this.move_up = true;
+      } else {
+        this.move_up = false;
+      }
     }
   },
   computed: {
@@ -482,6 +683,16 @@ export default {
     // 右侧菜单名
     toTitle() {
       let [, text] = this.title;
+      return text;
+    },
+    // 右侧菜单名2
+    toTitleSecond() {
+      let [, , text] = this.title;
+      return text;
+    },
+    // 右侧菜单名3
+    toTitleThird() {
+      let [, , , text] = this.title;
       return text;
     },
     // 上部按钮名
@@ -558,6 +769,41 @@ export default {
     // 右侧 数据筛选
     filterTo(val) {
       this.$refs["to-tree"].filter(val);
+    },
+    // 通讯录模式 右1筛选
+    filterListFirst(newval, oldval) {
+      if (oldval == "") {
+        this.archiveFirst = this.addressee;
+      }
+      if (newval == "") {
+        this.addressee = this.archiveFirst;
+      }
+      let reg = RegExp(newval);
+      this.addressee = this.addressee.filter(item => reg.test(item.label));
+    },
+    // 通讯录模式 右2筛选
+    filterListSecond(newval, oldval) {
+      if (oldval == "") {
+        this.archiveSecond = this.Cc;
+      }
+      if (newval == "") {
+        this.Cc = this.archiveSecond;
+      }
+      let reg = RegExp(newval);
+      this.Cc = this.Cc.filter(item => reg.test(item.label));
+    },
+    // 通讯录模式 右3筛选
+    filterListThird(newval, oldval) {
+      if (oldval == "") {
+        this.archiveThird = this.secret_receiver;
+      }
+      if (newval == "") {
+        this.secret_receiver = this.archiveThird;
+      }
+      let reg = RegExp(newval);
+      this.secret_receiver = this.secret_receiver.filter(item =>
+        reg.test(item.label)
+      );
     }
   }
 };
@@ -585,6 +831,14 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.transfer-right-item {
+  height: calc((100% - 41px) / 2);
+}
+
+.transfer-right-small {
+  height: 41px;
 }
 
 .transfer-main {
@@ -618,6 +872,17 @@ export default {
   overflow: hidden;
 }
 
+.address-list-center {
+  height: 100%;
+}
+
+.address-list-center > .transfer-center-item {
+  height: 50%;
+  padding: 70px 10px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
 .transfer-title {
   border-bottom: 1px solid #ebeef5;
   padding: 0 15px;
@@ -634,6 +899,62 @@ export default {
 
 .filter-tree {
   margin-bottom: 10px;
+}
+
+.address-list-ul {
+  padding-bottom: 20px;
+}
+
+.address-list-li {
+  position: relative;
+  padding: 4px 24px 4px 4px;
+  border-radius: 3px;
+  overflow: hidden; /*超出部分隐藏*/
+  white-space: nowrap; /*不换行*/
+  text-overflow: ellipsis; /*超出部分文字以...显示*/
+}
+
+.address-list-li:hover {
+  background-color: #f5f7fa;
+}
+
+.address-list-li:hover .address-list-del {
+  display: block;
+}
+
+.address-list-del {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  margin-top: -10px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  background-color: #fef0f0;
+  color: #f56c6c;
+  cursor: pointer;
+}
+
+.u-clear {
+  float: right;
+  color: #67c23a;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.move_up_img {
+  float: right;
+  margin-top: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.move_down_img {
+  transform: rotate(180deg);
 }
 </style>
 
