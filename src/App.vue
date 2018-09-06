@@ -8,16 +8,16 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter openAll>
+      <tree-transfer :title="title" :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
       </tree-transfer>
     </div>
   </div>
 </template>
 
 <script>
-import treeTransfer from "el-tree-transfer";
+// import treeTransfer from "el-tree-transfer";
 // import treeTransfer from "@/components/transfer-extend"; // 源码位置
-// import treeTransfer from "../npm/lib/transfer-extend"; // 源码位置
+import treeTransfer from "../npm/lib/transfer-extend"; // 源码位置
 
 export default {
   name: "App",
@@ -64,7 +64,7 @@ export default {
           ]
         }
       ], // 穿梭框 - 源数据 - 树形
-      toData: [] // 穿梭框 - 目标数据 - 树形
+      toData: [], // 穿梭框 - 目标数据 - 树形
     };
   },
   created() {

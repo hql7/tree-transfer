@@ -12,7 +12,7 @@
           <!-- <slot name="from"></slot> -->
           <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
           </el-input>
-          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
+          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
           </el-tree>
         </div>
       </div>
@@ -243,7 +243,20 @@ export default {
     mode: {
       type: String,
       default: "transfer"
+    },
+    // 穿梭后是否展开节点
+    transferOpenNode: {
+      type: Boolean,
+      default: true
+    },
+     // 源数据 默认选中节点
+    defaultCheckedKeys:{
+      type:Array,
+      default:()=>[]
     }
+  },
+  created(){
+    this.from_check_keys = this.defaultCheckedKeys;
   },
   methods: {
     // 添加按钮
@@ -376,7 +389,9 @@ export default {
       this.from_check_keys = [];
 
       // 目标数据节点展开
-      this.to_expanded_keys = keys;
+      if (this.transferOpenNode) {
+        this.to_expanded_keys = keys;
+      }
 
       // 传递信息给父组件
       this.$emit("addBtn", this.self_from_data, this.self_to_data, {
@@ -515,7 +530,9 @@ export default {
       this.to_check_keys = [];
 
       // 目标数据节点展开
-      this.from_expanded_keys = keys;
+      if (this.transferOpenNode) {
+        this.from_expanded_keys = keys;
+      }
 
       // 传递信息给父组件
       this.$emit("removeBtn", this.self_from_data, this.self_to_data, {
