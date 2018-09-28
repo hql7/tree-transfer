@@ -8,16 +8,16 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
+      <tree-transfer :title="title" :from_data='fromData' :to_data='toData' @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
       </tree-transfer>
     </div>
   </div>
 </template>
 
 <script>
-// import treeTransfer from "el-tree-transfer";
+import treeTransfer from "el-tree-transfer";
 // import treeTransfer from "@/components/transfer-extend"; // 源码位置
-import treeTransfer from "../npm/lib/transfer-extend"; // 源码位置
+// import treeTransfer from "../npm/lib/transfer-extend"; // 源码位置
 
 export default {
   name: "App",
@@ -51,7 +51,13 @@ export default {
                   id: 5,
                   pid: 4,
                   label: "11-5",
-                  children: []
+                  children: [
+                    {
+                      id: 111,
+                      pid: 5,
+                      label: "11-111"
+                    }
+                  ]
                 },
                 {
                   id: 6,
@@ -64,13 +70,119 @@ export default {
           ]
         }
       ], // 穿梭框 - 源数据 - 树形
-      toData: [], // 穿梭框 - 目标数据 - 树形
+      toData: [] // 穿梭框 - 目标数据 - 树形
     };
   },
   created() {
-    this.axios.get("../static/data.json").then(res => {
-      // this.fromData = res.data;
-    });
+    this.fromData = [
+      { id: 1, label: "查找所有商品", pid: 0 },
+      {
+        id: 3,
+        label: "eos管理员门店管理",
+        pid: 0,
+        children: [
+          { id: 51, label: "门店等级列表", pid: 3 },
+          { id: 4, label: "eos管理员门店列表", pid: 3 }
+        ]
+      },
+      {
+        id: 5,
+        label: "eos管理员供应商管理",
+        pid: 0,
+        children: [
+          { id: 52, label: "商品价格级别列表", pid: 5 },
+          { id: 6, label: "eos管理员供应商列表", pid: 5 }
+        ]
+      },
+      {
+        id: 7,
+        label: "eos管理员采购管理",
+        pid: 0,
+        children: [{ id: 8, label: "eos管理员采购列表", pid: 7 }]
+      },
+      {
+        id: 9,
+        label: "eos管理员代发管理",
+        pid: 0,
+        children: [{ id: 10, label: "eos管理员代发列表", pid: 9 }]
+      },
+      {
+        id: 11,
+        label: "eos管理员系统管理",
+        pid: 0,
+        children: [
+          { id: 16, label: "eos管理员系统日志", pid: 11 },
+          { id: 15, label: "eos管理员送货地址", pid: 11 },
+          { id: 14, label: "eos管理员系统通知", pid: 11 },
+          { id: 13, label: "eos管理员系统参数", pid: 11 },
+          { id: 12, label: "eos管理员解析模板", pid: 11 }
+        ]
+      },
+      {
+        id: 18,
+        label: "eos门店供应商管理",
+        pid: 0,
+        children: [
+          { id: 20, label: "eos门店财务管理", pid: 18 },
+          { id: 19, label: "eos门店供应商综合", pid: 18 }
+        ]
+      },
+      { id: 21, label: "eos门店商品管理", pid: 0 },
+      {
+        id: 22,
+        label: "eos门店订单管理",
+        pid: 0,
+        children: [
+          { id: 26, label: "eos门店代发订单", pid: 22 },
+          { id: 25, label: "eos门店入库单", pid: 22 },
+          { id: 24, label: "eos门店采购单", pid: 22 },
+          { id: 23, label: "eos门店采购计划单", pid: 22 }
+        ]
+      },
+      {
+        id: 27,
+        label: "eos门店个人中心",
+        pid: 0,
+        children: [
+          { id: 29, label: "eos门店消息通知", pid: 27 },
+          { id: 28, label: "eos门店账户安全", pid: 27 }
+        ]
+      },
+      {
+        id: 31,
+        label: "eos仓库门店管理",
+        pid: 0,
+        children: [
+          { id: 33, label: "eos仓库财务管理", pid: 31 },
+          { id: 32, label: "eos仓库门店管理类表", pid: 31 }
+        ]
+      },
+      { id: 34, label: "eos仓库商品管理", pid: 0 },
+      {
+        id: 35,
+        label: "eos仓库订单管理",
+        pid: 0,
+        children: [
+          { id: 38, label: "eos仓库代发管理", pid: 35 },
+          { id: 37, label: "eos仓库出库单", pid: 35 },
+          { id: 36, label: "eos仓库采购单", pid: 35 }
+        ]
+      },
+      {
+        id: 39,
+        label: "eos仓库个人中心",
+        pid: 0,
+        children: [
+          { id: 43, label: "eos仓库支付管理", pid: 39 },
+          { id: 42, label: "eos仓库消息通知", pid: 39 },
+          { id: 41, label: "eos仓库账号安全", pid: 39 },
+          { id: 40, label: "eos仓库个人信息", pid: 39 }
+        ]
+      },
+      { id: 47, label: "测试业务功能名称", pid: 0 },
+      { id: 50, label: "string", pid: 0 },
+      { id: 53, label: "拆单接口", pid: 0 }
+    ];
   },
   methods: {
     // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList
