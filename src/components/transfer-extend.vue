@@ -89,18 +89,18 @@
             <span class="u-clear" @click="clearList(0,'all')" v-if="!move_up">清空</span>
             <img class="move_up_img move_down_img" v-else src="../assets/shang.png" alt="" @click="moveUp('down')">
           </h3>
-          <!-- 内容区 -->
-          <div class="transfer-main" v-if='!move_up'>
-            <!-- <slot name='to'></slot> -->
-            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListFirst" size="small" class="filter-tree">
-            </el-input>
-            <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
-                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
-              </li>
-            </ul>
-          </div>
+            <!-- 内容区 -->
+            <div class="transfer-main" v-if='!move_up'>
+              <!-- <slot name='to'></slot> -->
+              <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListFirst" size="small" class="filter-tree">
+              </el-input>
+              <ul class="address-list-ul">
+                <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
+                  <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                  <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
+                </li>
+              </ul>
+            </div>
         </div>
         <div class="transfer-right-item">
           <h3 class="transfer-title">
@@ -126,18 +126,18 @@
             <span class="u-clear" @click="clearList(2,'all')" v-if="move_up">清空</span>
             <img class="move_up_img" v-else src="../assets/shang.png" alt="" @click="moveUp('up')">
           </h3>
-          <!-- 内容区 -->
-          <div class="transfer-main" v-if='move_up'>
-            <!-- <slot name='to'></slot> -->
-            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListThird" size="small" class="filter-tree">
-            </el-input>
-            <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
-                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
-              </li>
-            </ul>
-          </div>
+            <!-- 内容区 -->
+            <div class="transfer-main" v-if='move_up'>
+              <!-- <slot name='to'></slot> -->
+              <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListThird" size="small" class="filter-tree">
+              </el-input>
+              <ul class="address-list-ul">
+                <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
+                  <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                  <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
+                </li>
+              </ul>
+            </div>
         </div>
       </div>
     </template>
@@ -249,13 +249,13 @@ export default {
       type: Boolean,
       default: true
     },
-     // 源数据 默认选中节点
-    defaultCheckedKeys:{
-      type:Array,
-      default:()=>[]
+    // 源数据 默认选中节点
+    defaultCheckedKeys: {
+      type: Array,
+      default: () => []
     }
   },
-  created(){
+  created() {
     this.from_check_keys = this.defaultCheckedKeys;
   },
   methods: {
@@ -334,9 +334,11 @@ export default {
       let leafCheckedNodes = arrayCheckedNodes.filter(
         item => !item[children__] || item[children__].length == 0
       );
-      // 末端叶子直接插入目标树
+      // 末端叶子插入目标树
       leafCheckedNodes.forEach(item => {
-        this.$refs["to-tree"].append(item, item[pid__]);
+        if (!inquireIsExist(item)) {
+          this.$refs["to-tree"].append(item, item[pid__]);
+        }
       });
 
       // 递归查询data内是否存在item函数
@@ -478,7 +480,9 @@ export default {
       );
       // 末端叶子直接插入目标树
       leafCheckedNodes.forEach(item => {
-        this.$refs["from-tree"].append(item, item[pid__]);
+        if (!inquireIsExist(item)) {
+          this.$refs["from-tree"].append(item, item[pid__]);
+        }
       });
 
       // 递归查询data内是否存在item函数
@@ -580,12 +584,12 @@ export default {
     // 源数据 筛选
     filterNodeFrom(value, data) {
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data[this.defaultProps.label].indexOf(value) !== -1;
     },
     // 目标数据筛选
     filterNodeTo(value, data) {
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data[this.defaultProps.label].indexOf(value) !== -1;
     },
     // 通讯录模式 穿梭操作
     addressListTransfer(type) {
