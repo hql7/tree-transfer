@@ -89,18 +89,18 @@
             <span class="u-clear" @click="clearList(0,'all')" v-if="!move_up">清空</span>
             <img class="move_up_img move_down_img" v-else src="../assets/shang.png" alt="" @click="moveUp('down')">
           </h3>
-            <!-- 内容区 -->
-            <div class="transfer-main" v-if='!move_up'>
-              <!-- <slot name='to'></slot> -->
-              <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListFirst" size="small" class="filter-tree">
-              </el-input>
-              <ul class="address-list-ul">
-                <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
-                  <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                  <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
-                </li>
-              </ul>
-            </div>
+          <!-- 内容区 -->
+          <div class="transfer-main" v-if='!move_up'>
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListFirst" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="transfer-right-item">
           <h3 class="transfer-title">
@@ -126,18 +126,18 @@
             <span class="u-clear" @click="clearList(2,'all')" v-if="move_up">清空</span>
             <img class="move_up_img" v-else src="../assets/shang.png" alt="" @click="moveUp('up')">
           </h3>
-            <!-- 内容区 -->
-            <div class="transfer-main" v-if='move_up'>
-              <!-- <slot name='to'></slot> -->
-              <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListThird" size="small" class="filter-tree">
-              </el-input>
-              <ul class="address-list-ul">
-                <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
-                  <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                  <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
-                </li>
-              </ul>
-            </div>
+          <!-- 内容区 -->
+          <div class="transfer-main" v-if='move_up'>
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListThird" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </template>
@@ -312,12 +312,12 @@ export default {
       });
 
       // 第二步
-      let cloneSkeletonCheckedNodes = JSON.parse(
+      /*  let cloneSkeletonCheckedNodes = JSON.parse(
         JSON.stringify(arrayCheckedNodes)
-      ); // 深拷贝数据 -选中节点
+      ); // 深拷贝数据 -选中节点 */
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
-      cloneSkeletonCheckedNodes.forEach(item => {
+      nodes.forEach(item => {
         if (!inquireIsExist(item)) {
           newSkeletonCheckedNodes.push(item);
         }
@@ -346,8 +346,8 @@ export default {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
         let strItem =
           typeof item[id__] == "number"
-            ? `"${id__}":${item[id__]}`
-            : `"${id__}":"${item[id__]}"`;
+            ? `"${id__}":${item[id__]},`
+            : `"${id__}":"${item[id__]}",`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
 
@@ -410,9 +410,7 @@ export default {
       // 获取半选通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let harfKeys = this.$refs["to-tree"].getHalfCheckedKeys();
       // 获取选中通过穿梭框的nodes 选中节点数据
-      let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes(
-        this.leafOnly
-      );
+      let arrayCheckedNodes = this.$refs["to-tree"].getCheckedNodes();
       // 获取选中通过穿梭框的nodes - 仅用于传送选中节点数组到父组件同后台通信需求
       let nodes = JSON.parse(JSON.stringify(arrayCheckedNodes));
       // 半选中节点数据
@@ -453,15 +451,15 @@ export default {
         } else {
           this.$refs["from-tree"].append(item, item[pid__]);
         }
-      });
+      }); // 深拷贝数据 -选中节点 // 筛选目标树不存在的骨架节点 - 全选内的节点
 
       // 第二步
-      let cloneSkeletonCheckedNodes = JSON.parse(
+      /* let cloneSkeletonCheckedNodes = JSON.parse(
         JSON.stringify(arrayCheckedNodes)
-      ); // 深拷贝数据 -选中节点
-      // 筛选目标树不存在的骨架节点 - 全选内的节点
+      ); */
+
       let newSkeletonCheckedNodes = [];
-      cloneSkeletonCheckedNodes.forEach(item => {
+      nodes.forEach(item => {
         if (!inquireIsExist(item)) {
           newSkeletonCheckedNodes.push(item);
         }
@@ -490,8 +488,8 @@ export default {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
         let strItem =
           typeof item[id__] == "number"
-            ? `"${id__}":${item[id__]}`
-            : `"${id__}":"${item[id__]}"`;
+            ? `"${id__}":${item[id__]},`
+            : `"${id__}":"${item[id__]}",`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {

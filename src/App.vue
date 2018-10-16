@@ -8,7 +8,7 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' :defaultProps="{label:'name',children:'children'}" :to_data='toData' @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
+      <tree-transfer :title="title" :from_data='fromData' :defaultProps="{label:'name',children:'items'}" :to_data='toData' @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
       </tree-transfer>
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
     return {
       mode: "transfer", // transfer addressList
       fromData: [
-        {
+        /* {
           id: 1,
           pid: 0,
           name: "测试左侧",
@@ -68,10 +68,10 @@ export default {
               ]
             }
           ]
-        }
+        } */
       ], // 穿梭框 - 源数据 - 树形
       toData: [
-        {
+       /*  {
           id: 1,
           pid: 0,
           name: "测试左侧",
@@ -89,7 +89,7 @@ export default {
               ]
             }
           ]
-        }
+        } */
       ] // 穿梭框 - 目标数据 - 树形
     };
   },
@@ -613,6 +613,14 @@ export default {
         permissions: []
       }
     ]; */
+    /* fetch("../static/data.jsonp")
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+      }); */
+    this.axios.get("../static/dat.json").then(res => {
+      this.fromData = res.data.dtu;
+    });
   },
   methods: {
     // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList

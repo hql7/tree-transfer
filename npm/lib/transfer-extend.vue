@@ -312,12 +312,12 @@ export default {
       });
 
       // 第二步
-      let cloneSkeletonCheckedNodes = JSON.parse(
+      /* let cloneSkeletonCheckedNodes = JSON.parse(
         JSON.stringify(arrayCheckedNodes)
-      ); // 深拷贝数据 -选中节点
+      ); // 深拷贝数据 -选中节点 */
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
-      cloneSkeletonCheckedNodes.forEach(item => {
+      nodes.forEach(item => {
         if (!inquireIsExist(item)) {
           newSkeletonCheckedNodes.push(item);
         }
@@ -346,8 +346,8 @@ export default {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
         let strItem =
           typeof item[id__] == "number"
-            ? `"${id__}":${item[id__]}`
-            : `"${id__}":"${item[id__]}"`;
+            ? `"${id__}":${item[id__]},`
+            : `"${id__}":"${item[id__]}",`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
 
@@ -456,12 +456,12 @@ export default {
       });
 
       // 第二步
-      let cloneSkeletonCheckedNodes = JSON.parse(
+      /* let cloneSkeletonCheckedNodes = JSON.parse(
         JSON.stringify(arrayCheckedNodes)
-      ); // 深拷贝数据 -选中节点
+      ); // 深拷贝数据 -选中节点 */
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
-      cloneSkeletonCheckedNodes.forEach(item => {
+      nodes.forEach(item => {
         if (!inquireIsExist(item)) {
           newSkeletonCheckedNodes.push(item);
         }
@@ -490,8 +490,8 @@ export default {
         // 将树形数据格式化成一维字符串 然后通过匹配来判断是否已存在
         let strItem =
           typeof item[id__] == "number"
-            ? `"${id__}":${item[id__]}`
-            : `"${id__}":"${item[id__]}"`;
+            ? `"${id__}":${item[id__]},`
+            : `"${id__}":"${item[id__]}",`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {
