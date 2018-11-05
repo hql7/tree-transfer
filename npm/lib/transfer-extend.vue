@@ -10,7 +10,7 @@
         <!-- 内容区 -->
         <div class="transfer-main">
           <!-- <slot name="from"></slot> -->
-          <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
+          <el-input v-if="filter" :placeholder="placeholder" v-model="filterFrom" size="small" class="filter-tree">
           </el-input>
           <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
           </el-tree>
@@ -47,7 +47,7 @@
         <!-- 内容区 -->
         <div class="transfer-main">
           <!-- <slot name='to'></slot> -->
-          <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterTo" size="small" class="filter-tree">
+          <el-input v-if="filter" :placeholder="placeholder" v-model="filterTo" size="small" class="filter-tree">
           </el-input>
           <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
           </el-tree>
@@ -64,7 +64,7 @@
         <!-- 内容区 -->
         <div class="transfer-main">
           <!-- <slot name="from"></slot> -->
-          <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterFrom" size="small" class="filter-tree">
+          <el-input v-if="filter" :placeholder="placeholder" v-model="filterFrom" size="small" class="filter-tree">
           </el-input>
           <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
           </el-tree>
@@ -89,18 +89,18 @@
             <span class="u-clear" @click="clearList(0,'all')" v-if="!move_up">清空</span>
             <img class="move_up_img move_down_img" v-else src="./shang.png" alt="" @click="moveUp('down')">
           </h3>
-            <!-- 内容区 -->
-            <div class="transfer-main" v-if='!move_up'>
-              <!-- <slot name='to'></slot> -->
-              <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListFirst" size="small" class="filter-tree">
-              </el-input>
-              <ul class="address-list-ul">
-                <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
-                  <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                  <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
-                </li>
-              </ul>
-            </div>
+          <!-- 内容区 -->
+          <div class="transfer-main" v-if='!move_up'>
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" :placeholder="placeholder" v-model="filterListFirst" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="transfer-right-item">
           <h3 class="transfer-title">
@@ -110,7 +110,7 @@
           <!-- 内容区 -->
           <div class="transfer-main">
             <!-- <slot name='to'></slot> -->
-            <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListSecond" size="small" class="filter-tree">
+            <el-input v-if="filter" :placeholder="placeholder" v-model="filterListSecond" size="small" class="filter-tree">
             </el-input>
             <ul class="address-list-ul">
               <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
@@ -126,18 +126,18 @@
             <span class="u-clear" @click="clearList(2,'all')" v-if="move_up">清空</span>
             <img class="move_up_img" v-else src="./shang.png" alt="" @click="moveUp('up')">
           </h3>
-            <!-- 内容区 -->
-            <div class="transfer-main" v-if='move_up'>
-              <!-- <slot name='to'></slot> -->
-              <el-input v-if="filter" placeholder="输入关键字进行过滤" v-model="filterListThird" size="small" class="filter-tree">
-              </el-input>
-              <ul class="address-list-ul">
-                <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
-                  <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                  <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
-                </li>
-              </ul>
-            </div>
+          <!-- 内容区 -->
+          <div class="transfer-main" v-if='move_up'>
+            <!-- <slot name='to'></slot> -->
+            <el-input v-if="filter" :placeholder="placeholder" v-model="filterListThird" size="small" class="filter-tree">
+            </el-input>
+            <ul class="address-list-ul">
+              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
+                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
+                <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </template>
@@ -253,7 +253,17 @@ export default {
     defaultCheckedKeys: {
       type: Array,
       default: () => []
-    }
+    },
+    // 筛选placeholder
+    placeholder: {
+      type: String,
+      default: "输入关键字进行过滤"
+    },
+     // 默认穿梭一次默认选中数据
+    defaultTransfer:{
+      type: Boolean,
+      default: false
+    },
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
@@ -347,7 +357,7 @@ export default {
         let strItem =
           typeof item[id__] == "number"
             ? `"${id__}":${item[id__]},`
-            : `"${id__}":"${item[id__]}",`;
+            : `"${id__}":"${item[id__]}"`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
 
@@ -491,7 +501,7 @@ export default {
         let strItem =
           typeof item[id__] == "number"
             ? `"${id__}":${item[id__]},`
-            : `"${id__}":"${item[id__]}",`;
+            : `"${id__}":"${item[id__]}"`;
         let reg = RegExp(strItem);
         let existed = reg.test(strData);
         /*  for (let i of data) {
@@ -825,6 +835,14 @@ export default {
       this.secret_receiver = this.secret_receiver.filter(item =>
         reg.test(item.label)
       );
+    },
+      // 监视默认选中
+    defaultCheckedKeys(val){
+      if(val && this.defaultTransfer){
+        this.$nextTick(()=>{
+          this.addToAims()
+        })
+      }
     }
   }
 };
