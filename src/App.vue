@@ -8,7 +8,7 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' :defaultProps="{label:'name',children:'items'}" :defaultCheckedKeys="defaultCheckedKeys" defaultTransfer :to_data='toData' @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
+      <tree-transfer :title="title" :from_data='fromData' :button_text="['左', '右']" :defaultProps="{label:'name',children:'items'}" :defaultCheckedKeys="defaultCheckedKeys" defaultTransfer :to_data='toData' @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
       </tree-transfer>
     </div>
   </div>

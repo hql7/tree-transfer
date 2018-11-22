@@ -20,13 +20,13 @@
       <div class="transfer-center">
         <template v-if='button_text'>
           <p class="transfer-center-item">
-            <el-button type="primary" @click="addTo" :disabled="from_disabled">
+            <el-button type="primary" @click="addToAims" :disabled="from_disabled">
               {{fromButton || '添加'}}
               <i class="el-icon-arrow-right"></i>
             </el-button>
           </p>
           <p class="transfer-center-item">
-            <el-button type="primary" @click='removeTo' :disabled="to_disabled" icon="el-icon-arrow-left">{{toButton || '移除'}}</el-button>
+            <el-button type="primary" @click='removeToSource' :disabled="to_disabled" icon="el-icon-arrow-left">{{toButton || '移除'}}</el-button>
           </p>
         </template>
         <template v-else>

@@ -199,6 +199,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ## 版本说明
 
+> 1.9.8 版本修复自定义按钮`button_text`的报错。
+
 > 1.9.7 版本增加`defaultTransfer`属性用来满足用户不想将数据拆分成fromData和toData的需求，增加`placeholder`属性。
 
 > 1.9.0 增强 id 既有数字又有字符型时的正则匹配强度。
