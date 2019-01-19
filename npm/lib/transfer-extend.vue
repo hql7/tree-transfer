@@ -12,8 +12,9 @@
           <!-- <slot name="from"></slot> -->
           <el-input v-if="filter" :placeholder="placeholder" v-model="filterFrom" size="small" class="filter-tree">
           </el-input>
-          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
+          <el-tree ref='from-tree' check-strictly :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
           </el-tree>
+          <slot name="left-footer"></slot>
         </div>
       </div>
       <!-- 穿梭区 按钮框 -->
@@ -49,8 +50,9 @@
           <!-- <slot name='to'></slot> -->
           <el-input v-if="filter" :placeholder="placeholder" v-model="filterTo" size="small" class="filter-tree">
           </el-input>
-          <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
+          <el-tree slot='to' ref='to-tree' check-strictly :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
           </el-tree>
+          <slot name="right-footer"></slot>
         </div>
       </div>
     </template>
@@ -559,10 +561,12 @@ export default {
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
       this.from_check_keys = treeObj.checkedNodes;
+      this.$emit("left-check-change", nodeObj, treeObj);
     },
     // 目标树选中事件 - 是否禁用穿梭按钮
     toTreeChecked(nodeObj, treeObj) {
       this.to_check_keys = treeObj.checkedNodes;
+      this.$emit("right-check-change", nodeObj, treeObj);
     },
     // 源数据 总全选checkbox
     fromAllBoxChange(val) {

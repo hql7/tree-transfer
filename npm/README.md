@@ -169,7 +169,16 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 20. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
 
+21. 事件：`left-check-change` 说明：`左侧源数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
+
+22. 事件：`right-check-change` 说明：`右侧目标数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
+
+23. Slot：`left-footer`, `right-footer` 说明：`穿梭框左侧、右侧底部slot`
+
+
 ## 版本说明
+
+> 2.0.0 版本增加穿梭框左侧、右侧数据勾选事件，穿梭框左侧、右侧底部slot。
 
 > 1.9.8 版本修复自定义按钮`button_text`的报错。
 

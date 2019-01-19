@@ -8,7 +8,11 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' :button_text="['左', '右']" :defaultProps="{label:'name',children:'items'}" :defaultCheckedKeys="defaultCheckedKeys" defaultTransfer :to_data='toData' @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter open-all>
+      <tree-transfer :title="title" :from_data='fromData' height='540px' filter open-all 
+      :defaultProps="{label:'name',children:'children'}" :defaultCheckedKeys="defaultCheckedKeys" 
+      defaultTransfer :to_data='toData' @addBtn='add' node_key="id" @removeBtn='remove'
+      @left-check-change="leftCheckChange" @right-check-change="rightCheckChange" :mode='mode' 
+      >
       </tree-transfer>
     </div>
   </div>
@@ -16,8 +20,8 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-import treeTransfer from "@/components/transfer-extend"; // 源码位置
-// import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+// import treeTransfer from "@/components/transfer-extend"; // 源码位置
+import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
 
 export default {
   name: "App",
@@ -25,7 +29,7 @@ export default {
     return {
       mode: "transfer", // transfer addressList
       fromData: [
-        /* {
+        {
           id: 1,
           pid: 0,
           name: "测试左侧",
@@ -68,7 +72,7 @@ export default {
               ]
             }
           ]
-        } */
+        }
       ], // 穿梭框 - 源数据 - 树形
       toData: [
         /*  {
@@ -619,12 +623,13 @@ export default {
       .then(res => {
         console.log(res);
       }); */ 
-      this.axios
-      .get("../static/dat.json")
+      /* this.axios
+      .get("../static/da.json")
       .then(res => {
-        this.fromData = res.data.dtu;
-        this.defaultCheckedKeys = res.data.dtu[0].items.map(item => item.id);
-      });
+        this.fromData = res.data.rows; */
+        /* this.fromData = res.data.dtu;
+        this.defaultCheckedKeys = res.data.dtu[0].items.map(item => item.id); */
+      // });
   },
   methods: {
     // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList
@@ -650,6 +655,16 @@ export default {
       console.log("fromData:", fromData);
       console.log("toData:", toData);
       console.log("obj:", obj);
+    },
+    // 左侧源数据选中事件
+    leftCheckChange(nodeObj, treeObj){
+      console.log(nodeObj);
+      console.log(treeObj);
+    },
+    // 右侧目标数据选中事件
+    rightCheckChange(nodeObj, treeObj){
+      console.log(nodeObj);
+      console.log(treeObj);
     },
     // 自定义节点 仅树形结构支持
     renderContent(h, { node, data, store }) {
@@ -710,4 +725,5 @@ export default {
   background-color: #f5f7fa;
   outline: none;
 }
+
 </style>
