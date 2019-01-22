@@ -12,7 +12,7 @@
           <!-- <slot name="from"></slot> -->
           <el-input v-if="filter" :placeholder="placeholder" v-model="filterFrom" size="small" class="filter-tree">
           </el-input>
-          <el-tree ref='from-tree' check-strictly :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
+          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
           </el-tree>
           <slot name="left-footer"></slot>
         </div>
@@ -50,7 +50,7 @@
           <!-- <slot name='to'></slot> -->
           <el-input v-if="filter" :placeholder="placeholder" v-model="filterTo" size="small" class="filter-tree">
           </el-input>
-          <el-tree slot='to' ref='to-tree' check-strictly :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
+          <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
           </el-tree>
           <slot name="right-footer"></slot>
         </div>

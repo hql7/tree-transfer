@@ -38,6 +38,7 @@ export default {
               id: 2,
               pid: 1,
               name: "水电费是打发斯蒂芬斯蒂芬gas噶水电费噶地方死光光",
+              disabled: true,
               children: []
             },
             {

@@ -66,6 +66,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
                     id: "1-1",
                     pid: "1",
                     label: "二级 1-1",
+                    disabled: true,
                     children: []
                   },
                   {
@@ -178,7 +179,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ## 版本说明
 
-> 2.0.0 版本增加穿梭框左侧、右侧数据勾选事件，穿梭框左侧、右侧底部slot。
+> 2.0.1 修复父子不关联问题。
+
+> 2.0.0 版本增加穿梭框左侧、右侧数据勾选事件，穿梭框左侧、右侧底部slot。 
 
 > 1.9.8 版本修复自定义按钮`button_text`的报错。
 
