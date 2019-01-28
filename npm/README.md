@@ -27,6 +27,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 > id 推荐为 string，但也可以是 number，请不要混用，id 不要重复！！！
 
+# 这里有一个兄弟组件-树形表格：[在线访问](http://eltreetable.zhongxiang.shop/) - [GitHub](https://github.com/hql7/el-tree-table)
+
 ## 快速上手
 
 > 先 npm 下载插件
