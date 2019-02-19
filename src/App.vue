@@ -8,11 +8,13 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' height='540px' filter open-all 
+      <tree-transfer :title="title" :from_data='fromData' height='540px' filter 
       :defaultProps="{label:'name',children:'children'}" :defaultCheckedKeys="defaultCheckedKeys" 
       defaultTransfer :to_data='toData' @addBtn='add' node_key="id" @removeBtn='remove'
       @left-check-change="leftCheckChange" @right-check-change="rightCheckChange" :mode='mode' 
+      :transferOpenNode="false"
       >
+       <span slot="title-right" class="my-title-right" @click="handleTitleRight">自定义内容</span>
       </tree-transfer>
     </div>
   </div>
@@ -20,8 +22,8 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-// import treeTransfer from "@/components/transfer-extend"; // 源码位置
-import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+import treeTransfer from "@/components/transfer-extend"; // 源码位置
+// import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
 
 export default {
   name: "App",
@@ -690,6 +692,10 @@ export default {
           </span>
         </span>
       );
+    },
+    // 标题自定义区点击事件
+    handleTitleRight(){
+      alert("标题自定义区点击事件")
     }
   },
   computed: {
@@ -725,6 +731,12 @@ export default {
   padding: 5px 10px;
   background-color: #f5f7fa;
   outline: none;
+}
+
+.my-title-right{
+  float: right;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 </style>

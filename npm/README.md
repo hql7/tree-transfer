@@ -178,8 +178,12 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 23. Slot：`left-footer`, `right-footer` 说明：`穿梭框左侧、右侧底部slot`
 
+24. Slot: `title-left`, `title-right` 说明：`穿梭框标题区左侧、右侧自定义内容`
+
 
 ## 版本说明
+
+> 2.0.2 增加标题头部slot自定义内容区
 
 > 2.0.1 修复父子不关联问题。
 

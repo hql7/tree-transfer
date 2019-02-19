@@ -6,6 +6,7 @@
         <h3 class="transfer-title">
           <el-checkbox :indeterminate="from_is_indeterminate" v-model="from_check_all" @change='fromAllBoxChange'></el-checkbox>
           <span>{{fromTitle}}</span>
+          <slot name="title-left"></slot>
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
@@ -44,6 +45,7 @@
         <h3 class="transfer-title">
           <el-checkbox :indeterminate="to_is_indeterminate" v-model="to_check_all" @change="toAllBoxChange"></el-checkbox>
           <span>{{toTitle}}</span>
+          <slot name="title-right"></slot>
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
