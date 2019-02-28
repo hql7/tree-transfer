@@ -8,11 +8,10 @@
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' height='540px' filter 
+      <tree-transfer :title="title" :from_data='fromData' height='540px' filter open-all
       :defaultProps="{label:'name',children:'children'}" :defaultCheckedKeys="defaultCheckedKeys" 
       defaultTransfer :to_data='toData' @addBtn='add' node_key="id" @removeBtn='remove'
       @left-check-change="leftCheckChange" @right-check-change="rightCheckChange" :mode='mode' 
-      :transferOpenNode="false"
       >
        <span slot="title-right" class="my-title-right" @click="handleTitleRight">自定义内容</span>
       </tree-transfer>
@@ -102,6 +101,9 @@ export default {
     };
   },
   created() {
+    setTimeout(() => {
+      this.defaultCheckedKeys = [111];
+    }, 0);
     /*  this.fromData = [
       {
         id: "29",
