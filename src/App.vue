@@ -1,19 +1,38 @@
 <template>
   <div id="app">
-    <img class="vue" src="./assets/logo.png">
+    <img class="vue" src="./assets/logo.png" />
     <router-view />
     <h4>
       <label>请打开f12查看移动数据</label>
-      <el-button size="medium" type="info" @click="changeMode">当前模式：{{mode}}</el-button>
+      <el-button size="medium" type="info" @click="changeMode"
+        >当前模式：{{ mode }}</el-button
+      >
     </h4>
     <div class="box">
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
-      <tree-transfer :title="title" :from_data='fromData' height='540px' filter open-all
-      :defaultProps="{label:'name',children:'children'}" :defaultCheckedKeys="defaultCheckedKeys" 
-      defaultTransfer :to_data='toData' @addBtn='add' node_key="id" @removeBtn='remove'
-      @left-check-change="leftCheckChange" @right-check-change="rightCheckChange" :mode='mode' 
+      <tree-transfer
+        :title="title"
+        :from_data="fromArray"
+        :to_data="toArray"
+        :defaultProps="{ label: 'name', children: 'children' }"
+        :defaultCheckedKeys="defaultCheckedKeys"
+        :mode="mode"
+        open-all
+        filter
+        array-to-tree
+        height="540px"
+        node_key="id"
+        @addBtn="add"
+        @removeBtn="remove"
+        @left-check-change="leftCheckChange"
+        @right-check-change="rightCheckChange"
       >
-       <span slot="title-right" class="my-title-right" @click="handleTitleRight">自定义内容</span>
+        <span
+          slot="title-right"
+          class="my-title-right"
+          @click="handleTitleRight"
+          >自定义内容</span
+        >
       </tree-transfer>
     </div>
   </div>
@@ -97,7 +116,50 @@ export default {
           ]
         } */
       ], // 穿梭框 - 目标数据 - 树形
-      defaultCheckedKeys:[] // 左侧默认选中数据
+      fromArray: [
+        {
+          id: "1",
+          name: "1",
+          pid: "0"
+        },
+        {
+          id: "2",
+          name: "2",
+          pid: "0"
+        },
+        {
+          id: "1-1",
+          name: "1-1",
+          pid: "1"
+        },
+        {
+          id: "1-2",
+          name: "1-2",
+          pid: "1"
+        },
+        {
+          id: "1-1-1",
+          name: "1-1-1",
+          pid: "1-1"
+        },
+        {
+          id: "1-1-1-1",
+          name: "1-1-1-1",
+          pid: "1-1-1"
+        },
+        {
+          id: "2-1",
+          name: "2-1",
+          pid: "2"
+        },
+        {
+          id: "2-2",
+          name: "2-2",
+          pid: "2"
+        }
+      ],
+      toArray: [],
+      defaultCheckedKeys: [] // 左侧默认选中数据
     };
   },
   created() {
@@ -627,14 +689,14 @@ export default {
       .then(res => res.json())
       .then(res => {
         console.log(res);
-      }); */ 
-      /* this.axios
+      }); */
+    /* this.axios
       .get("../static/da.json")
       .then(res => {
         this.fromData = res.data.rows; */
-        /* this.fromData = res.data.dtu;
+    /* this.fromData = res.data.dtu;
         this.defaultCheckedKeys = res.data.dtu[0].items.map(item => item.id); */
-      // });
+    // });
   },
   methods: {
     // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList
@@ -662,12 +724,12 @@ export default {
       console.log("obj:", obj);
     },
     // 左侧源数据选中事件
-    leftCheckChange(nodeObj, treeObj){
+    leftCheckChange(nodeObj, treeObj) {
       console.log(nodeObj);
       console.log(treeObj);
     },
     // 右侧目标数据选中事件
-    rightCheckChange(nodeObj, treeObj){
+    rightCheckChange(nodeObj, treeObj) {
       console.log(nodeObj);
       console.log(treeObj);
     },
@@ -696,8 +758,8 @@ export default {
       );
     },
     // 标题自定义区点击事件
-    handleTitleRight(){
-      alert("标题自定义区点击事件")
+    handleTitleRight() {
+      alert("标题自定义区点击事件");
     }
   },
   computed: {
@@ -735,10 +797,9 @@ export default {
   outline: none;
 }
 
-.my-title-right{
+.my-title-right {
   float: right;
   font-size: 12px;
   cursor: pointer;
 }
-
 </style>

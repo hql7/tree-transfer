@@ -1,58 +1,124 @@
 <template>
-  <div class="transfer" :style="{width,height}">
+  <div class="transfer" :style="{ width, height }">
     <template v-if="mode == 'transfer'">
       <!-- 左侧穿梭框 原料框 -->
       <div class="transfer-left">
         <h3 class="transfer-title">
-          <el-checkbox :indeterminate="from_is_indeterminate" v-model="from_check_all" @change='fromAllBoxChange'></el-checkbox>
-          <span>{{fromTitle}}</span>
+          <el-checkbox
+            :indeterminate="from_is_indeterminate"
+            v-model="from_check_all"
+            @change="fromAllBoxChange"
+          ></el-checkbox>
+          <span>{{ fromTitle }}</span>
           <slot name="title-left"></slot>
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
           <!-- <slot name="from"></slot> -->
-          <el-input v-if="filter" :placeholder="placeholder" v-model="filterFrom" size="small" class="filter-tree">
+          <el-input
+            v-if="filter"
+            :placeholder="placeholder"
+            v-model="filterFrom"
+            size="small"
+            class="filter-tree"
+          >
           </el-input>
-          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent' :default-checked-keys="defaultCheckedKeys">
+          <el-tree
+            ref="from-tree"
+            :data="self_from_data"
+            show-checkbox
+            :node-key="node_key"
+            @check="fromTreeChecked"
+            :default-expanded-keys="from_expanded_keys"
+            :props="defaultProps"
+            :filter-node-method="filterNodeFrom"
+            :default-expand-all="openAll"
+            :render-content="renderContent"
+            :default-checked-keys="defaultCheckedKeys"
+          >
           </el-tree>
           <slot name="left-footer"></slot>
         </div>
       </div>
       <!-- 穿梭区 按钮框 -->
       <div class="transfer-center">
-        <template v-if='button_text'>
+        <template v-if="button_text">
           <p class="transfer-center-item">
-            <el-button type="primary" @click="addToAims" :disabled="from_disabled">
-              {{fromButton || '添加'}}
+            <el-button
+              type="primary"
+              @click="addToAims"
+              :disabled="from_disabled"
+            >
+              {{ fromButton || "添加" }}
               <i class="el-icon-arrow-right"></i>
             </el-button>
           </p>
           <p class="transfer-center-item">
-            <el-button type="primary" @click='removeToSource' :disabled="to_disabled" icon="el-icon-arrow-left">{{toButton || '移除'}}</el-button>
+            <el-button
+              type="primary"
+              @click="removeToSource"
+              :disabled="to_disabled"
+              icon="el-icon-arrow-left"
+              >{{ toButton || "移除" }}</el-button
+            >
           </p>
         </template>
         <template v-else>
           <p class="transfer-center-item">
-            <el-button type="primary" @click="addToAims" icon="el-icon-arrow-right" circle :disabled="from_disabled"></el-button>
+            <el-button
+              type="primary"
+              @click="addToAims"
+              icon="el-icon-arrow-right"
+              circle
+              :disabled="from_disabled"
+            ></el-button>
           </p>
           <p class="transfer-center-item">
-            <el-button type="primary" @click='removeToSource' :disabled="to_disabled" icon="el-icon-arrow-left" circle></el-button>
+            <el-button
+              type="primary"
+              @click="removeToSource"
+              :disabled="to_disabled"
+              icon="el-icon-arrow-left"
+              circle
+            ></el-button>
           </p>
         </template>
       </div>
       <!-- 右侧穿梭框 目标框 -->
       <div class="transfer-right">
         <h3 class="transfer-title">
-          <el-checkbox :indeterminate="to_is_indeterminate" v-model="to_check_all" @change="toAllBoxChange"></el-checkbox>
-          <span>{{toTitle}}</span>
+          <el-checkbox
+            :indeterminate="to_is_indeterminate"
+            v-model="to_check_all"
+            @change="toAllBoxChange"
+          ></el-checkbox>
+          <span>{{ toTitle }}</span>
           <slot name="title-right"></slot>
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
           <!-- <slot name='to'></slot> -->
-          <el-input v-if="filter" :placeholder="placeholder" v-model="filterTo" size="small" class="filter-tree">
+          <el-input
+            v-if="filter"
+            :placeholder="placeholder"
+            v-model="filterTo"
+            size="small"
+            class="filter-tree"
+          >
           </el-input>
-          <el-tree slot='to' ref='to-tree' :data="self_to_data" show-checkbox :node-key="node_key" @check='toTreeChecked' :default-expanded-keys="to_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeTo" :default-expand-all="openAll" :render-content='renderContent'>
+          <el-tree
+            slot="to"
+            ref="to-tree"
+            :data="self_to_data"
+            show-checkbox
+            :node-key="node_key"
+            @check="toTreeChecked"
+            :default-expanded-keys="to_expanded_keys"
+            :props="defaultProps"
+            :filter-node-method="filterNodeTo"
+            :default-expand-all="openAll"
+            :render-content="renderContent"
+          >
           </el-tree>
           <slot name="right-footer"></slot>
         </div>
@@ -62,83 +128,186 @@
       <!-- 左侧穿梭框 原料框 -->
       <div class="transfer-left">
         <h3 class="transfer-title">
-          <el-checkbox :indeterminate="from_is_indeterminate" v-model="from_check_all" @change='fromAllBoxChange'></el-checkbox>
-          <span>{{fromTitle}}</span>
+          <el-checkbox
+            :indeterminate="from_is_indeterminate"
+            v-model="from_check_all"
+            @change="fromAllBoxChange"
+          ></el-checkbox>
+          <span>{{ fromTitle }}</span>
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
           <!-- <slot name="from"></slot> -->
-          <el-input v-if="filter" :placeholder="placeholder" v-model="filterFrom" size="small" class="filter-tree">
+          <el-input
+            v-if="filter"
+            :placeholder="placeholder"
+            v-model="filterFrom"
+            size="small"
+            class="filter-tree"
+          >
           </el-input>
-          <el-tree ref='from-tree' :data="self_from_data" show-checkbox :node-key="node_key" @check='fromTreeChecked' :default-expanded-keys="from_expanded_keys" :props="defaultProps" :filter-node-method="filterNodeFrom" :default-expand-all="openAll" :render-content='renderContent'>
+          <el-tree
+            ref="from-tree"
+            :data="self_from_data"
+            show-checkbox
+            :node-key="node_key"
+            @check="fromTreeChecked"
+            :default-expanded-keys="from_expanded_keys"
+            :props="defaultProps"
+            :filter-node-method="filterNodeFrom"
+            :default-expand-all="openAll"
+            :render-content="renderContent"
+          >
           </el-tree>
         </div>
       </div>
       <!-- 穿梭区 按钮框 -->
       <div class="transfer-center address-list-center">
-        <p class="transfer-center-item" v-show='!move_up'>
-          <el-button type="primary" @click="addressListTransfer(0)" icon="el-icon-arrow-right" circle :disabled="from_disabled"></el-button>
+        <p class="transfer-center-item" v-show="!move_up">
+          <el-button
+            type="primary"
+            @click="addressListTransfer(0)"
+            icon="el-icon-arrow-right"
+            circle
+            :disabled="from_disabled"
+          ></el-button>
         </p>
         <p class="transfer-center-item">
-          <el-button type="primary" @click='addressListTransfer(1)' :disabled="from_disabled" icon="el-icon-arrow-right" circle></el-button>
+          <el-button
+            type="primary"
+            @click="addressListTransfer(1)"
+            :disabled="from_disabled"
+            icon="el-icon-arrow-right"
+            circle
+          ></el-button>
         </p>
-        <p class="transfer-center-item" v-show='move_up'>
-          <el-button type="primary" @click='addressListTransfer(2)' :disabled="from_disabled" icon="el-icon-arrow-right" circle></el-button>
+        <p class="transfer-center-item" v-show="move_up">
+          <el-button
+            type="primary"
+            @click="addressListTransfer(2)"
+            :disabled="from_disabled"
+            icon="el-icon-arrow-right"
+            circle
+          ></el-button>
         </p>
       </div>
       <div class="transfer-right">
-        <div class="transfer-right-item" :class="{'transfer-right-small':move_up}">
+        <div
+          class="transfer-right-item"
+          :class="{ 'transfer-right-small': move_up }"
+        >
           <h3 class="transfer-title">
-            <span>{{toTitle}}</span>
-            <span class="u-clear" @click="clearList(0,'all')" v-if="!move_up">清空</span>
-            <img class="move_up_img move_down_img" v-else src="./shang.png" alt="" @click="moveUp('down')">
+            <span>{{ toTitle }}</span>
+            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up"
+              >清空</span
+            >
+            <img
+              class="move_up_img move_down_img"
+              v-else
+              src="./shang.png"
+              alt=""
+              @click="moveUp('down')"
+            />
           </h3>
           <!-- 内容区 -->
-          <div class="transfer-main" v-if='!move_up'>
+          <div class="transfer-main" v-if="!move_up">
             <!-- <slot name='to'></slot> -->
-            <el-input v-if="filter" :placeholder="placeholder" v-model="filterListFirst" size="small" class="filter-tree">
+            <el-input
+              v-if="filter"
+              :placeholder="placeholder"
+              v-model="filterListFirst"
+              size="small"
+              class="filter-tree"
+            >
             </el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
-                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                <i class="address-list-del" @click="clearList(0,item[node_key])">x</i>
+              <li
+                class="address-list-li"
+                v-for="item of addressee"
+                :key="item[node_key]"
+              >
+                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
+                <i
+                  class="address-list-del"
+                  @click="clearList(0, item[node_key])"
+                  >x</i
+                >
               </li>
             </ul>
           </div>
         </div>
         <div class="transfer-right-item">
           <h3 class="transfer-title">
-            <span>{{toTitleSecond || '抄送人'}}</span>
-            <span class="u-clear" @click="clearList(1,'all')">清空</span>
+            <span>{{ toTitleSecond || "抄送人" }}</span>
+            <span class="u-clear" @click="clearList(1, 'all')">清空</span>
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main">
             <!-- <slot name='to'></slot> -->
-            <el-input v-if="filter" :placeholder="placeholder" v-model="filterListSecond" size="small" class="filter-tree">
+            <el-input
+              v-if="filter"
+              :placeholder="placeholder"
+              v-model="filterListSecond"
+              size="small"
+              class="filter-tree"
+            >
             </el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
-                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                <i class="address-list-del" @click="clearList(1,item[node_key])">x</i>
+              <li
+                class="address-list-li"
+                v-for="item of Cc"
+                :key="item[node_key]"
+              >
+                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
+                <i
+                  class="address-list-del"
+                  @click="clearList(1, item[node_key])"
+                  >x</i
+                >
               </li>
             </ul>
           </div>
         </div>
-        <div class="transfer-right-item" :class="{'transfer-right-small':!move_up}">
+        <div
+          class="transfer-right-item"
+          :class="{ 'transfer-right-small': !move_up }"
+        >
           <h3 class="transfer-title">
-            <span>{{toTitleThird || '密送人'}}</span>
-            <span class="u-clear" @click="clearList(2,'all')" v-if="move_up">清空</span>
-            <img class="move_up_img" v-else src="./shang.png" alt="" @click="moveUp('up')">
+            <span>{{ toTitleThird || "密送人" }}</span>
+            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up"
+              >清空</span
+            >
+            <img
+              class="move_up_img"
+              v-else
+              src="./shang.png"
+              alt=""
+              @click="moveUp('up')"
+            />
           </h3>
           <!-- 内容区 -->
-          <div class="transfer-main" v-if='move_up'>
+          <div class="transfer-main" v-if="move_up">
             <!-- <slot name='to'></slot> -->
-            <el-input v-if="filter" :placeholder="placeholder" v-model="filterListThird" size="small" class="filter-tree">
+            <el-input
+              v-if="filter"
+              :placeholder="placeholder"
+              v-model="filterListThird"
+              size="small"
+              class="filter-tree"
+            >
             </el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
-                <label>{{item[defaultProps.label]}}{{item.Email}}</label>
-                <i class="address-list-del" @click="clearList(2,item[node_key])">x</i>
+              <li
+                class="address-list-li"
+                v-for="item of secret_receiver"
+                :key="item[node_key]"
+              >
+                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
+                <i
+                  class="address-list-del"
+                  @click="clearList(2, item[node_key])"
+                  >x</i
+                >
               </li>
             </ul>
           </div>
@@ -149,7 +318,7 @@
 </template>
 
 <script>
-// import { cloneDeepWith } from "lodash";
+import { arrayToTree } from "./array.js";
 export default {
   data() {
     return {
@@ -161,8 +330,8 @@ export default {
       to_expanded_keys: [], // 目标数据展开节点
       // self_from_data: [...this.from_data], // 左侧数据
       // self_to_data: [...this.to_data], // 右侧数据
-      self_from: [], // 子组件左侧数据
-      self_to: [], // 子组件右侧数据
+      // self_from: [], // 子组件左侧数据
+      // self_to: [], // 子组件右侧数据
       from_disabled: true, // 添加按钮是否禁用
       to_disabled: true, // 移除按钮是否禁用
       from_check_keys: [], // 源数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
@@ -263,11 +432,16 @@ export default {
       type: String,
       default: "输入关键字进行过滤"
     },
-     // 默认穿梭一次默认选中数据
-    defaultTransfer:{
+    // 默认穿梭一次默认选中数据
+    defaultTransfer: {
       type: Boolean,
       default: false
     },
+    // 是否开启arrayToTree
+    arrayToTree: {
+      type: Boolean,
+      default: false
+    }
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
@@ -416,6 +590,9 @@ export default {
         harfKeys,
         halfNodes
       });
+
+      // 处理完毕取消选中
+      this.$refs["from-tree"].setCheckedKeys([]);
     },
     // 移除按钮
     removeToSource() {
@@ -559,6 +736,8 @@ export default {
         harfKeys,
         halfNodes
       });
+      // 处理完毕取消选中
+      this.$refs["to-tree"].setCheckedKeys([]);
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
@@ -698,19 +877,35 @@ export default {
   computed: {
     // 左侧数据
     self_from_data() {
-      let from_array = [...this.from_data, ...this.self_from];
-      from_array.forEach(item => {
-        item[this.pid] = 0;
-      });
-      return from_array;
+      let from_array = [...this.from_data];
+      if (!this.arrayToTree) {
+        from_array.forEach(item => {
+          item[this.pid] = 0;
+        });
+        return from_array;
+      } else {
+        return arrayToTree(from_array, {
+          id: this.node_key,
+          pid: this.pid,
+          children: this.defaultProps.children
+        });
+      }
     },
     // 右侧数据
     self_to_data() {
-      let to_array = [...this.to_data, ...this.self_to];
-      to_array.forEach(item => {
-        item[this.pid] = 0;
-      });
-      return to_array;
+      let to_array = [...this.to_data];
+      if (!this.arrayToTree) {
+        to_array.forEach(item => {
+          item[this.pid] = 0;
+        });
+        return to_array;
+      } else {
+        return arrayToTree(to_array, {
+          id: this.node_key,
+          pid: this.pid,
+          children: this.defaultProps.children
+        });
+      }
     },
     // 左侧菜单名
     fromTitle() {
@@ -842,12 +1037,12 @@ export default {
         reg.test(item.label)
       );
     },
-      // 监视默认选中
-    defaultCheckedKeys(val){
-      if(val && this.defaultTransfer){
-        this.$nextTick(()=>{
-          this.addToAims()
-        })
+    // 监视默认选中
+    defaultCheckedKeys(val) {
+      if (val && this.defaultTransfer) {
+        this.$nextTick(() => {
+          this.addToAims();
+        });
       }
     }
   }
@@ -1002,4 +1197,3 @@ export default {
   transform: rotate(180deg);
 }
 </style>
-
