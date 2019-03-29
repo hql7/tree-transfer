@@ -51,7 +51,7 @@ function arrayToTree(
   array.forEach(item => {
     // 适应el-tree-transfer 将根节点pid重置为 0
     let root = ["undefined", undefined, null].includes(item[options.pid]);
-    if (root) item[options.pid] = 0;
+    if (root) item[options.pid] = "0";
     // 筛选可以插入当前节点的所有子节点
     let children_array = array.filter(
       it => it[options.pid] === item[options.id]

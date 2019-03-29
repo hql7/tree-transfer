@@ -1,6 +1,6 @@
 {
   "name": "el-tree-transfer",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A tree shaped shuttle box assembly based on Vue and element-ui 一个基于vue.js和element-ui的树形穿梭框，也可用于邮件通讯录",
   "main": "dist/treeTransfer.min.js",
   "scripts": {

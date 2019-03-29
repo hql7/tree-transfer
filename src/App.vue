@@ -12,14 +12,14 @@
       <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
       <tree-transfer
         :title="title"
-        :from_data="fromArray"
-        :to_data="toArray"
+        :from_data="fromData"
+        :to_data="toData"
         :defaultProps="{ label: 'name', children: 'children' }"
         :defaultCheckedKeys="defaultCheckedKeys"
         :mode="mode"
-        open-all
         filter
-        array-to-tree
+        open-all
+        default-transfer
         height="540px"
         node_key="id"
         @addBtn="add"
@@ -40,8 +40,8 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-import treeTransfer from "@/components/transfer-extend"; // 源码位置
-// import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+// import treeTransfer from "@/components/transfer-extend"; // 源码位置
+import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
 
 export default {
   name: "App",
@@ -58,7 +58,7 @@ export default {
               id: 2,
               pid: 1,
               name: "水电费是打发斯蒂芬斯蒂芬gas噶水电费噶地方死光光",
-              disabled: true,
+              // disabled: true,
               children: []
             },
             {
@@ -66,8 +66,8 @@ export default {
               pid: 1,
               name: "11-3",
               children: []
-            },
-            {
+            }
+            /*    {
               id: 4,
               pid: 1,
               name: "11-4",
@@ -91,6 +91,26 @@ export default {
                   children: []
                 }
               ]
+            } */
+          ]
+        },
+        {
+          id: 7127,
+          pid: 0,
+          name: "debug",
+          children: [
+            {
+              id: 71272,
+              pid: 7127,
+              name: "debug22",
+              // disabled: true,
+              children: []
+            },
+            {
+              id: 71273,
+              pid: 7127,
+              name: "debug11",
+              children: []
             }
           ]
         }
@@ -163,9 +183,86 @@ export default {
     };
   },
   created() {
-    setTimeout(() => {
-      this.defaultCheckedKeys = [111];
-    }, 0);
+    // this.defaultCheckedKeys = [1];
+
+    this.$nextTick(() => {
+      // this.defaultCheckedKeys = [1];
+    });
+
+    /* setTimeout(() => {
+      this.defaultCheckedKeys = [1];
+    }, 0); */
+
+    this.fromData = [
+      {
+        id: 1,
+        pid: 0,
+        name: "关键字",
+        children: [
+          {
+            id: 11,
+            pid: 1,
+            name: "财务报表",
+            disabled: true
+          },
+          {
+            id: 12,
+            pid: 1,
+            name: "工资奖金"
+          },
+          {
+            id: 13,
+            pid: 1,
+            name: "会议纪要"
+          }
+        ]
+      },
+      {
+        id: 2,
+        pid: 0,
+        name: "正则",
+        children: [
+          {
+            id: 22,
+            pid: 2,
+            name: "Email地址"
+          },
+          {
+            id: 23,
+            pid: 2,
+            name: "MAC地址"
+          },
+          {
+            id: 24,
+            pid: 2,
+            name: "IPv6地址"
+          }
+        ]
+      },
+      {
+        id: 3,
+        pid: 0,
+        name: "标识符",
+        children: [
+          {
+            id: 32,
+            pid: 3,
+            name: "包含确切数据过滤器模板"
+          },
+          {
+            id: 33,
+            pid: 3,
+            name: "包含前缀过滤器模板"
+          },
+          {
+            id: 34,
+            pid: 3,
+            name: "包含后缀过滤器模板"
+          }
+        ]
+      }
+    ];
+
     /*  this.fromData = [
       {
         id: "29",
