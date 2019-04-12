@@ -204,7 +204,7 @@
             <img
               class="move_up_img move_down_img"
               v-else
-              src="./shang.png"
+              src="../assets/shang.png"
               alt=""
               @click="moveUp('down')"
             />
@@ -280,7 +280,7 @@
             <img
               class="move_up_img"
               v-else
-              src="./shang.png"
+              src="../assets/shang.png"
               alt=""
               @click="moveUp('up')"
             />
@@ -318,7 +318,7 @@
 </template>
 
 <script>
-import { arrayToTree } from "./array.js";
+import { arrayToTree } from "@/assets/array.js";
 export default {
   data() {
     return {
@@ -976,7 +976,7 @@ export default {
 </script>
 
 <style scoped>
-@import "./clear.css";
+@import "../assets/clear.css";
 .el-tree {
   min-width: 100%;
   display: inline-block !important;

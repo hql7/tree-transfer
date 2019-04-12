@@ -40,8 +40,8 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-// import treeTransfer from "@/components/transfer-extend"; // 源码位置
-import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+import treeTransfer from "@/components/transfer-extend"; // 源码位置
+// import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
 
 export default {
   name: "App",
