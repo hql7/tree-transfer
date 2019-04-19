@@ -35,6 +35,8 @@
             :default-expand-all="openAll"
             :render-content="renderContent"
             :default-checked-keys="defaultCheckedKeys"
+            :lazy="lazy"
+            :load="leftloadNode"
           >
           </el-tree>
           <slot name="left-footer"></slot>
@@ -118,6 +120,8 @@
             :filter-node-method="filterNodeTo"
             :default-expand-all="openAll"
             :render-content="renderContent"
+            :lazy="lazy"
+            :load="rightloadNode"
           >
           </el-tree>
           <slot name="right-footer"></slot>
@@ -399,7 +403,7 @@ export default {
     defaultProps: {
       type: Object,
       default: () => {
-        return { label: "label", children: "children" };
+        return { label: "label", children: "children", isLeaf: "leaf" };
       }
     },
     // el-tree node-key 必须唯一
@@ -429,7 +433,7 @@ export default {
       type: String,
       default: "transfer"
     },
-     // 通讯录模式配置项 num-> 所需右侧通讯录个数 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）connector -> 连接符（字符串）
+    // 通讯录模式配置项 num-> 所需右侧通讯录个数 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）connector -> 连接符（字符串）
     addressOptions: {
       type: Object,
       default: () => {
@@ -464,7 +468,14 @@ export default {
     arrayToTree: {
       type: Boolean,
       default: false
-    }
+    },
+    // 是否启用懒加载
+    lazy: {
+      type: Boolean,
+      default: false
+    },
+    // 懒加载的回调函数
+    lazyFn: Function
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
@@ -573,7 +584,7 @@ export default {
       this.from_check_keys = [];
 
       // 目标数据节点展开
-      if (this.transferOpenNode) {
+      if (this.transferOpenNode && !this.lazy) {
         this.to_expanded_keys = keys;
       }
 
@@ -684,7 +695,7 @@ export default {
       this.to_check_keys = [];
 
       // 目标数据节点展开
-      if (this.transferOpenNode) {
+      if (this.transferOpenNode && !this.lazy) {
         this.from_expanded_keys = keys;
       }
 
@@ -697,6 +708,22 @@ export default {
       });
       // 处理完毕取消选中
       this.$refs["to-tree"].setCheckedKeys([]);
+    },
+    // 异步加载左侧
+    leftloadNode(node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.self_from_data);
+      }
+
+      this.lazyFn && this.lazyFn(node, resolve, "left");
+    },
+    // 异步加载右侧
+    rightloadNode(node, resolve) {
+      if (node.level === 0) {
+        return resolve(this.self_to_data);
+      }
+      
+      this.lazyFn && this.lazyFn(node, resolve, "right");
     },
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {

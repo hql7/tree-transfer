@@ -17,15 +17,15 @@
         :defaultProps="{ label: 'name', children: 'children' }"
         :defaultCheckedKeys="defaultCheckedKeys"
         :mode="mode"
-        :addressOptions="{ num: 3, connector: '-', suffix: 'id' }"
-        filter
-        open-all
+        :lazy-fn="lazyFn"
         height="540px"
         node_key="id"
         @addBtn="add"
         @removeBtn="remove"
         @left-check-change="leftCheckChange"
         @right-check-change="rightCheckChange"
+        filter
+        lazy
       >
         <span
           slot="title-right"
@@ -47,7 +47,7 @@ export default {
   name: "App",
   data() {
     return {
-      mode: "addressList", // transfer addressList
+      mode: "transfer", // transfer addressList
       fromData: [
         {
           id: 1,
@@ -193,7 +193,7 @@ export default {
       this.defaultCheckedKeys = [1];
     }, 0); */
 
-    this.fromData = [
+    /* this.fromData = [
       {
         id: 1,
         pid: 0,
@@ -261,8 +261,14 @@ export default {
           }
         ]
       }
+    ]; */
+    this.fromData = [
+      {
+        id: 7127,
+        pid: 0,
+        name: "debug"
+      }
     ];
-
     /* setTimeout(() => {
       this.defaultCheckedKeys = [11, 12, 13, 22, 23, 24, 32, 33, 34];
     }, 0); */
@@ -800,6 +806,26 @@ export default {
     // });
   },
   methods: {
+    // 懒加载回调
+    lazyFn(node, resolve) {
+      setTimeout(() => {
+        resolve([
+          {
+            id: 71272,
+            pid: 7127,
+            name: "debug22",
+            // disabled: true,
+            children: []
+          },
+          {
+            id: 71273,
+            pid: 7127,
+            name: "debug11",
+            children: []
+          }
+        ]);
+      }, 500);
+    },
     // 切换模式 现有树形穿梭框模式transfer 和通讯录模式addressList
     changeMode() {
       if (this.mode == "transfer") {
