@@ -17,9 +17,9 @@
         :defaultProps="{ label: 'name', children: 'children' }"
         :defaultCheckedKeys="defaultCheckedKeys"
         :mode="mode"
+        :addressOptions="{ num: 3, connector: '-', suffix: 'id' }"
         filter
         open-all
-        default-transfer
         height="540px"
         node_key="id"
         @addBtn="add"
@@ -47,7 +47,7 @@ export default {
   name: "App",
   data() {
     return {
-      mode: "transfer", // transfer addressList
+      mode: "addressList", // transfer addressList
       fromData: [
         {
           id: 1,
@@ -262,6 +262,10 @@ export default {
         ]
       }
     ];
+
+    /* setTimeout(() => {
+      this.defaultCheckedKeys = [11, 12, 13, 22, 23, 24, 32, 33, 34];
+    }, 0); */
 
     /*  this.fromData = [
       {

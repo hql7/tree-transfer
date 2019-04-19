@@ -163,21 +163,16 @@
       </div>
       <!-- 穿梭区 按钮框 -->
       <div class="transfer-center address-list-center">
-        <p
-          class="transfer-center-item"
-          v-show="!move_up"
-          :class="{ 'address-only-item': addressOptions.num === 1 }"
-        >
+        <p class="transfer-center-item" v-show="!move_up">
           <el-button
             type="primary"
             @click="addressListTransfer(0)"
             icon="el-icon-arrow-right"
             circle
-            class="address-first-btn"
             :disabled="from_disabled"
           ></el-button>
         </p>
-        <p class="transfer-center-item" v-if="addressOptions.num > 1">
+        <p class="transfer-center-item">
           <el-button
             type="primary"
             @click="addressListTransfer(1)"
@@ -199,10 +194,7 @@
       <div class="transfer-right">
         <div
           class="transfer-right-item"
-          :class="{
-            'transfer-right-small': move_up,
-            'transfer-right-only': addressOptions.num === 1
-          }"
+          :class="{ 'transfer-right-small': move_up }"
         >
           <h3 class="transfer-title">
             <span>{{ toTitle }}</span>
@@ -212,7 +204,7 @@
             <img
               class="move_up_img move_down_img"
               v-else
-              src="./shang.png"
+              src="../assets/shang.png"
               alt=""
               @click="moveUp('down')"
             />
@@ -234,11 +226,7 @@
                 v-for="item of addressee"
                 :key="item[node_key]"
               >
-                <label>
-                  {{ item[defaultProps.label] }}
-                  {{ addressOptions.connector }}
-                  {{ item[addressOptions.suffix] }}
-                </label>
+                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
                 <i
                   class="address-list-del"
                   @click="clearList(0, item[node_key])"
@@ -248,7 +236,7 @@
             </ul>
           </div>
         </div>
-        <div class="transfer-right-item" v-if="addressOptions.num >= 2">
+        <div class="transfer-right-item">
           <h3 class="transfer-title">
             <span>{{ toTitleSecond || "抄送人" }}</span>
             <span class="u-clear" @click="clearList(1, 'all')">清空</span>
@@ -270,11 +258,7 @@
                 v-for="item of Cc"
                 :key="item[node_key]"
               >
-                <label>
-                  {{ item[defaultProps.label] }}
-                  {{ addressOptions.connector }}
-                  {{ item[addressOptions.suffix] }}
-                </label>
+                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
                 <i
                   class="address-list-del"
                   @click="clearList(1, item[node_key])"
@@ -285,7 +269,6 @@
           </div>
         </div>
         <div
-          v-if="addressOptions.num === 3"
           class="transfer-right-item"
           :class="{ 'transfer-right-small': !move_up }"
         >
@@ -297,7 +280,7 @@
             <img
               class="move_up_img"
               v-else
-              src="./shang.png"
+              src="../assets/shang.png"
               alt=""
               @click="moveUp('up')"
             />
@@ -319,11 +302,7 @@
                 v-for="item of secret_receiver"
                 :key="item[node_key]"
               >
-                <label>
-                  {{ item[defaultProps.label] }}
-                  {{ addressOptions.connector }}
-                  {{ item[addressOptions.suffix] }}
-                </label>
+                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
                 <i
                   class="address-list-del"
                   @click="clearList(2, item[node_key])"
@@ -339,7 +318,7 @@
 </template>
 
 <script>
-import { arrayToTree } from "./array.js";
+import { arrayToTree } from "@/assets/array.js";
 export default {
   data() {
     return {
@@ -428,17 +407,6 @@ export default {
     mode: {
       type: String,
       default: "transfer"
-    },
-    // 通讯录模式配置项 num-> 所需右侧通讯录个数 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）connector -> 连接符（字符串）
-    addressOptions: {
-      type: Object,
-      default: () => {
-        return {
-          num: 3,
-          suffix: "suffix",
-          connector: "-"
-        };
-      }
     },
     // 穿梭后是否展开节点
     transferOpenNode: {
@@ -1008,7 +976,7 @@ export default {
 </script>
 
 <style scoped>
-@import "./clear.css";
+@import "../assets/clear.css";
 .el-tree {
   min-width: 100%;
   display: inline-block !important;
@@ -1037,10 +1005,6 @@ export default {
 
 .transfer-right-small {
   height: 41px;
-}
-
-.transfer-right-only {
-  height: 100%;
 }
 
 .transfer-main {
@@ -1083,18 +1047,6 @@ export default {
   padding: 70px 10px 0;
   box-sizing: border-box;
   overflow: hidden;
-}
-
-.address-list-center > .address-only-item {
-  height: 100%;
-  position: relative;
-}
-
-.address-only-item > .address-first-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .transfer-title {

@@ -163,16 +163,21 @@
       </div>
       <!-- 穿梭区 按钮框 -->
       <div class="transfer-center address-list-center">
-        <p class="transfer-center-item" v-show="!move_up">
+        <p
+          class="transfer-center-item"
+          v-show="!move_up"
+          :class="{ 'address-only-item': addressOptions.num === 1 }"
+        >
           <el-button
             type="primary"
             @click="addressListTransfer(0)"
             icon="el-icon-arrow-right"
+            class="address-first-btn"
             circle
             :disabled="from_disabled"
           ></el-button>
         </p>
-        <p class="transfer-center-item">
+        <p class="transfer-center-item" v-if="addressOptions.num > 1">
           <el-button
             type="primary"
             @click="addressListTransfer(1)"
@@ -194,7 +199,10 @@
       <div class="transfer-right">
         <div
           class="transfer-right-item"
-          :class="{ 'transfer-right-small': move_up }"
+          :class="{
+            'transfer-right-small': move_up,
+            'transfer-right-only': addressOptions.num === 1
+          }"
         >
           <h3 class="transfer-title">
             <span>{{ toTitle }}</span>
@@ -226,7 +234,11 @@
                 v-for="item of addressee"
                 :key="item[node_key]"
               >
-                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
+                <label>
+                  {{ item[defaultProps.label] }}
+                  {{ addressOptions.connector }}
+                  {{ item[addressOptions.suffix] }}
+                </label>
                 <i
                   class="address-list-del"
                   @click="clearList(0, item[node_key])"
@@ -236,7 +248,7 @@
             </ul>
           </div>
         </div>
-        <div class="transfer-right-item">
+        <div class="transfer-right-item" v-if="addressOptions.num >= 2">
           <h3 class="transfer-title">
             <span>{{ toTitleSecond || "抄送人" }}</span>
             <span class="u-clear" @click="clearList(1, 'all')">清空</span>
@@ -258,7 +270,11 @@
                 v-for="item of Cc"
                 :key="item[node_key]"
               >
-                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
+                <label>
+                  {{ item[defaultProps.label] }}
+                  {{ addressOptions.connector }}
+                  {{ item[addressOptions.suffix] }}
+                </label>
                 <i
                   class="address-list-del"
                   @click="clearList(1, item[node_key])"
@@ -269,6 +285,7 @@
           </div>
         </div>
         <div
+          v-if="addressOptions.num === 3"
           class="transfer-right-item"
           :class="{ 'transfer-right-small': !move_up }"
         >
@@ -302,7 +319,11 @@
                 v-for="item of secret_receiver"
                 :key="item[node_key]"
               >
-                <label>{{ item[defaultProps.label] }}{{ item.Email }}</label>
+                <label>
+                  {{ item[defaultProps.label] }}
+                  {{ addressOptions.connector }}
+                  {{ item[addressOptions.suffix] }}
+                </label>
                 <i
                   class="address-list-del"
                   @click="clearList(2, item[node_key])"
@@ -403,10 +424,21 @@ export default {
     },
     // 自定义树节点
     renderContent: Function,
-    // 穿梭框模式
+    // 穿梭框模式 addressList->通讯录模式 transfer穿梭框模式
     mode: {
       type: String,
       default: "transfer"
+    },
+     // 通讯录模式配置项 num-> 所需右侧通讯录个数 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）connector -> 连接符（字符串）
+    addressOptions: {
+      type: Object,
+      default: () => {
+        return {
+          num: 3,
+          suffix: "suffix",
+          connector: "-"
+        };
+      }
     },
     // 穿梭后是否展开节点
     transferOpenNode: {
@@ -1007,6 +1039,10 @@ export default {
   height: 41px;
 }
 
+.transfer-right-only {
+  height: 100%;
+}
+
 .transfer-main {
   padding: 10px;
   height: calc(100% - 41px);
@@ -1047,6 +1083,18 @@ export default {
   padding: 70px 10px 0;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+.address-list-center > .address-only-item {
+  height: 100%;
+  position: relative;
+}
+
+.address-only-item > .address-first-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .transfer-title {

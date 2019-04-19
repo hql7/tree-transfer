@@ -12,11 +12,16 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### [在线访问](http://tree-transfer.zhongxiang.shop/) - [GitHub](https://github.com/hql7/tree-transfer) - [NPM](https://www.npmjs.com/package/el-tree-transfer) - [SegmentFault](https://segmentfault.com/a/1190000015553081) - [CSDN](https://blog.csdn.net/qq_15390381/article/details/80943549)- [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
 
-#### 注意！ 2.0.0 版本存在父子不关联错误，2.1.1版本增加arrayToTree支持，但已经是树形数据的请不要使用此参数
+#### 注意！ 2.0.0 版本存在父子不关联错误，2.1.1 版本增加 arrayToTree 支持，但已经是树形数据的请不要使用此参数
+
 #### 注意！ 1.9.0 版本增强 id 为数字型的匹配强度，1.9.7 版本增加`defaultTransfer`属性用来满足用户不想将数据拆分成 fromData 和 toData 的需求
+
 #### 注意！ 1.8.7 版本增加通讯录模式，可通过 mode 字段配置模式
+
 #### 注意！ 1.7.7 版本移动事件参数调整，直接返回移动后的 fromData 数据和 toData 数据。
+
 #### 注意！ 1.5 以上版本改为自动处理
+
 > 第一层数据的 pid 请设定为 0！！ pid 就是父级的 id！别再跑过来问了真的
 > id 推荐为 string，但也可以是 number，请不要混用，id 不要重复！！！
 
@@ -163,23 +168,27 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 19. 参数：`arrayToTree` 说明：`是否开启一维数组转化为树形结构` 类型：`Boolean` 必填：`false` 补充：`数据必须存在根节点，并且不会断节，数据格式详见github上app.vue，根据id、pid对应关系转化，存在一定的性能问题`
 
-20. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
+20. 参数：`addressOptions` 说明：`通讯录模式配置项{num: Number, suffix: String, connector: String}` 类型：`Object` 必填：`false` 补充：`num-> 所需右侧通讯录个数,默认3 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）默认suffix connector -> 连接符（字符串）默认-`
 
-21. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
+21. 事件：`addBtn` 说明：`点击添加按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
 
-22. 事件：`left-check-change` 说明：`左侧源数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
+22. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
 
-23. 事件：`right-check-change` 说明：`右侧目标数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
+23. 事件：`left-check-change` 说明：`左侧源数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
 
-24. Slot：`left-footer`, `right-footer` 说明：`穿梭框左侧、右侧底部slot`
+24. 事件：`right-check-change` 说明：`右侧目标数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
 
-25. Slot: `title-left`, `title-right` 说明：`穿梭框标题区左侧、右侧自定义内容`
+25. Slot：`left-footer`, `right-footer` 说明：`穿梭框左侧、右侧底部slot`
+
+26. Slot: `title-left`, `title-right` 说明：`穿梭框标题区左侧、右侧自定义内容`
 
 ## 版本说明
 
-> 2.1.1 修复array数组模式选择根节点穿梭错误,废弃`leafOnly`参数，注意已经是树结构的不要使用arrayToTree参数
+> 2.1.2 增加通讯录模式的可配置项，但作为非主要维护模式灵活度仍较低，具体参数说明见`参数20`
 
-> 2.1.0 增加arrayTotree参数，处理一维数组自动转化为所需树结构(详见参数19,或github-app.vue)；修复穿梭后半选节点残留的问题；去除部分不必要变量
+> 2.1.1 修复 array 数组模式选择根节点穿梭错误,废弃`leafOnly`参数，注意已经是树结构的不要使用 arrayToTree 参数
+
+> 2.1.0 增加 arrayTotree 参数，处理一维数组自动转化为所需树结构(详见参数 19,或 github-app.vue)；修复穿梭后半选节点残留的问题；去除部分不必要变量
 
 > 2.0.2 增加标题头部 slot 自定义内容区
 
