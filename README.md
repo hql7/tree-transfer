@@ -39,7 +39,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 因为公司业务使用 vue 框架，ui 库使用的 element-ui。在市面上找到一个好用的 vue 树形穿梭框组件都很难，又不想仅仅因为一个穿梭框在 element-ui 之外引入其他重量级插件，因此就有了 el-tree-transfer。轻量，易用，无需投入其他学习成本。
 
-### [在线访问](http://tree-transfer.zhongxiang.shop/) - [GitHub](https://github.com/hql7/tree-transfer) - [NPM](https://www.npmjs.com/package/el-tree-transfer) - [SegmentFault](https://segmentfault.com/a/1190000015553081) - [CSDN](https://blog.csdn.net/qq_15390381/article/details/80943549)- [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
+### [在线访问](https://hql7.github.io/) - [GitHub](https://github.com/hql7/tree-transfer) - [NPM](https://www.npmjs.com/package/el-tree-transfer) - [SegmentFault](https://segmentfault.com/a/1190000015553081) - [CSDN](https://blog.csdn.net/qq_15390381/article/details/80943549)- [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
 
 #### 注意！ 2.2.0 版本增加lazy懒加载功能
 #### 注意！ 2.0.0 版本存在父子不关联错误，2.1.1 版本增加 arrayToTree 支持，但已经是树形数据的请不要使用此参数
@@ -49,7 +49,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 #### 注意！ 1.5 以上版本改为自动处理
 > 第一层数据的 pid 请设定为 0！！
 > id 推荐为 string，但也可以是 number，请不要混用，id 不要重复！！！
-#### 这里有一个兄弟组件-树形表格：[在线访问](http://eltreetable.zhongxiang.shop/) - [GitHub](https://github.com/hql7/el-tree-table)
+#### 这里有一个兄弟组件-树形表格：[在线访问](https://hql7.github.io/) - [GitHub](https://github.com/hql7/el-tree-table)
 
 ## 快速上手
 

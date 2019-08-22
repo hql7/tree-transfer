@@ -17,7 +17,6 @@
         :defaultProps="{ label: 'name', children: 'children' }"
         :defaultCheckedKeys="defaultCheckedKeys"
         :mode="mode"
-        :lazy-fn="lazyFn"
         height="540px"
         node_key="id"
         @addBtn="add"
@@ -25,7 +24,6 @@
         @left-check-change="leftCheckChange"
         @right-check-change="rightCheckChange"
         filter
-        lazy
       >
         <span
           slot="title-right"
@@ -262,13 +260,13 @@ export default {
         ]
       }
     ]; */
-    this.fromData = [
+    /* this.fromData = [
       {
         id: 7127,
         pid: 0,
         name: "debug"
       }
-    ];
+    ]; */
     /* setTimeout(() => {
       this.defaultCheckedKeys = [11, 12, 13, 22, 23, 24, 32, 33, 34];
     }, 0); */
