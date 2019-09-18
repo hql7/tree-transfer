@@ -849,14 +849,16 @@ export default {
       console.log("obj:", obj);
     },
     // 左侧源数据选中事件
-    leftCheckChange(nodeObj, treeObj) {
+    leftCheckChange(nodeObj, treeObj, checkAll) {
       console.log(nodeObj);
       console.log(treeObj);
+      console.log(checkAll);
     },
     // 右侧目标数据选中事件
-    rightCheckChange(nodeObj, treeObj) {
+    rightCheckChange(nodeObj, treeObj, checkAll) {
       console.log(nodeObj);
       console.log(treeObj);
+      console.log(checkAll);
     },
     // 自定义节点 仅树形结构支持
     renderContent(h, { node, data, store }) {

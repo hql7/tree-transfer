@@ -728,12 +728,16 @@ export default {
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
       this.from_check_keys = treeObj.checkedNodes;
-      this.$emit("left-check-change", nodeObj, treeObj);
+      this.$nextTick(()=>{
+        this.$emit("left-check-change", nodeObj, treeObj, this.from_check_all);
+      })
     },
     // 目标树选中事件 - 是否禁用穿梭按钮
     toTreeChecked(nodeObj, treeObj) {
       this.to_check_keys = treeObj.checkedNodes;
-      this.$emit("right-check-change", nodeObj, treeObj);
+      this.$nextTick(()=>{
+        this.$emit("right-check-change", nodeObj, treeObj, this.to_check_all);
+      })
     },
     // 源数据 总全选checkbox
     fromAllBoxChange(val) {
@@ -747,6 +751,7 @@ export default {
         this.$refs["from-tree"].setCheckedNodes([]);
         this.from_check_keys = [];
       }
+      this.$emit("left-check-change", null, null, this.from_check_all);      
     },
     // 目标数据 总全选checkbox
     toAllBoxChange(val) {
@@ -760,6 +765,7 @@ export default {
         this.$refs["to-tree"].setCheckedNodes([]);
         this.to_check_keys = [];
       }
+      this.$emit("right-check-change", null, null, this.to_check_all);         
     },
     // 源数据 筛选
     filterNodeFrom(value, data) {
