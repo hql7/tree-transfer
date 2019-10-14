@@ -17,6 +17,8 @@
         :defaultProps="{ label: 'name', children: 'children' }"
         :defaultCheckedKeys="defaultCheckedKeys"
         :mode="mode"
+        lazy
+        :lazyFn="lazyFn"
         height="540px"
         node_key="id"
         @addBtn="add"
