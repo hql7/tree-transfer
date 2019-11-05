@@ -9,13 +9,13 @@
       >
     </h4>
     <div class="box">
-      <!-- <tree-transfer :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :render-content="renderContent"> -->
       <tree-transfer
         :title="title"
         :from_data="fromData"
         :to_data="toData"
         :defaultProps="{ label: 'name', children: 'children' }"
         :defaultCheckedKeys="defaultCheckedKeys"
+        defaultTransfer
         :mode="mode"
         lazy
         :lazyFn="lazyFn"
@@ -804,6 +804,11 @@ export default {
     /* this.fromData = res.data.dtu;
         this.defaultCheckedKeys = res.data.dtu[0].items.map(item => item.id); */
     // });
+  },
+  mounted() {
+    setTimeout(()=>{
+      this.defaultCheckedKeys = [1]
+    }, 1000)
   },
   methods: {
     // 懒加载回调
