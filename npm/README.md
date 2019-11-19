@@ -149,6 +149,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 20 | addressOptions | 通讯录模式配置项 | Object | false | - | {num: Number, suffix: String, connector: String} | num-> 所需右侧通讯录个数,默认3 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）默认suffix connector -> 连接符（字符串）默认- |
 | 21 | lazy | 是否启用懒加载 | Boolean | false | - | false | 效果动el-tree懒加载，不可和openAll或默认展开同时使用 |
 | 22 | lazyFn | 懒加载的回调函数 | Function | true | - | - | 当适用lazy时必须传入回调函数，示例:lazyFn='loadNode',返回参数loadNode(node, resolve, from), node->当前展开节点node，resolve->懒加载resolve，from -> left/right 表示回调来自左侧/右侧 |
+| 23 | high-light | 是否高亮当前选中节点| Boolean | false | - | false | - |
 
 > -----------------------------------------------------------
 
@@ -171,6 +172,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 
 ## 版本说明
+
+> 2.2.2 增加选中高亮参数
 
 > 2.2.1 增加title处的全选事件，具体参数说明见`事件3，事件4`
 

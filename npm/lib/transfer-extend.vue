@@ -25,18 +25,19 @@
           </el-input>
           <el-tree
             ref="from-tree"
-            :data="self_from_data"
             show-checkbox
-            :node-key="node_key"
-            @check="fromTreeChecked"
-            :default-expanded-keys="from_expanded_keys"
-            :props="defaultProps"
-            :filter-node-method="filterNodeFrom"
-            :default-expand-all="openAll"
-            :render-content="renderContent"
-            :default-checked-keys="defaultCheckedKeys"
             :lazy="lazy"
+            :node-key="node_key"
             :load="leftloadNode"
+            :props="defaultProps"
+            :data="self_from_data"
+            :default-expand-all="openAll"
+            :highlight-current="highLight"
+            :render-content="renderContent"
+            :filter-node-method="filterNodeFrom"
+            :default-checked-keys="defaultCheckedKeys"
+            :default-expanded-keys="from_expanded_keys"
+            @check="fromTreeChecked"
           >
           </el-tree>
           <slot name="left-footer"></slot>
@@ -111,17 +112,18 @@
           <el-tree
             slot="to"
             ref="to-tree"
-            :data="self_to_data"
             show-checkbox
-            :node-key="node_key"
-            @check="toTreeChecked"
-            :default-expanded-keys="to_expanded_keys"
-            :props="defaultProps"
-            :filter-node-method="filterNodeTo"
-            :default-expand-all="openAll"
-            :render-content="renderContent"
             :lazy="lazy"
+            :data="self_to_data"
+            :node-key="node_key"
+            :props="defaultProps"
             :load="rightloadNode"
+            :default-expand-all="openAll"
+            :highlight-current="highLight"
+            :render-content="renderContent"
+            :filter-node-method="filterNodeTo"
+            :default-expanded-keys="to_expanded_keys"
+            @check="toTreeChecked"
           >
           </el-tree>
           <slot name="right-footer"></slot>
@@ -152,15 +154,16 @@
           </el-input>
           <el-tree
             ref="from-tree"
-            :data="self_from_data"
             show-checkbox
             :node-key="node_key"
-            @check="fromTreeChecked"
-            :default-expanded-keys="from_expanded_keys"
             :props="defaultProps"
-            :filter-node-method="filterNodeFrom"
+            :data="self_from_data"
             :default-expand-all="openAll"
+            :highlight-current="highLight"
             :render-content="renderContent"
+            :filter-node-method="filterNodeFrom"
+            :default-expanded-keys="from_expanded_keys"
+            @check="fromTreeChecked"
           >
           </el-tree>
         </div>
@@ -475,7 +478,12 @@ export default {
       default: false
     },
     // 懒加载的回调函数
-    lazyFn: Function
+    lazyFn: Function,
+    // 是否高亮当前选中节点，默认值是 false。
+    highLight: {
+      type: Boolean,
+      default: false
+    }
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
@@ -863,7 +871,8 @@ export default {
       } else {
         this.move_up = false;
       }
-    }
+    },
+    // 以下为提供方法 ----------------------------------------------------------------方法--------------------------------------
   },
   computed: {
     // 左侧数据
