@@ -1,35 +1,6 @@
-# tree-transfer
-
-> A Vue.js project
-
-## Build Setup
-
-```bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
 # el-tree-transfer
 
-## 简介·请先阅读文档及版本说明
+## 简介
 
 ---
 
@@ -39,7 +10,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 因为公司业务使用 vue 框架，ui 库使用的 element-ui。在市面上找到一个好用的 vue 树形穿梭框组件都很难，又不想仅仅因为一个穿梭框在 element-ui 之外引入其他重量级插件，因此就有了 el-tree-transfer。轻量，易用，无需投入其他学习成本。
 
-### [在线访问](https://hql7.github.io/) - [GitHub](https://github.com/hql7/tree-transfer) - [NPM](https://www.npmjs.com/package/el-tree-transfer) - [SegmentFault](https://segmentfault.com/a/1190000015553081) - [CSDN](https://blog.csdn.net/qq_15390381/article/details/80943549)- [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
+### [在线访问](http://tree-transfer.zhongxiang.shop/) - [GitHub](https://github.com/hql7/tree-transfer) - [NPM](https://www.npmjs.com/package/el-tree-transfer) - [SegmentFault](https://segmentfault.com/a/1190000015553081) - [CSDN](https://blog.csdn.net/qq_15390381/article/details/80943549)- [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
 
 #### 注意！ 2.2.0 版本增加lazy懒加载功能
 #### 注意！ 2.0.0 版本存在父子不关联错误，2.1.1 版本增加 arrayToTree 支持，但已经是树形数据的请不要使用此参数
@@ -47,9 +18,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 #### 注意！ 1.8.7 版本增加通讯录模式，可通过 mode 字段配置模式
 #### 注意！ 1.7.7 版本移动事件参数调整，直接返回移动后的 fromData 数据和 toData 数据。
 #### 注意！ 1.5 以上版本改为自动处理
-> 第一层数据的 pid 请设定为 0！！
+> 第一层数据的 pid 请设定为 0！！ pid 就是父级的 id！别再跑过来问了真的
 > id 推荐为 string，但也可以是 number，请不要混用，id 不要重复！！！
-#### 这里有一个兄弟组件-树形表格：[在线访问](https://hql7.github.io/) - [GitHub](https://github.com/hql7/el-tree-table)
+#### 这里有一个兄弟组件-树形表格：[在线访问](http://eltreetable.zhongxiang.shop/) - [GitHub](https://github.com/hql7/el-tree-table)
 
 ## 快速上手
 
@@ -69,7 +40,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
         ...
         // 使用树形穿梭框组件
         <tree-transfer :title="title" :from_data='fromData' :to_data='toData' :defaultProps="{label:'label'}" @addBtn='add' @removeBtn='remove' :mode='mode' height='540px' filter openAll>
-        </tree-transfer>
+      </tree-transfer>
       </div>
     </template>
 
@@ -79,7 +50,6 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
       export defult {
         data(){
           return:{
-            title: "Transfer Tree",
             mode: "transfer", // transfer addressList
             fromData:[
               {
@@ -145,7 +115,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
             console.log("obj:", obj);
           }
         },
-        components:{ treeTransfer } // 注册
+        comporents:{ treeTransfer } // 注册
       }
     </script>
 
@@ -169,7 +139,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 10 | leafOnly | 废弃 | - | - | - | - | - |
 | 11 | filter | 是否开启筛选功能 | Boolean | false| - | false | 根据defaultProps参数的label字段筛选 |
 | 12 | openAll | 是否默认展开全部 | Boolean | false | - | false | 存在性能问题 |
-| 13 | renderContent | 自定义树节点 | Function | false | - | - | 用法同element-ui tree |
+| 13 | ~~renderContent~~ renderContentLeft, renderContentRight | 自定义树节点， 用法同element-ui tree | Function | false | - | - | 2.2.3版本拆为两个函数分别定义左右两侧自定义节点 |
 | 14 | mode | 设置穿梭框模式 | String | false | transfer/addressList | transfer | mode默认为transfer模式，即树形穿梭框模式，可配置字段为addressList改为通讯录模式，通讯录模式时按钮不可自定义名字，如要自定义标题名在title数组传入四个值即可，addressList模式时标题默认为通讯录、收件人、抄送人、密送人 |
 | 15 | transferOpenNode | 穿梭后是否展开穿梭的节点 | Boolean | false | - | true | 默认为true即展开穿梭的节点，便于视觉查看，增加此参数是因为数据量大时展开会有明显卡顿问题，但注意，如此参数设置为false则穿梭后不展开，毕竟无法确定第几层就会有庞大数据 |
 | 16 | defaultCheckedKeys | 默认选中节点 | Array | false | - | - | 只匹配初始时默认节点，不会在你操作后动态改变默认节点 |
@@ -179,6 +149,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 20 | addressOptions | 通讯录模式配置项 | Object | false | - | {num: Number, suffix: String, connector: String} | num-> 所需右侧通讯录个数,默认3 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）默认suffix connector -> 连接符（字符串）默认- |
 | 21 | lazy | 是否启用懒加载 | Boolean | false | - | false | 效果动el-tree懒加载，不可和openAll或默认展开同时使用 |
 | 22 | lazyFn | 懒加载的回调函数 | Function | true | - | - | 当适用lazy时必须传入回调函数，示例:lazyFn='loadNode',返回参数loadNode(node, resolve, from), node->当前展开节点node，resolve->懒加载resolve，from -> left/right 表示回调来自左侧/右侧 |
+| 23 | high-light | 是否高亮当前选中节点| Boolean | false | - | false | - |
+| 24 | filterNode | 自定义搜索函数 | Function | false | - | - | 不传则仍默认根据defaultProps参数的label字段筛选 |
 
 > -----------------------------------------------------------
 
@@ -199,7 +171,12 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 4 | title-right | 穿梭框标题区左侧、右侧自定义内容 |
 
 
+
 ## 版本说明
+
+> 2.2.3 拆分自定义树节点函数`参数13 renderContent` 为 `renderContentLeft,renderContentRight`分别定义左右两侧自定义节点函数；增加`filterNode`函数来自定义搜索
+
+> 2.2.2 增加选中高亮参数
 
 > 2.2.1 增加title处的全选事件，具体参数说明见`事件3，事件4`
 
@@ -247,7 +224,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 > 1.3.7 版本取消了对 loadsh 库的依赖，此前仅用此库做某些深拷贝处理
 
-## 旧版文档
+## 旧版文档【不再更新】
 1.  参数：`width` 说明：`宽度` 类型：`String` 必填：`false` 默认：`100%` 补充：`建议在外部盒子设定宽度和位置`
 
 2.  参数：`height` 说明：`高度` 类型：`String` 必填：`false` 默认：`320px`
@@ -266,7 +243,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 9.  参数：`pid` 说明：`自定义pid的参数名，默认为"pid"` 必填：`false` 补充：`有网友提出后台给的字段名不叫pid，因此增加自定义支持`
 
-10. -- 不建议使用！参数：`leafOnly` 说明：`是否只返回叶子节点` 类型：`Boolean` 必填：`false` 补充：`默认false，如果你只需要返回的末端子节点可使用此参数`
+10. --(废弃) 不建议使用！参数：`leafOnly` 说明：`是否只返回叶子节点` 类型：`Boolean` 必填：`false` 补充：`默认false，如果你只需要返回的末端子节点可使用此参数`
 
 11. 参数：`filter` 说明：`是否开启筛选功能` 类型：`Boolean` 必填：`false`
 
@@ -278,7 +255,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 15. 参数：`transferOpenNode` 说明：`穿梭后是否展开穿梭的节点` 类型：`Boolean` 必填：`false` 补充：`默认为true即展开穿梭的节点，便于视觉查看，增加此参数是因为数据量大时展开会有明显卡顿问题，但注意，如此参数设置为false则穿梭后不展开，毕竟无法确定第几层就会有庞大数据`
 
-16. 参数：`defaultCheckedKeys` 说明：`默认选中节点` 类型：`Array` 必填：`false` 补充：`只匹配初始时默认节点，不会在你操作后动态改变默认节点`
+16. 参数：`defaultCheckedKeys` 说明：`默认展开节点` 类型：`Array` 必填：`false` 补充：`只匹配初始时默认节点，不会在你操作后动态改变默认节点`
 
 17. 参数：`placeholder` 说明：`设置搜索框提示语` 类型：`String` 必填：`false` 补充：`默认为请输入关键词进行筛选`
 
@@ -296,9 +273,9 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 24. 事件：`removeBtn` 说明：`点击移除按钮时触发的事件` 回调参数：`function(fromData,toData,obj),树形穿梭框transfer模式分别为1.移动后左侧数据，2.移动后右侧数据，3.移动的节点keys、nodes、halfKeys、halfNodes对象；通讯录addressList模式时返回参数为右侧收件人列表、右侧抄送人列表、右侧密送人列表`
 
-25. 事件：`left-check-change` 说明：`左侧源数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
+25. 事件：`left-check-change` 说明：`左侧源数据勾选事件` 回调参数：`function(nodeObj, treeObj, checkall)见el-tree组件check事件返回值,新增第三个参数表示是否全部选中`
 
-26. 事件：`right-check-change` 说明：`右侧目标数据勾选事件` 回调参数：`function(nodeObj, treeObj)见el-tree组件check事件返回值`
+26. 事件：`right-check-change` 说明：`右侧目标数据勾选事件` 回调参数：`function(nodeObj, treeObj, checkall)见el-tree组件check事件返回值，新增第三个参数表示是否全部选中`
 
 27. Slot：`left-footer`, `right-footer` 说明：`穿梭框左侧、右侧底部slot`
 
@@ -308,5 +285,5 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ## 有好多有脾气的老哥找我给打赏，谢过
 
-![微信](./src/assets/wx.png)
-![支付宝](./src/assets/zfb.jpg)
+![微信](/src/assets/wx.png)
+![支付宝](/src/assets/zfb.jpg)

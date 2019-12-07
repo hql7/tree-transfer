@@ -4,36 +4,30 @@
     <router-view />
     <h4>
       <label>请打开f12查看移动数据</label>
-      <el-button size="medium" type="info" @click="changeMode"
-        >当前模式：{{ mode }}</el-button
-      >
+      <el-button size="medium" type="info" @click="changeMode">当前模式：{{ mode }}</el-button>
     </h4>
     <div class="box">
       <tree-transfer
-        :title="title"
-        :from_data="fromData"
-        :to_data="toData"
-        :defaultProps="{ label: 'name', children: 'children' }"
-        :defaultCheckedKeys="defaultCheckedKeys"
-        defaultTransfer
-        :mode="mode"
+      filter
         lazy
         high-light
+        default-transfer
+        :mode="mode"
+        :title="title"
         :lazyFn="lazyFn"
+        :to_data="toData"
+        :from_data="fromData"
+        :filterNode="filterNode"
+        :defaultProps="defaultProps"
+        :defaultCheckedKeys="defaultCheckedKeys"
+        @right-check-change="rightCheckChange"
+        @left-check-change="leftCheckChange"
+        @removeBtn="remove"
+        @addBtn="add"
         height="540px"
         node_key="id"
-        @addBtn="add"
-        @removeBtn="remove"
-        @left-check-change="leftCheckChange"
-        @right-check-change="rightCheckChange"
-        filter
       >
-        <span
-          slot="title-right"
-          class="my-title-right"
-          @click="handleTitleRight"
-          >自定义内容</span
-        >
+        <span slot="title-right" class="my-title-right" @click="handleTitleRight">自定义内容</span>
       </tree-transfer>
     </div>
   </div>
@@ -49,6 +43,7 @@ export default {
   data() {
     return {
       mode: "transfer", // transfer addressList
+      defaultProps: { label: "name", children: "children" },
       fromData: [
         {
           id: 1,
@@ -807,11 +802,17 @@ export default {
     // });
   },
   mounted() {
-    setTimeout(()=>{
-      this.defaultCheckedKeys = [1]
-    }, 1000)
+    setTimeout(() => {
+      this.defaultCheckedKeys = [1];
+    }, 1000);
   },
   methods: {
+    // 自定义筛选函数
+    filterNode(value, data, where) {
+      console.log(value, data, where);
+      if (!value) return true;
+      return data[this.defaultProps.label].indexOf(value) !== -1;
+    },
     // 懒加载回调
     lazyFn(node, resolve) {
       setTimeout(() => {

@@ -139,7 +139,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 10 | leafOnly | 废弃 | - | - | - | - | - |
 | 11 | filter | 是否开启筛选功能 | Boolean | false| - | false | 根据defaultProps参数的label字段筛选 |
 | 12 | openAll | 是否默认展开全部 | Boolean | false | - | false | 存在性能问题 |
-| 13 | renderContent | 自定义树节点 | Function | false | - | - | 用法同element-ui tree |
+| 13 | ~~renderContent~~ renderContentLeft, renderContentRight | 自定义树节点， 用法同element-ui tree | Function | false | - | - | 2.2.3版本拆为两个函数分别定义左右两侧自定义节点 |
 | 14 | mode | 设置穿梭框模式 | String | false | transfer/addressList | transfer | mode默认为transfer模式，即树形穿梭框模式，可配置字段为addressList改为通讯录模式，通讯录模式时按钮不可自定义名字，如要自定义标题名在title数组传入四个值即可，addressList模式时标题默认为通讯录、收件人、抄送人、密送人 |
 | 15 | transferOpenNode | 穿梭后是否展开穿梭的节点 | Boolean | false | - | true | 默认为true即展开穿梭的节点，便于视觉查看，增加此参数是因为数据量大时展开会有明显卡顿问题，但注意，如此参数设置为false则穿梭后不展开，毕竟无法确定第几层就会有庞大数据 |
 | 16 | defaultCheckedKeys | 默认选中节点 | Array | false | - | - | 只匹配初始时默认节点，不会在你操作后动态改变默认节点 |
@@ -150,6 +150,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 21 | lazy | 是否启用懒加载 | Boolean | false | - | false | 效果动el-tree懒加载，不可和openAll或默认展开同时使用 |
 | 22 | lazyFn | 懒加载的回调函数 | Function | true | - | - | 当适用lazy时必须传入回调函数，示例:lazyFn='loadNode',返回参数loadNode(node, resolve, from), node->当前展开节点node，resolve->懒加载resolve，from -> left/right 表示回调来自左侧/右侧 |
 | 23 | high-light | 是否高亮当前选中节点| Boolean | false | - | false | - |
+| 24 | filterNode | 自定义搜索函数 | Function | false | - | - | 不传则仍默认根据defaultProps参数的label字段筛选 |
 
 > -----------------------------------------------------------
 
@@ -172,6 +173,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 
 ## 版本说明
+
+> 2.2.3 拆分自定义树节点函数`参数13 renderContent` 为 `renderContentLeft,renderContentRight`分别定义左右两侧自定义节点函数；增加`filterNode`函数来自定义搜索
 
 > 2.2.2 增加选中高亮参数
 
@@ -221,7 +224,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 > 1.3.7 版本取消了对 loadsh 库的依赖，此前仅用此库做某些深拷贝处理
 
-## 旧版文档
+## 旧版文档【不再更新】
 1.  参数：`width` 说明：`宽度` 类型：`String` 必填：`false` 默认：`100%` 补充：`建议在外部盒子设定宽度和位置`
 
 2.  参数：`height` 说明：`高度` 类型：`String` 必填：`false` 默认：`320px`

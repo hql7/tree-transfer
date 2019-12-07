@@ -33,7 +33,7 @@
             :data="self_from_data"
             :default-expand-all="openAll"
             :highlight-current="highLight"
-            :render-content="renderContent"
+            :render-content="renderContentLeft"
             :filter-node-method="filterNodeFrom"
             :default-checked-keys="defaultCheckedKeys"
             :default-expanded-keys="from_expanded_keys"
@@ -120,7 +120,7 @@
             :load="rightloadNode"
             :default-expand-all="openAll"
             :highlight-current="highLight"
-            :render-content="renderContent"
+            :render-content="renderContentRight"
             :filter-node-method="filterNodeTo"
             :default-expanded-keys="to_expanded_keys"
             @check="toTreeChecked"
@@ -160,7 +160,7 @@
             :data="self_from_data"
             :default-expand-all="openAll"
             :highlight-current="highLight"
-            :render-content="renderContent"
+            :render-content="renderContentLeft"
             :filter-node-method="filterNodeFrom"
             :default-expanded-keys="from_expanded_keys"
             @check="fromTreeChecked"
@@ -429,8 +429,10 @@ export default {
       type: Boolean,
       default: false
     },
-    // 自定义树节点
-    renderContent: Function,
+    // 左侧自定义树节点
+    renderContentLeft: Function,
+    // 右侧自定义树节点
+    renderContentRight: Function,
     // 穿梭框模式
     mode: {
       type: String,
@@ -462,6 +464,8 @@ export default {
       type: String,
       default: "输入关键字进行过滤"
     },
+    // 自定义筛选函数
+    filterNode: Function, 
     // 默认穿梭一次默认选中数据
     defaultTransfer: {
       type: Boolean,
@@ -777,11 +781,17 @@ export default {
     },
     // 源数据 筛选
     filterNodeFrom(value, data) {
+      if(this.filterNode){
+        return this.filterNode(value, data, 'form')
+      }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
     // 目标数据筛选
     filterNodeTo(value, data) {
+      if(this.filterNode){
+        return this.filterNode(value, data, 'to')
+      }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },

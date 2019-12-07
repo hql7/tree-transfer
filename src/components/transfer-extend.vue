@@ -25,18 +25,19 @@
           </el-input>
           <el-tree
             ref="from-tree"
-            :data="self_from_data"
             show-checkbox
-            :node-key="node_key"
-            @check="fromTreeChecked"
-            :default-expanded-keys="from_expanded_keys"
-            :props="defaultProps"
-            :filter-node-method="filterNodeFrom"
-            :default-expand-all="openAll"
-            :render-content="renderContent"
-            :default-checked-keys="defaultCheckedKeys"
             :lazy="lazy"
+            :node-key="node_key"
             :load="leftloadNode"
+            :props="defaultProps"
+            :data="self_from_data"
+            :default-expand-all="openAll"
+            :highlight-current="highLight"
+            :render-content="renderContentLeft"
+            :filter-node-method="filterNodeFrom"
+            :default-checked-keys="defaultCheckedKeys"
+            :default-expanded-keys="from_expanded_keys"
+            @check="fromTreeChecked"
           >
           </el-tree>
           <slot name="left-footer"></slot>
@@ -111,17 +112,18 @@
           <el-tree
             slot="to"
             ref="to-tree"
-            :data="self_to_data"
             show-checkbox
-            :node-key="node_key"
-            @check="toTreeChecked"
-            :default-expanded-keys="to_expanded_keys"
-            :props="defaultProps"
-            :filter-node-method="filterNodeTo"
-            :default-expand-all="openAll"
-            :render-content="renderContent"
             :lazy="lazy"
+            :data="self_to_data"
+            :node-key="node_key"
+            :props="defaultProps"
             :load="rightloadNode"
+            :default-expand-all="openAll"
+            :highlight-current="highLight"
+            :render-content="renderContentRight"
+            :filter-node-method="filterNodeTo"
+            :default-expanded-keys="to_expanded_keys"
+            @check="toTreeChecked"
           >
           </el-tree>
           <slot name="right-footer"></slot>
@@ -152,15 +154,16 @@
           </el-input>
           <el-tree
             ref="from-tree"
-            :data="self_from_data"
             show-checkbox
             :node-key="node_key"
-            @check="fromTreeChecked"
-            :default-expanded-keys="from_expanded_keys"
             :props="defaultProps"
-            :filter-node-method="filterNodeFrom"
+            :data="self_from_data"
             :default-expand-all="openAll"
-            :render-content="renderContent"
+            :highlight-current="highLight"
+            :render-content="renderContentLeft"
+            :filter-node-method="filterNodeFrom"
+            :default-expanded-keys="from_expanded_keys"
+            @check="fromTreeChecked"
           >
           </el-tree>
         </div>
@@ -176,8 +179,8 @@
             type="primary"
             @click="addressListTransfer(0)"
             icon="el-icon-arrow-right"
-            class="address-first-btn"
             circle
+            class="address-first-btn"
             :disabled="from_disabled"
           ></el-button>
         </p>
@@ -216,7 +219,7 @@
             <img
               class="move_up_img move_down_img"
               v-else
-              src="../assets/shang.png"
+              src="./shang.png"
               alt=""
               @click="moveUp('down')"
             />
@@ -301,7 +304,7 @@
             <img
               class="move_up_img"
               v-else
-              src="../assets/shang.png"
+              src="./shang.png"
               alt=""
               @click="moveUp('up')"
             />
@@ -343,7 +346,7 @@
 </template>
 
 <script>
-import { arrayToTree } from "@/assets/array.js";
+import { arrayToTree } from "./array.js";
 export default {
   data() {
     return {
@@ -403,7 +406,7 @@ export default {
     defaultProps: {
       type: Object,
       default: () => {
-        return { label: "label", children: "children", isLeaf: "leaf" };
+        return { label: "label", children: "children" };
       }
     },
     // el-tree node-key 必须唯一
@@ -426,9 +429,11 @@ export default {
       type: Boolean,
       default: false
     },
-    // 自定义树节点
-    renderContent: Function,
-    // 穿梭框模式 addressList->通讯录模式 transfer穿梭框模式
+    // 左侧自定义树节点
+    renderContentLeft: Function,
+    // 右侧自定义树节点
+    renderContentRight: Function,
+    // 穿梭框模式
     mode: {
       type: String,
       default: "transfer"
@@ -459,6 +464,8 @@ export default {
       type: String,
       default: "输入关键字进行过滤"
     },
+    // 自定义筛选函数
+    filterNode: Function, 
     // 默认穿梭一次默认选中数据
     defaultTransfer: {
       type: Boolean,
@@ -476,7 +483,11 @@ export default {
     },
     // 懒加载的回调函数
     lazyFn: Function,
-    // 是否显示全选
+    // 是否高亮当前选中节点，默认值是 false。
+    highLight: {
+      type: Boolean,
+      default: false
+    }
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
@@ -723,7 +734,7 @@ export default {
       if (node.level === 0) {
         return resolve(this.self_to_data);
       }
-      
+
       this.lazyFn && this.lazyFn(node, resolve, "right");
     },
     // 源树选中事件 - 是否禁用穿梭按钮
@@ -752,7 +763,7 @@ export default {
         this.$refs["from-tree"].setCheckedNodes([]);
         this.from_check_keys = [];
       }
-      this.$emit("left-check-change", null, null, this.from_check_all);
+      this.$emit("left-check-change", null, null, this.from_check_all);      
     },
     // 目标数据 总全选checkbox
     toAllBoxChange(val) {
@@ -766,15 +777,21 @@ export default {
         this.$refs["to-tree"].setCheckedNodes([]);
         this.to_check_keys = [];
       }
-      this.$emit("right-check-change", null, null, this.to_check_all);   
+      this.$emit("right-check-change", null, null, this.to_check_all);         
     },
     // 源数据 筛选
     filterNodeFrom(value, data) {
+      if(this.filterNode){
+        return this.filterNode(value, data, 'form')
+      }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
     // 目标数据筛选
     filterNodeTo(value, data) {
+      if(this.filterNode){
+        return this.filterNode(value, data, 'to')
+      }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
@@ -864,7 +881,8 @@ export default {
       } else {
         this.move_up = false;
       }
-    }
+    },
+    // 以下为提供方法 ----------------------------------------------------------------方法--------------------------------------
   },
   computed: {
     // 左侧数据
@@ -1042,7 +1060,7 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/clear.css";
+@import "./clear.css";
 .el-tree {
   min-width: 100%;
   display: inline-block !important;
