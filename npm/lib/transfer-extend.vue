@@ -14,7 +14,7 @@
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
-          <!-- <slot name="from"></slot> -->
+          <slot name="from"></slot>
           <el-input
             v-if="filter"
             :placeholder="placeholder"
@@ -100,7 +100,7 @@
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
-          <!-- <slot name='to'></slot> -->
+          <slot name='to'></slot>
           <el-input
             v-if="filter"
             :placeholder="placeholder"
@@ -143,7 +143,7 @@
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
-          <!-- <slot name="from"></slot> -->
+          <slot name="from"></slot>
           <el-input
             v-if="filter"
             :placeholder="placeholder"
@@ -226,7 +226,7 @@
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main" v-if="!move_up">
-            <!-- <slot name='to'></slot> -->
+            <slot name='to'></slot>
             <el-input
               v-if="filter"
               :placeholder="placeholder"
@@ -262,7 +262,7 @@
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main">
-            <!-- <slot name='to'></slot> -->
+            <slot name='to'></slot>
             <el-input
               v-if="filter"
               :placeholder="placeholder"
@@ -311,7 +311,7 @@
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main" v-if="move_up">
-            <!-- <slot name='to'></slot> -->
+            <slot name='to'></slot>
             <el-input
               v-if="filter"
               :placeholder="placeholder"
