@@ -151,7 +151,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 22 | lazyFn | 懒加载的回调函数 | Function | true | - | - | 当适用lazy时必须传入回调函数，示例:lazyFn='loadNode',返回参数loadNode(node, resolve, from), node->当前展开节点node，resolve->懒加载resolve，from -> left/right 表示回调来自左侧/右侧 |
 | 23 | high-light | 是否高亮当前选中节点| Boolean | false | - | false | - |
 | 24 | filterNode | 自定义搜索函数 | Function | false | - | - | 不传则仍默认根据defaultProps参数的label字段筛选 |
-
+| 25 | defaultExpandedKeys | 默认展开节点 | Array | false | - | - | 要展开的节点id数组，会自动去重生效在左右两侧 |
 > -----------------------------------------------------------
 
 ## 事件
@@ -178,6 +178,8 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 
 ## 版本说明
+
+> 2.2.5 增加参数`defaultExpandedKeys`默认展开节点
 
 > 2.2.3 拆分自定义树节点函数`参数13 renderContent` 为 `renderContentLeft,renderContentRight`分别定义左右两侧自定义节点函数；增加`filterNode`函数来自定义搜索
 

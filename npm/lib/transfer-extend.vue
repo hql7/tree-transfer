@@ -459,6 +459,11 @@ export default {
       type: Array,
       default: () => []
     },
+    // 源数据 默认展开节点
+    defaultExpandedKeys: {
+      type: Array,
+      default: () => []
+    },
     // 筛选placeholder
     placeholder: {
       type: String,
@@ -491,6 +496,8 @@ export default {
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
+    this.from_expanded_keys = this.defaultExpandedKeys;
+    this.to_expanded_keys = this.defaultExpandedKeys;
   },
   mounted() {
     if (this.defaultCheckedKeys.length > 0 && this.defaultTransfer) {
@@ -1054,6 +1061,13 @@ export default {
           this.addToAims();
         });
       }
+    },
+    // 监视默认展开
+    defaultExpandedKeys(val){
+      let _form  = new Set(this.from_expanded_keys.concat(val));
+      this.from_expanded_keys = [..._form];
+      let _to  = new Set(this.to_expanded_keys.concat(val));
+      this.to_expanded_keys = [..._to];
     }
   }
 };

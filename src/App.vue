@@ -7,19 +7,20 @@
       <el-button size="medium" type="info" @click="changeMode">当前模式：{{ mode }}</el-button>
     </h4>
     <div class="box">
+      <!-- lazy -->
+      <!-- :lazyFn="lazyFn" -->
       <tree-transfer
       filter
-        lazy
         high-light
         default-transfer
         :mode="mode"
         :title="title"
-        :lazyFn="lazyFn"
         :to_data="toData"
         :from_data="fromData"
         :filterNode="filterNode"
         :defaultProps="defaultProps"
         :defaultCheckedKeys="defaultCheckedKeys"
+        :defaultExpandedKeys="[2,3]"
         @right-check-change="rightCheckChange"
         @left-check-change="leftCheckChange"
         @removeBtn="remove"
