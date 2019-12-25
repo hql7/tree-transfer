@@ -5,12 +5,14 @@
     <h4>
       <label>请打开f12查看移动数据</label>
       <el-button size="medium" type="info" @click="changeMode">当前模式：{{ mode }}</el-button>
+      <el-button size="medium" @click="clearChecked()">清除选中</el-button>
     </h4>
     <div class="box">
       <!-- lazy -->
       <!-- :lazyFn="lazyFn" -->
       <tree-transfer
-      filter
+        ref="wl-tree-transfer"
+        filter
         high-light
         default-transfer
         :mode="mode"
@@ -808,6 +810,10 @@ export default {
     }, 1000);
   },
   methods: {
+    // 清除选中
+    clearChecked(){
+      this.$refs['wl-tree-transfer'].clearChecked()
+    },
     // 自定义筛选函数
     filterNode(value, data, where) {
       console.log(value, data, where);

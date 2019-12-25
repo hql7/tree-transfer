@@ -21,8 +21,7 @@
             v-model="filterFrom"
             size="small"
             class="filter-tree"
-          >
-          </el-input>
+          ></el-input>
           <el-tree
             ref="from-tree"
             show-checkbox
@@ -38,8 +37,7 @@
             :default-checked-keys="defaultCheckedKeys"
             :default-expanded-keys="from_expanded_keys"
             @check="fromTreeChecked"
-          >
-          </el-tree>
+          ></el-tree>
           <slot name="left-footer"></slot>
         </div>
       </div>
@@ -47,11 +45,7 @@
       <div class="transfer-center">
         <template v-if="button_text">
           <p class="transfer-center-item">
-            <el-button
-              type="primary"
-              @click="addToAims"
-              :disabled="from_disabled"
-            >
+            <el-button type="primary" @click="addToAims" :disabled="from_disabled">
               {{ fromButton || "添加" }}
               <i class="el-icon-arrow-right"></i>
             </el-button>
@@ -62,8 +56,7 @@
               @click="removeToSource"
               :disabled="to_disabled"
               icon="el-icon-arrow-left"
-              >{{ toButton || "移除" }}</el-button
-            >
+            >{{ toButton || "移除" }}</el-button>
           </p>
         </template>
         <template v-else>
@@ -100,15 +93,14 @@
         </h3>
         <!-- 内容区 -->
         <div class="transfer-main">
-          <slot name='to'></slot>
+          <slot name="to"></slot>
           <el-input
             v-if="filter"
             :placeholder="placeholder"
             v-model="filterTo"
             size="small"
             class="filter-tree"
-          >
-          </el-input>
+          ></el-input>
           <el-tree
             slot="to"
             ref="to-tree"
@@ -124,8 +116,7 @@
             :filter-node-method="filterNodeTo"
             :default-expanded-keys="to_expanded_keys"
             @check="toTreeChecked"
-          >
-          </el-tree>
+          ></el-tree>
           <slot name="right-footer"></slot>
         </div>
       </div>
@@ -150,8 +141,7 @@
             v-model="filterFrom"
             size="small"
             class="filter-tree"
-          >
-          </el-input>
+          ></el-input>
           <el-tree
             ref="from-tree"
             show-checkbox
@@ -164,8 +154,7 @@
             :filter-node-method="filterNodeFrom"
             :default-expanded-keys="from_expanded_keys"
             @check="fromTreeChecked"
-          >
-          </el-tree>
+          ></el-tree>
         </div>
       </div>
       <!-- 穿梭区 按钮框 -->
@@ -213,44 +202,33 @@
         >
           <h3 class="transfer-title">
             <span>{{ toTitle }}</span>
-            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up"
-              >清空</span
-            >
+            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up">清空</span>
             <img
               class="move_up_img move_down_img"
               v-else
               src="./shang.png"
-              alt=""
+              alt
               @click="moveUp('down')"
             />
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main" v-if="!move_up">
-            <slot name='to'></slot>
+            <slot name="to"></slot>
             <el-input
               v-if="filter"
               :placeholder="placeholder"
               v-model="filterListFirst"
               size="small"
               class="filter-tree"
-            >
-            </el-input>
+            ></el-input>
             <ul class="address-list-ul">
-              <li
-                class="address-list-li"
-                v-for="item of addressee"
-                :key="item[node_key]"
-              >
+              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i
-                  class="address-list-del"
-                  @click="clearList(0, item[node_key])"
-                  >x</i
-                >
+                <i class="address-list-del" @click="clearList(0, item[node_key])">x</i>
               </li>
             </ul>
           </div>
@@ -262,31 +240,22 @@
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main">
-            <slot name='to'></slot>
+            <slot name="to"></slot>
             <el-input
               v-if="filter"
               :placeholder="placeholder"
               v-model="filterListSecond"
               size="small"
               class="filter-tree"
-            >
-            </el-input>
+            ></el-input>
             <ul class="address-list-ul">
-              <li
-                class="address-list-li"
-                v-for="item of Cc"
-                :key="item[node_key]"
-              >
+              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i
-                  class="address-list-del"
-                  @click="clearList(1, item[node_key])"
-                  >x</i
-                >
+                <i class="address-list-del" @click="clearList(1, item[node_key])">x</i>
               </li>
             </ul>
           </div>
@@ -298,44 +267,27 @@
         >
           <h3 class="transfer-title">
             <span>{{ toTitleThird || "密送人" }}</span>
-            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up"
-              >清空</span
-            >
-            <img
-              class="move_up_img"
-              v-else
-              src="./shang.png"
-              alt=""
-              @click="moveUp('up')"
-            />
+            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up">清空</span>
+            <img class="move_up_img" v-else src="./shang.png" alt @click="moveUp('up')" />
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main" v-if="move_up">
-            <slot name='to'></slot>
+            <slot name="to"></slot>
             <el-input
               v-if="filter"
               :placeholder="placeholder"
               v-model="filterListThird"
               size="small"
               class="filter-tree"
-            >
-            </el-input>
+            ></el-input>
             <ul class="address-list-ul">
-              <li
-                class="address-list-li"
-                v-for="item of secret_receiver"
-                :key="item[node_key]"
-              >
+              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i
-                  class="address-list-del"
-                  @click="clearList(2, item[node_key])"
-                  >x</i
-                >
+                <i class="address-list-del" @click="clearList(2, item[node_key])">x</i>
               </li>
             </ul>
           </div>
@@ -470,7 +422,7 @@ export default {
       default: "输入关键字进行过滤"
     },
     // 自定义筛选函数
-    filterNode: Function, 
+    filterNode: Function,
     // 默认穿梭一次默认选中数据
     defaultTransfer: {
       type: Boolean,
@@ -507,6 +459,29 @@ export default {
     }
   },
   methods: {
+    // -------------------------------提供输出函数---------------------
+    /**
+     * 清空选中节点
+     * type：string left左边 right右边 all全部 默认all
+     */
+    clearChecked(type = "all") {
+      if (type === "left") {
+        this.$refs["from-tree"].setCheckedKeys([]);
+        this.from_is_indeterminate = false;
+        this.from_check_all = false;
+      } else if (type === "right") {
+        this.$refs["to-tree"].setCheckedKeys([]);
+        this.to_is_indeterminate = false;
+        this.to_check_all = false;
+      } else {
+        this.$refs["from-tree"].setCheckedKeys([]);
+        this.$refs["to-tree"].setCheckedKeys([]);
+        this.from_is_indeterminate = false;
+        this.from_check_all = false;
+        this.to_is_indeterminate = false;
+        this.to_check_all = false;
+      }
+    },
     // 添加按钮
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
@@ -747,16 +722,16 @@ export default {
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
       this.from_check_keys = treeObj.checkedNodes;
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$emit("left-check-change", nodeObj, treeObj, this.from_check_all);
-      })
+      });
     },
     // 目标树选中事件 - 是否禁用穿梭按钮
     toTreeChecked(nodeObj, treeObj) {
       this.to_check_keys = treeObj.checkedNodes;
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$emit("right-check-change", nodeObj, treeObj, this.to_check_all);
-      })
+      });
     },
     // 源数据 总全选checkbox
     fromAllBoxChange(val) {
@@ -770,7 +745,7 @@ export default {
         this.$refs["from-tree"].setCheckedNodes([]);
         this.from_check_keys = [];
       }
-      this.$emit("left-check-change", null, null, this.from_check_all);      
+      this.$emit("left-check-change", null, null, this.from_check_all);
     },
     // 目标数据 总全选checkbox
     toAllBoxChange(val) {
@@ -784,20 +759,20 @@ export default {
         this.$refs["to-tree"].setCheckedNodes([]);
         this.to_check_keys = [];
       }
-      this.$emit("right-check-change", null, null, this.to_check_all);         
+      this.$emit("right-check-change", null, null, this.to_check_all);
     },
     // 源数据 筛选
     filterNodeFrom(value, data) {
-      if(this.filterNode){
-        return this.filterNode(value, data, 'form')
+      if (this.filterNode) {
+        return this.filterNode(value, data, "form");
       }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
     // 目标数据筛选
     filterNodeTo(value, data) {
-      if(this.filterNode){
-        return this.filterNode(value, data, 'to')
+      if (this.filterNode) {
+        return this.filterNode(value, data, "to");
       }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
@@ -888,7 +863,7 @@ export default {
       } else {
         this.move_up = false;
       }
-    },
+    }
     // 以下为提供方法 ----------------------------------------------------------------方法--------------------------------------
   },
   computed: {
@@ -1063,10 +1038,10 @@ export default {
       }
     },
     // 监视默认展开
-    defaultExpandedKeys(val){
-      let _form  = new Set(this.from_expanded_keys.concat(val));
+    defaultExpandedKeys(val) {
+      let _form = new Set(this.from_expanded_keys.concat(val));
       this.from_expanded_keys = [..._form];
-      let _to  = new Set(this.to_expanded_keys.concat(val));
+      let _to = new Set(this.to_expanded_keys.concat(val));
       this.to_expanded_keys = [..._to];
     }
   }

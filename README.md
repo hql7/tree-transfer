@@ -162,6 +162,14 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 3 | left-check-change | 左侧源数据勾选事件 | function(nodeObj, treeObj, checkAll)见el-tree组件check事件返回值, 新增checkAll参数表示是否全部选中 | 
 | 4 | right-check-change | 右侧目标数据勾选事件 | function(nodeObj, treeObj, checkAll)见el-tree组件check事件返回值, 新增checkAll参数表示是否全部选中 |
 
+## 方法
+
+| 序号 | 名称 | 说明 |
+| ---- | ---- | ---- |
+| 1 | clearChecked | 清除选中节点，默认清除全部 `type：string left左边 right右边 all全部 默认all` |
+
+> --------------------------------------------------------
+
 > --------------------------------------------------------
 
 | 序号 | 名字 | 说明 |
