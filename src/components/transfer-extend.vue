@@ -500,6 +500,29 @@ export default {
     }
   },
   methods: {
+    // -------------------------------提供输出函数---------------------
+    /**
+     * 清空选中节点
+     * type：string left左边 right右边 all全部 默认all
+     */
+    clearChecked(type = "all") {
+      if (type === "left") {
+        this.$refs["from-tree"].setCheckedKeys([]);
+        this.from_is_indeterminate = false;
+        this.from_check_all = false;
+      } else if (type === "right") {
+        this.$refs["to-tree"].setCheckedKeys([]);
+        this.to_is_indeterminate = false;
+        this.to_check_all = false;
+      } else {
+        this.$refs["from-tree"].setCheckedKeys([]);
+        this.$refs["to-tree"].setCheckedKeys([]);
+        this.from_is_indeterminate = false;
+        this.from_check_all = false;
+        this.to_is_indeterminate = false;
+        this.to_check_all = false;
+      }
+    },
     // 添加按钮
     addToAims() {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
