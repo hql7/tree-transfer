@@ -45,7 +45,7 @@
       <div class="transfer-center">
         <template v-if="button_text">
           <p class="transfer-center-item">
-            <el-button type="primary" @click="addToAims" :disabled="from_disabled">
+            <el-button type="primary" @click="addToAims()" :disabled="from_disabled">
               {{ fromButton || "添加" }}
               <i class="el-icon-arrow-right"></i>
             </el-button>
@@ -63,7 +63,7 @@
           <p class="transfer-center-item">
             <el-button
               type="primary"
-              @click="addToAims"
+              @click="addToAims()"
               icon="el-icon-arrow-right"
               circle
               :disabled="from_disabled"
@@ -450,11 +450,9 @@ export default {
     this.from_check_keys = this.defaultCheckedKeys;
     this.from_expanded_keys = this.defaultExpandedKeys;
     this.to_expanded_keys = this.defaultExpandedKeys;
-  },
-  mounted() {
-    if (this.defaultCheckedKeys.length > 0 && this.defaultTransfer) {
+    if (this.defaultTransfer && this.defaultCheckedKeys.length > 0) {
       this.$nextTick(() => {
-        this.addToAims();
+        this.addToAims(false);
       });
     }
   },
@@ -483,7 +481,7 @@ export default {
       }
     },
     // 添加按钮
-    addToAims() {
+    addToAims(emit = true) {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["from-tree"].getCheckedKeys();
       // 获取半选通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
@@ -583,12 +581,13 @@ export default {
       }
 
       // 传递信息给父组件
-      this.$emit("addBtn", this.self_from_data, this.self_to_data, {
-        keys,
-        nodes,
-        harfKeys,
-        halfNodes
-      });
+      emit &&
+        this.$emit("addBtn", this.self_from_data, this.self_to_data, {
+          keys,
+          nodes,
+          harfKeys,
+          halfNodes
+        });
 
       // 处理完毕取消选中
       this.$refs["from-tree"].setCheckedKeys([]);
@@ -1031,9 +1030,9 @@ export default {
     },
     // 监视默认选中
     defaultCheckedKeys(val) {
-      if (val && this.defaultTransfer) {
+      if (this.defaultTransfer && val.length > 0) {
         this.$nextTick(() => {
-          this.addToAims();
+          this.addToAims(false);
         });
       }
     },
