@@ -45,7 +45,7 @@
       <div class="transfer-center">
         <template v-if="button_text">
           <p class="transfer-center-item">
-            <el-button type="primary" @click="addToAims()" :disabled="from_disabled">
+            <el-button type="primary" @click="addToAims(true)" :disabled="from_disabled">
               {{ fromButton || "添加" }}
               <i class="el-icon-arrow-right"></i>
             </el-button>
@@ -63,7 +63,7 @@
           <p class="transfer-center-item">
             <el-button
               type="primary"
-              @click="addToAims()"
+              @click="addToAims(true)"
               icon="el-icon-arrow-right"
               circle
               :disabled="from_disabled"
@@ -481,7 +481,7 @@ export default {
       }
     },
     // 添加按钮
-    addToAims(emit = true) {
+    addToAims(emit) {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
       let keys = this.$refs["from-tree"].getCheckedKeys();
       // 获取半选通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信

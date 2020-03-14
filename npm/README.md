@@ -187,7 +187,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ## 版本说明
 
-> 2.2.7 优化defaultCheckedKeys和defaultTransfer配合使用时，触发了添加事件的问题，通常默认第一次穿梭是后台偷懒没有生成fromData和toData
+> 2.2.8 优化defaultCheckedKeys和defaultTransfer配合使用时，触发了添加事件的问题，通常默认第一次穿梭是后台偷懒没有生成fromData和toData
 两份数据，需要前端拆分，此时再触发添加事件则务必要；另可不使用defaultTransfer而是在defaultCheckedKeys改变后手动调用addToAims(false)函数，参数传false则不会触发emit回调
 
 > 2.2.6 增加`clearChecked`清空选中节点方法
