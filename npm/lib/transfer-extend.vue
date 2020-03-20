@@ -105,7 +105,7 @@
             slot="to"
             ref="to-tree"
             show-checkbox
-            :lazy="lazy"
+            :lazy="lazyRight"
             :data="self_to_data"
             :node-key="node_key"
             :props="defaultProps"
@@ -435,6 +435,11 @@ export default {
     },
     // 是否启用懒加载
     lazy: {
+      type: Boolean,
+      default: false
+    },
+    // 是否右侧树也启用懒加载
+    lazyRight: {
       type: Boolean,
       default: false
     },
