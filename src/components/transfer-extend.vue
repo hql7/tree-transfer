@@ -1,5 +1,5 @@
 <template>
-  <div class="transfer" :style="{ width, height }">
+  <div class="wl-transfer transfer" :style="{ width, height }">
     <template v-if="mode == 'transfer'">
       <!-- 左侧穿梭框 原料框 -->
       <div class="transfer-left">
@@ -21,8 +21,7 @@
             v-model="filterFrom"
             size="small"
             class="filter-tree"
-          >
-          </el-input>
+          ></el-input>
           <el-tree
             ref="from-tree"
             show-checkbox
@@ -38,8 +37,7 @@
             :default-checked-keys="defaultCheckedKeys"
             :default-expanded-keys="from_expanded_keys"
             @check="fromTreeChecked"
-          >
-          </el-tree>
+          ></el-tree>
           <slot name="left-footer"></slot>
         </div>
       </div>
@@ -47,11 +45,7 @@
       <div class="transfer-center">
         <template v-if="button_text">
           <p class="transfer-center-item">
-            <el-button
-              type="primary"
-              @click="addToAims"
-              :disabled="from_disabled"
-            >
+            <el-button type="primary" @click="addToAims" :disabled="from_disabled">
               {{ fromButton || "添加" }}
               <i class="el-icon-arrow-right"></i>
             </el-button>
@@ -62,8 +56,7 @@
               @click="removeToSource"
               :disabled="to_disabled"
               icon="el-icon-arrow-left"
-              >{{ toButton || "移除" }}</el-button
-            >
+            >{{ toButton || "移除" }}</el-button>
           </p>
         </template>
         <template v-else>
@@ -107,8 +100,7 @@
             v-model="filterTo"
             size="small"
             class="filter-tree"
-          >
-          </el-input>
+          ></el-input>
           <el-tree
             slot="to"
             ref="to-tree"
@@ -124,8 +116,7 @@
             :filter-node-method="filterNodeTo"
             :default-expanded-keys="to_expanded_keys"
             @check="toTreeChecked"
-          >
-          </el-tree>
+          ></el-tree>
           <slot name="right-footer"></slot>
         </div>
       </div>
@@ -150,8 +141,7 @@
             v-model="filterFrom"
             size="small"
             class="filter-tree"
-          >
-          </el-input>
+          ></el-input>
           <el-tree
             ref="from-tree"
             show-checkbox
@@ -164,8 +154,7 @@
             :filter-node-method="filterNodeFrom"
             :default-expanded-keys="from_expanded_keys"
             @check="fromTreeChecked"
-          >
-          </el-tree>
+          ></el-tree>
         </div>
       </div>
       <!-- 穿梭区 按钮框 -->
@@ -213,14 +202,12 @@
         >
           <h3 class="transfer-title">
             <span>{{ toTitle }}</span>
-            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up"
-              >清空</span
-            >
+            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up">清空</span>
             <img
               class="move_up_img move_down_img"
               v-else
               src="./shang.png"
-              alt=""
+              alt
               @click="moveUp('down')"
             />
           </h3>
@@ -233,24 +220,15 @@
               v-model="filterListFirst"
               size="small"
               class="filter-tree"
-            >
-            </el-input>
+            ></el-input>
             <ul class="address-list-ul">
-              <li
-                class="address-list-li"
-                v-for="item of addressee"
-                :key="item[node_key]"
-              >
+              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i
-                  class="address-list-del"
-                  @click="clearList(0, item[node_key])"
-                  >x</i
-                >
+                <i class="address-list-del" @click="clearList(0, item[node_key])">x</i>
               </li>
             </ul>
           </div>
@@ -269,24 +247,15 @@
               v-model="filterListSecond"
               size="small"
               class="filter-tree"
-            >
-            </el-input>
+            ></el-input>
             <ul class="address-list-ul">
-              <li
-                class="address-list-li"
-                v-for="item of Cc"
-                :key="item[node_key]"
-              >
+              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i
-                  class="address-list-del"
-                  @click="clearList(1, item[node_key])"
-                  >x</i
-                >
+                <i class="address-list-del" @click="clearList(1, item[node_key])">x</i>
               </li>
             </ul>
           </div>
@@ -298,16 +267,8 @@
         >
           <h3 class="transfer-title">
             <span>{{ toTitleThird || "密送人" }}</span>
-            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up"
-              >清空</span
-            >
-            <img
-              class="move_up_img"
-              v-else
-              src="./shang.png"
-              alt=""
-              @click="moveUp('up')"
-            />
+            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up">清空</span>
+            <img class="move_up_img" v-else src="./shang.png" alt @click="moveUp('up')" />
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main" v-if="move_up">
@@ -318,24 +279,15 @@
               v-model="filterListThird"
               size="small"
               class="filter-tree"
-            >
-            </el-input>
+            ></el-input>
             <ul class="address-list-ul">
-              <li
-                class="address-list-li"
-                v-for="item of secret_receiver"
-                :key="item[node_key]"
-              >
+              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i
-                  class="address-list-del"
-                  @click="clearList(2, item[node_key])"
-                  >x</i
-                >
+                <i class="address-list-del" @click="clearList(2, item[node_key])">x</i>
               </li>
             </ul>
           </div>
@@ -371,63 +323,63 @@ export default {
       addressee: [], // 收件人列表
       Cc: [], // 抄送人列表
       secret_receiver: [], // 密送人列表
-      move_up: false // 通讯录模式 切换右侧
+      move_up: false, // 通讯录模式 切换右侧
     };
   },
   props: {
     // 宽度
     width: {
       type: String,
-      default: "100%"
+      default: "100%",
     },
     // 高度
     height: {
       type: String,
-      default: "320px"
+      default: "320px",
     },
     // 标题
     title: {
       type: Array,
-      default: () => ["源列表", "目标列表"]
+      default: () => ["源列表", "目标列表"],
     },
     // 穿梭按钮名字
     button_text: Array,
     // 源数据
     from_data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     // 选中数据
     to_data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     // el-tree 配置项
     defaultProps: {
       type: Object,
       default: () => {
         return { label: "label", children: "children" };
-      }
+      },
     },
     // el-tree node-key 必须唯一
     node_key: {
       type: String,
-      default: "id"
+      default: "id",
     },
     // 自定义 pid参数名
     pid: {
       type: String,
-      default: "pid"
+      default: "pid",
     },
     // 是否启用筛选
     filter: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否展开所有节点
     openAll: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 左侧自定义树节点
     renderContentLeft: Function,
@@ -436,7 +388,7 @@ export default {
     // 穿梭框模式
     mode: {
       type: String,
-      default: "transfer"
+      default: "transfer",
     },
     // 通讯录模式配置项 num-> 所需右侧通讯录个数 suffix-> label后想要拼接的字段（如id，即取此条数据的id拼接在后方）connector -> 连接符（字符串）
     addressOptions: {
@@ -445,49 +397,49 @@ export default {
         return {
           num: 3,
           suffix: "suffix",
-          connector: "-"
+          connector: "-",
         };
-      }
+      },
     },
     // 穿梭后是否展开节点
     transferOpenNode: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 源数据 默认选中节点
     defaultCheckedKeys: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     // 筛选placeholder
     placeholder: {
       type: String,
-      default: "输入关键字进行过滤"
+      default: "输入关键字进行过滤",
     },
     // 自定义筛选函数
-    filterNode: Function, 
+    filterNode: Function,
     // 默认穿梭一次默认选中数据
     defaultTransfer: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否开启arrayToTree
     arrayToTree: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否启用懒加载
     lazy: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 懒加载的回调函数
     lazyFn: Function,
     // 是否高亮当前选中节点，默认值是 false。
     highLight: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   created() {
     this.from_check_keys = this.defaultCheckedKeys;
@@ -558,13 +510,13 @@ export default {
       ); // 深拷贝数据 - 半选节点
       // 筛选目标树不存在的骨架节点 - 半选内的节点
       let newSkeletonHalfCheckedNodes = [];
-      skeletonHalfCheckedNodes.forEach(item => {
+      skeletonHalfCheckedNodes.forEach((item) => {
         if (!inquireIsExist(item)) {
           newSkeletonHalfCheckedNodes.push(item);
         }
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 半选节点
-      newSkeletonHalfCheckedNodes.forEach(item => {
+      newSkeletonHalfCheckedNodes.forEach((item) => {
         item[children__] = [];
         [0, "0"].includes(item[pid__])
           ? this.$refs["to-tree"].append(item)
@@ -574,13 +526,13 @@ export default {
       // 第二步
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
-      nodes.forEach(item => {
+      nodes.forEach((item) => {
         if (!inquireIsExist(item)) {
           newSkeletonCheckedNodes.push(item);
         }
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 全选节点
-      newSkeletonCheckedNodes.forEach(item => {
+      newSkeletonCheckedNodes.forEach((item) => {
         if (item[children__] && item[children__].length > 0) {
           item[children__] = [];
           [0, "0"].includes(item[pid__])
@@ -591,10 +543,10 @@ export default {
 
       // 第三步 处理末端叶子元素 - 声明新盒子筛选出所有末端叶子节点
       let leafCheckedNodes = arrayCheckedNodes.filter(
-        item => !item[children__] || item[children__].length == 0
+        (item) => !item[children__] || item[children__].length == 0
       );
       // 末端叶子插入目标树
-      leafCheckedNodes.forEach(item => {
+      leafCheckedNodes.forEach((item) => {
         if (!inquireIsExist(item)) {
           this.$refs["to-tree"].append(item, item[pid__]);
         }
@@ -613,7 +565,7 @@ export default {
       }
 
       // 左侧删掉选中数据
-      arrayCheckedNodes.map(item => this.$refs["from-tree"].remove(item));
+      arrayCheckedNodes.map((item) => this.$refs["from-tree"].remove(item));
 
       // 处理完毕按钮恢复禁用状态
       this.from_check_keys = [];
@@ -628,7 +580,7 @@ export default {
         keys,
         nodes,
         harfKeys,
-        halfNodes
+        halfNodes,
       });
 
       // 处理完毕取消选中
@@ -669,13 +621,13 @@ export default {
       ); // 深拷贝数据 - 半选节点
       // 筛选目标树不存在的骨架节点 - 半选内的节点
       let newSkeletonHalfCheckedNodes = [];
-      skeletonHalfCheckedNodes.forEach(item => {
+      skeletonHalfCheckedNodes.forEach((item) => {
         if (!inquireIsExist(item)) {
           newSkeletonHalfCheckedNodes.push(item);
         }
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 半选节点
-      newSkeletonHalfCheckedNodes.forEach(item => {
+      newSkeletonHalfCheckedNodes.forEach((item) => {
         item[children__] = [];
         [0, "0"].includes(item[pid__])
           ? this.$refs["from-tree"].append(item)
@@ -685,13 +637,13 @@ export default {
       // 第二步
       // 筛选目标树不存在的骨架节点 - 全选内的节点
       let newSkeletonCheckedNodes = [];
-      nodes.forEach(item => {
+      nodes.forEach((item) => {
         if (!inquireIsExist(item)) {
           newSkeletonCheckedNodes.push(item);
         }
       });
       // 筛选到目标树不存在的骨架后在处理每个骨架节点-非末端叶子节点 - 全选节点
-      newSkeletonCheckedNodes.forEach(item => {
+      newSkeletonCheckedNodes.forEach((item) => {
         if (item[children__] && item[children__].length > 0) {
           item[children__] = [];
           [0, "0"].includes(item[pid__])
@@ -702,10 +654,10 @@ export default {
 
       // 第三步 处理末端叶子元素 - 声明新盒子筛选出所有末端叶子节点
       let leafCheckedNodes = arrayCheckedNodes.filter(
-        item => !item[children__] || item[children__].length == 0
+        (item) => !item[children__] || item[children__].length == 0
       );
       // 末端叶子插入目标树
-      leafCheckedNodes.forEach(item => {
+      leafCheckedNodes.forEach((item) => {
         if (!inquireIsExist(item)) {
           this.$refs["from-tree"].append(item, item[pid__]);
         }
@@ -724,7 +676,7 @@ export default {
       }
 
       // 右侧删掉选中数据
-      arrayCheckedNodes.map(item => this.$refs["to-tree"].remove(item));
+      arrayCheckedNodes.map((item) => this.$refs["to-tree"].remove(item));
 
       // 处理完毕按钮恢复禁用状态
       this.to_check_keys = [];
@@ -739,7 +691,7 @@ export default {
         keys,
         nodes,
         harfKeys,
-        halfNodes
+        halfNodes,
       });
       // 处理完毕取消选中
       this.$refs["to-tree"].setCheckedKeys([]);
@@ -763,16 +715,16 @@ export default {
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
       this.from_check_keys = treeObj.checkedNodes;
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$emit("left-check-change", nodeObj, treeObj, this.from_check_all);
-      })
+      });
     },
     // 目标树选中事件 - 是否禁用穿梭按钮
     toTreeChecked(nodeObj, treeObj) {
       this.to_check_keys = treeObj.checkedNodes;
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$emit("right-check-change", nodeObj, treeObj, this.to_check_all);
-      })
+      });
     },
     // 源数据 总全选checkbox
     fromAllBoxChange(val) {
@@ -786,7 +738,7 @@ export default {
         this.$refs["from-tree"].setCheckedNodes([]);
         this.from_check_keys = [];
       }
-      this.$emit("left-check-change", null, null, this.from_check_all);      
+      this.$emit("left-check-change", null, null, this.from_check_all);
     },
     // 目标数据 总全选checkbox
     toAllBoxChange(val) {
@@ -800,20 +752,20 @@ export default {
         this.$refs["to-tree"].setCheckedNodes([]);
         this.to_check_keys = [];
       }
-      this.$emit("right-check-change", null, null, this.to_check_all);         
+      this.$emit("right-check-change", null, null, this.to_check_all);
     },
     // 源数据 筛选
     filterNodeFrom(value, data) {
-      if(this.filterNode){
-        return this.filterNode(value, data, 'form')
+      if (this.filterNode) {
+        return this.filterNode(value, data, "form");
       }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
     // 目标数据筛选
     filterNodeTo(value, data) {
-      if(this.filterNode){
-        return this.filterNode(value, data, 'to')
+      if (this.filterNode) {
+        return this.filterNode(value, data, "to");
       }
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
@@ -828,10 +780,10 @@ export default {
       let arrayDeWeighting = [];
       switch (type) {
         case 0:
-          arrayDeWeighting = arrayCheckedNodes.filter(item => {
+          arrayDeWeighting = arrayCheckedNodes.filter((item) => {
             if (
               !this.addressee.some(
-                ite => ite[this.node_key] == item[this.node_key]
+                (ite) => ite[this.node_key] == item[this.node_key]
               )
             ) {
               return item;
@@ -840,9 +792,9 @@ export default {
           this.addressee = [...this.addressee, ...arrayDeWeighting];
           break;
         case 1:
-          arrayDeWeighting = arrayCheckedNodes.filter(item => {
+          arrayDeWeighting = arrayCheckedNodes.filter((item) => {
             if (
-              !this.Cc.some(ite => ite[this.node_key] == item[this.node_key])
+              !this.Cc.some((ite) => ite[this.node_key] == item[this.node_key])
             ) {
               return item;
             }
@@ -850,10 +802,10 @@ export default {
           this.Cc = [...this.Cc, ...arrayDeWeighting];
           break;
         case 2:
-          arrayDeWeighting = arrayCheckedNodes.filter(item => {
+          arrayDeWeighting = arrayCheckedNodes.filter((item) => {
             if (
               !this.secret_receiver.some(
-                ite => ite[this.node_key] == item[this.node_key]
+                (ite) => ite[this.node_key] == item[this.node_key]
               )
             ) {
               return item;
@@ -879,19 +831,21 @@ export default {
           this.addressee =
             id == "all"
               ? []
-              : this.addressee.filter(item => item[this.node_key] != id);
+              : this.addressee.filter((item) => item[this.node_key] != id);
           break;
         case 1:
           this.Cc =
             id == "all"
               ? []
-              : this.Cc.filter(item => item[this.node_key] != id);
+              : this.Cc.filter((item) => item[this.node_key] != id);
           break;
         case 2:
           this.secret_receiver =
             id == "all"
               ? []
-              : this.secret_receiver.filter(item => item[this.node_key] != id);
+              : this.secret_receiver.filter(
+                  (item) => item[this.node_key] != id
+                );
           break;
       }
       // 传递信息给父组件
@@ -912,7 +866,7 @@ export default {
     self_from_data() {
       let from_array = [...this.from_data];
       if (!this.arrayToTree) {
-        from_array.forEach(item => {
+        from_array.forEach((item) => {
           item[this.pid] = 0;
         });
         return from_array;
@@ -920,7 +874,7 @@ export default {
         return arrayToTree(from_array, {
           id: this.node_key,
           pid: this.pid,
-          children: this.defaultProps.children
+          children: this.defaultProps.children,
         });
       }
     },
@@ -928,7 +882,7 @@ export default {
     self_to_data() {
       let to_array = [...this.to_data];
       if (!this.arrayToTree) {
-        to_array.forEach(item => {
+        to_array.forEach((item) => {
           item[this.pid] = 0;
         });
         return to_array;
@@ -936,7 +890,7 @@ export default {
         return arrayToTree(to_array, {
           id: this.node_key,
           pid: this.pid,
-          children: this.defaultProps.children
+          children: this.defaultProps.children,
         });
       }
     },
@@ -976,7 +930,7 @@ export default {
       }
       let [, text] = this.button_text;
       return text;
-    }
+    },
   },
   watch: {
     // 左侧 状态监测
@@ -988,7 +942,7 @@ export default {
         this.from_is_indeterminate = true;
 
         // 总全选是否开启 - 根据选中节点中为根节点的数量是否和源数据长度相等
-        let allCheck = val.filter(item => item[this.pid] == 0);
+        let allCheck = val.filter((item) => item[this.pid] == 0);
         if (allCheck.length == this.self_from_data.length) {
           // 关闭半选 开启全选
           this.from_is_indeterminate = false;
@@ -1012,7 +966,7 @@ export default {
         this.to_is_indeterminate = true;
 
         // 总全选是否开启 - 根据选中节点中为根节点的数量是否和源数据长度相等
-        let allCheck = val.filter(item => item[this.pid] == 0);
+        let allCheck = val.filter((item) => item[this.pid] == 0);
         if (allCheck.length == this.self_to_data.length) {
           // 关闭半选 开启全选
           this.to_is_indeterminate = false;
@@ -1044,7 +998,7 @@ export default {
         this.addressee = this.archiveFirst;
       }
       let reg = RegExp(newval);
-      this.addressee = this.addressee.filter(item => reg.test(item.label));
+      this.addressee = this.addressee.filter((item) => reg.test(item.label));
     },
     // 通讯录模式 右2筛选
     filterListSecond(newval, oldval) {
@@ -1055,7 +1009,7 @@ export default {
         this.Cc = this.archiveSecond;
       }
       let reg = RegExp(newval);
-      this.Cc = this.Cc.filter(item => reg.test(item.label));
+      this.Cc = this.Cc.filter((item) => reg.test(item.label));
     },
     // 通讯录模式 右3筛选
     filterListThird(newval, oldval) {
@@ -1066,7 +1020,7 @@ export default {
         this.secret_receiver = this.archiveThird;
       }
       let reg = RegExp(newval);
-      this.secret_receiver = this.secret_receiver.filter(item =>
+      this.secret_receiver = this.secret_receiver.filter((item) =>
         reg.test(item.label)
       );
     },
@@ -1077,172 +1031,171 @@ export default {
           this.addToAims();
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss">
 @import "./clear.css";
 .el-tree {
   min-width: 100%;
   display: inline-block !important;
 }
-
-.transfer {
+.wl-transfer {
   position: relative;
   overflow: hidden;
-}
 
-.transfer-left {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+  .transfer-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-.transfer-right {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
+  .transfer-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 
-.transfer-right-item {
-  height: calc((100% - 41px) / 2);
-}
+  .transfer-right-item {
+    height: calc((100% - 41px) / 2);
+  }
 
-.transfer-right-small {
-  height: 41px;
-}
+  .transfer-right-small {
+    height: 41px;
+  }
 
-.transfer-right-only {
-  height: 100%;
-}
+  .transfer-right-only {
+    height: 100%;
+  }
 
-.transfer-main {
-  padding: 10px;
-  height: calc(100% - 41px);
-  box-sizing: border-box;
-  overflow: auto;
-}
+  .transfer-main {
+    padding: 10px;
+    height: calc(100% - 41px);
+    box-sizing: border-box;
+    overflow: auto;
+  }
 
-.transfer-left,
-.transfer-right {
-  border: 1px solid #ebeef5;
-  width: 40%;
-  height: 100%;
-  box-sizing: border-box;
-  border-radius: 5px;
-  vertical-align: middle;
-}
+  .transfer-left,
+  .transfer-right {
+    border: 1px solid #ebeef5;
+    width: 40%;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    vertical-align: middle;
+  }
 
-.transfer-center {
-  position: absolute;
-  top: 50%;
-  left: 40%;
-  width: 20%;
-  transform: translateY(-50%);
-  text-align: center;
-}
+  .transfer-center {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    width: 20%;
+    transform: translateY(-50%);
+    text-align: center;
+  }
 
-.transfer-center-item {
-  padding: 10px;
-  overflow: hidden;
-}
+  .transfer-center-item {
+    padding: 10px;
+    overflow: hidden;
+  }
 
-.address-list-center {
-  height: 100%;
-}
+  .address-list-center {
+    height: 100%;
+  }
 
-.address-list-center > .transfer-center-item {
-  height: 50%;
-  padding: 70px 10px 0;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+  .address-list-center > .transfer-center-item {
+    height: 50%;
+    padding: 70px 10px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
 
-.address-list-center > .address-only-item {
-  height: 100%;
-  position: relative;
-}
+  .address-list-center > .address-only-item {
+    height: 100%;
+    position: relative;
+  }
 
-.address-only-item > .address-first-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+  .address-only-item > .address-first-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-.transfer-title {
-  border-bottom: 1px solid #ebeef5;
-  padding: 0 15px;
-  height: 40px;
-  line-height: 40px;
-  color: #333;
-  font-size: 16px;
-  background-color: #f5f7fa;
-}
+  .transfer-title {
+    border-bottom: 1px solid #ebeef5;
+    padding: 0 15px;
+    height: 40px;
+    line-height: 40px;
+    color: #333;
+    font-size: 16px;
+    background-color: #f5f7fa;
+  }
 
-.transfer-title .el-checkbox {
-  margin-right: 10px;
-}
+  .transfer-title .el-checkbox {
+    margin-right: 10px;
+  }
 
-.filter-tree {
-  margin-bottom: 10px;
-}
+  .filter-tree {
+    margin-bottom: 10px;
+  }
 
-.address-list-ul {
-  padding-bottom: 20px;
-}
+  .address-list-ul {
+    padding-bottom: 20px;
+  }
 
-.address-list-li {
-  position: relative;
-  padding: 4px 24px 4px 4px;
-  border-radius: 3px;
-  overflow: hidden; /*超出部分隐藏*/
-  white-space: nowrap; /*不换行*/
-  text-overflow: ellipsis; /*超出部分文字以...显示*/
-}
+  .address-list-li {
+    position: relative;
+    padding: 4px 24px 4px 4px;
+    border-radius: 3px;
+    overflow: hidden; /*超出部分隐藏*/
+    white-space: nowrap; /*不换行*/
+    text-overflow: ellipsis; /*超出部分文字以...显示*/
+  }
 
-.address-list-li:hover {
-  background-color: #f5f7fa;
-}
+  .address-list-li:hover {
+    background-color: #f5f7fa;
+  }
 
-.address-list-li:hover .address-list-del {
-  display: block;
-}
+  .address-list-li:hover .address-list-del {
+    display: block;
+  }
 
-.address-list-del {
-  display: none;
-  position: absolute;
-  top: 50%;
-  right: 2px;
-  margin-top: -10px;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 50%;
-  text-align: center;
-  background-color: #fef0f0;
-  color: #f56c6c;
-  cursor: pointer;
-}
+  .address-list-del {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    margin-top: -10px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #fef0f0;
+    color: #f56c6c;
+    cursor: pointer;
+  }
 
-.u-clear {
-  float: right;
-  color: #67c23a;
-  font-size: 14px;
-  cursor: pointer;
-}
+  .u-clear {
+    float: right;
+    color: #67c23a;
+    font-size: 14px;
+    cursor: pointer;
+  }
 
-.move_up_img {
-  float: right;
-  margin-top: 10px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
+  .move_up_img {
+    float: right;
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
 
-.move_down_img {
-  transform: rotate(180deg);
+  .move_down_img {
+    transform: rotate(180deg);
+  }
 }
 </style>
