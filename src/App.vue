@@ -2,10 +2,12 @@
   <div id="app">
     <img class="vue" src="./assets/logo.png" />
     <router-view />
-    <h4>
+    <h4 style="margin-bottom: 20px;">
       <label>请打开f12查看移动数据</label>
       <el-button size="medium" type="info" @click="changeMode">当前模式：{{ mode }}</el-button>
       <el-button size="medium" @click="clearChecked()">清除选中</el-button>
+      <el-button size="medium" @click="getChecked()">获取选中</el-button>
+      <el-button size="medium" @click="setChecked()">设置选中</el-button>
     </h4>
     <div class="box">
       <!-- lazy -->
@@ -27,7 +29,6 @@
         @left-check-change="leftCheckChange"
         @removeBtn="remove"
         @addBtn="add"
-        height="540px"
         node_key="id"
       >
         <span slot="title-right" class="my-title-right" @click="handleTitleRight">自定义内容</span>
@@ -57,13 +58,13 @@ export default {
               id: 2,
               pid: 1,
               name: "水电费是打发斯蒂芬斯蒂芬gas噶水电费噶地方死光光",
-              children: []
+              children: [],
             },
             {
               id: 3,
               pid: 1,
               name: "11-3",
-              children: []
+              children: [],
             },
             {
               id: 4,
@@ -78,19 +79,19 @@ export default {
                     {
                       id: 111,
                       pid: 5,
-                      name: "11-111"
-                    }
-                  ]
+                      name: "11-111",
+                    },
+                  ],
                 },
                 {
                   id: 6,
                   pid: 4,
                   name: "11-6",
-                  children: []
-                }
-              ]
-            }
-          ]
+                  children: [],
+                },
+              ],
+            },
+          ],
         },
         {
           id: 7127,
@@ -102,62 +103,62 @@ export default {
               pid: 7127,
               name: "debug22",
               // disabled: true,
-              children: []
+              children: [],
             },
             {
               id: 71273,
               pid: 7127,
               name: "debug11",
-              children: []
-            }
-          ]
-        }
+              children: [],
+            },
+          ],
+        },
       ], // 穿梭框 - 源数据 - 树形
       toData: [], // 穿梭框 - 目标数据 - 树形
       fromArray: [
         {
           id: "1",
           name: "1",
-          pid: "0"
+          pid: "0",
         },
         {
           id: "2",
           name: "2",
-          pid: "0"
+          pid: "0",
         },
         {
           id: "1-1",
           name: "1-1",
-          pid: "1"
+          pid: "1",
         },
         {
           id: "1-2",
           name: "1-2",
-          pid: "1"
+          pid: "1",
         },
         {
           id: "1-1-1",
           name: "1-1-1",
-          pid: "1-1"
+          pid: "1-1",
         },
         {
           id: "1-1-1-1",
           name: "1-1-1-1",
-          pid: "1-1-1"
+          pid: "1-1-1",
         },
         {
           id: "2-1",
           name: "2-1",
-          pid: "2"
+          pid: "2",
         },
         {
           id: "2-2",
           name: "2-2",
-          pid: "2"
-        }
+          pid: "2",
+        },
       ],
       toArray: [],
-      defaultCheckedKeys: [] // 左侧默认选中数据
+      defaultCheckedKeys: [], // 左侧默认选中数据
     };
   },
   created() {
@@ -173,6 +174,18 @@ export default {
     }, 1000);
   },
   methods: {
+    aaa(a, b) {
+      console.log(a, b);
+    },
+    // 获取选中
+    getChecked() {
+      const checkeds = this.$refs["wl-tree-transfer"].getChecked();
+      console.log(checkeds);
+    },
+    // 设置选中
+    setChecked() {
+      this.$refs["wl-tree-transfer"].setChecked([71272], [2]);
+    },
     // 清除选中
     clearChecked() {
       this.$refs["wl-tree-transfer"].clearChecked();
@@ -192,14 +205,14 @@ export default {
             pid: 7127,
             name: "debug22",
             // disabled: true,
-            children: []
+            children: [],
           },
           {
             id: 71273,
             pid: 7127,
             name: "debug11",
-            children: []
-          }
+            children: [],
+          },
         ]);
       }, 500);
     },
@@ -266,7 +279,7 @@ export default {
     // 标题自定义区点击事件
     handleTitleRight() {
       alert("标题自定义区点击事件");
-    }
+    },
   },
   computed: {
     title() {
@@ -275,9 +288,9 @@ export default {
       } else {
         return ["通讯录", "收件人", "抄送人", "密送人"];
       }
-    }
+    },
   },
-  components: { treeTransfer }
+  components: { treeTransfer },
 };
 </script>
 

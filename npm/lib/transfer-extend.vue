@@ -222,7 +222,7 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of addressee" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of selfSjr" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
@@ -249,7 +249,7 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of Cc" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of selfCsr" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
@@ -281,7 +281,7 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of secret_receiver" :key="item[node_key]">
+              <li class="address-list-li" v-for="item of selfMsr" :key="item[node_key]">
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
@@ -298,7 +298,8 @@
 </template>
 
 <script>
-import { arrayToTree } from "./array.js";
+import { arrayToTree } from "wl-core";
+
 export default {
   data() {
     return {
@@ -327,6 +328,9 @@ export default {
     };
   },
   props: {
+    sjr: Array,
+    csr: Array,
+    msr: Array,
     // 宽度
     width: {
       type: String,
@@ -463,28 +467,6 @@ export default {
   },
   methods: {
     // -------------------------------提供输出函数---------------------
-    /**
-     * 清空选中节点
-     * type：string left左边 right右边 all全部 默认all
-     */
-    clearChecked(type = "all") {
-      if (type === "left") {
-        this.$refs["from-tree"].setCheckedKeys([]);
-        this.from_is_indeterminate = false;
-        this.from_check_all = false;
-      } else if (type === "right") {
-        this.$refs["to-tree"].setCheckedKeys([]);
-        this.to_is_indeterminate = false;
-        this.to_check_all = false;
-      } else {
-        this.$refs["from-tree"].setCheckedKeys([]);
-        this.$refs["to-tree"].setCheckedKeys([]);
-        this.from_is_indeterminate = false;
-        this.from_check_all = false;
-        this.to_is_indeterminate = false;
-        this.to_check_all = false;
-      }
-    },
     // 添加按钮
     addToAims(emit) {
       // 获取选中通过穿梭框的keys - 仅用于传送纯净的id数组到父组件同后台通信
@@ -871,6 +853,62 @@ export default {
       }
     },
     // 以下为提供方法 ----------------------------------------------------------------方法--------------------------------------
+    /**
+     * @name 清空选中节点
+     * @param {String} type left左边 right右边 all全部 默认all
+     */
+    clearChecked(type = "all") {
+      if (type === "left") {
+        this.$refs["from-tree"].setCheckedKeys([]);
+        this.from_is_indeterminate = false;
+        this.from_check_all = false;
+      } else if (type === "right") {
+        this.$refs["to-tree"].setCheckedKeys([]);
+        this.to_is_indeterminate = false;
+        this.to_check_all = false;
+      } else {
+        this.$refs["from-tree"].setCheckedKeys([]);
+        this.$refs["to-tree"].setCheckedKeys([]);
+        this.from_is_indeterminate = false;
+        this.from_check_all = false;
+        this.to_is_indeterminate = false;
+        this.to_check_all = false;
+      }
+    },
+    /**
+     * @name 获取选中数据
+     */
+    getChecked() {
+      // 左侧选中信息
+      let leftKeys = this.$refs["from-tree"].getCheckedKeys();
+      let leftHarfKeys = this.$refs["from-tree"].getHalfCheckedKeys();
+      let leftNodes = this.$refs["from-tree"].getCheckedNodes();
+      let leftHalfNodes = this.$refs["from-tree"].getHalfCheckedNodes();
+      // 右侧选中信息
+      let rightKeys = this.$refs["to-tree"].getCheckedKeys();
+      let rightHarfKeys = this.$refs["to-tree"].getHalfCheckedKeys();
+      let rightNodes = this.$refs["to-tree"].getCheckedNodes();
+      let rightHalfNodes = this.$refs["to-tree"].getHalfCheckedNodes();
+      return {
+        leftKeys,
+        leftHarfKeys,
+        leftNodes,
+        leftHalfNodes,
+        rightKeys,
+        rightHarfKeys,
+        rightNodes,
+        rightHalfNodes,
+      };
+    },
+    /**
+     * @name 设置选中数据
+     * @param {Array} leftKeys 左侧ids
+     * @param {Array} rightKeys 右侧ids
+     */
+    setChecked(leftKeys = [], rightKeys = []) {
+      this.$refs["from-tree"].setCheckedKeys(leftKeys);
+      this.$refs["to-tree"].setCheckedKeys(rightKeys);
+    },
   },
   computed: {
     // 左侧数据
@@ -941,6 +979,22 @@ export default {
       }
       let [, text] = this.button_text;
       return text;
+    },
+    // 收件人
+    selfSjr() {
+      return Array.isArray(this.sjr)
+        ? this.sjr.concat(this.addressee)
+        : this.addressee;
+    },
+    // 抄送人
+    selfCsr() {
+      return Array.isArray(this.csr) ? this.sjr.concat(this.Cc) : this.Cc;
+    },
+    // 密送人
+    selfMsr() {
+      return Array.isArray(this.msr)
+        ? this.sjr.concat(this.secret_receiver)
+        : this.secret_receiver;
     },
   },
   watch: {
