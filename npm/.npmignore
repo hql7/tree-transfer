@@ -5,3 +5,5 @@
     node_modules/  
     lib/  
     test/  
+    yarn.lock
+    webpack.config.js

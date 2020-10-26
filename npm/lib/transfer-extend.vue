@@ -45,7 +45,11 @@
       <div class="transfer-center">
         <template v-if="button_text">
           <p class="transfer-center-item">
-            <el-button type="primary" @click="addToAims(true)" :disabled="from_disabled">
+            <el-button
+              type="primary"
+              @click="addToAims(true)"
+              :disabled="from_disabled"
+            >
               {{ fromButton || "添加" }}
               <i class="el-icon-arrow-right"></i>
             </el-button>
@@ -56,7 +60,8 @@
               @click="removeToSource"
               :disabled="to_disabled"
               icon="el-icon-arrow-left"
-            >{{ toButton || "移除" }}</el-button>
+              >{{ toButton || "移除" }}</el-button
+            >
           </p>
         </template>
         <template v-else>
@@ -197,12 +202,14 @@
           class="transfer-right-item"
           :class="{
             'transfer-right-small': move_up,
-            'transfer-right-only': addressOptions.num === 1
+            'transfer-right-only': addressOptions.num === 1,
           }"
         >
           <h3 class="transfer-title">
             <span>{{ toTitle }}</span>
-            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up">清空</span>
+            <span class="u-clear" @click="clearList(0, 'all')" v-if="!move_up"
+              >清空</span
+            >
             <img
               class="move_up_img move_down_img"
               v-else
@@ -222,13 +229,21 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of selfSjr" :key="item[node_key]">
+              <li
+                class="address-list-li"
+                v-for="item of selfSjr"
+                :key="item[node_key]"
+              >
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i class="address-list-del" @click="clearList(0, item[node_key])">x</i>
+                <i
+                  class="address-list-del"
+                  @click="clearList(0, item[node_key])"
+                  >x</i
+                >
               </li>
             </ul>
           </div>
@@ -249,13 +264,21 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of selfCsr" :key="item[node_key]">
+              <li
+                class="address-list-li"
+                v-for="item of selfCsr"
+                :key="item[node_key]"
+              >
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i class="address-list-del" @click="clearList(1, item[node_key])">x</i>
+                <i
+                  class="address-list-del"
+                  @click="clearList(1, item[node_key])"
+                  >x</i
+                >
               </li>
             </ul>
           </div>
@@ -267,8 +290,16 @@
         >
           <h3 class="transfer-title">
             <span>{{ toTitleThird || "密送人" }}</span>
-            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up">清空</span>
-            <img class="move_up_img" v-else src="./shang.png" alt @click="moveUp('up')" />
+            <span class="u-clear" @click="clearList(2, 'all')" v-if="move_up"
+              >清空</span
+            >
+            <img
+              class="move_up_img"
+              v-else
+              src="./shang.png"
+              alt
+              @click="moveUp('up')"
+            />
           </h3>
           <!-- 内容区 -->
           <div class="transfer-main" v-if="move_up">
@@ -281,13 +312,21 @@
               class="filter-tree"
             ></el-input>
             <ul class="address-list-ul">
-              <li class="address-list-li" v-for="item of selfMsr" :key="item[node_key]">
+              <li
+                class="address-list-li"
+                v-for="item of selfMsr"
+                :key="item[node_key]"
+              >
                 <label>
                   {{ item[defaultProps.label] }}
                   {{ addressOptions.connector }}
                   {{ item[addressOptions.suffix] }}
                 </label>
-                <i class="address-list-del" @click="clearList(2, item[node_key])">x</i>
+                <i
+                  class="address-list-del"
+                  @click="clearList(2, item[node_key])"
+                  >x</i
+                >
               </li>
             </ul>
           </div>
@@ -1110,14 +1149,15 @@ export default {
 
 <style lang="scss">
 @import "./clear.css";
-.el-tree {
-  min-width: 100%;
-  display: inline-block !important;
-}
 
 .wl-transfer {
   position: relative;
   overflow: hidden;
+
+  .el-tree {
+    min-width: 100%;
+    display: inline-block !important;
+  }
 
   .transfer-left {
     position: absolute;
