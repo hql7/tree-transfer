@@ -231,7 +231,7 @@
             <ul class="address-list-ul">
               <li
                 class="address-list-li"
-                v-for="item of selfSjr"
+                v-for="item of addressee"
                 :key="item[node_key]"
               >
                 <label>
@@ -240,9 +240,9 @@
                   {{ item[addressOptions.suffix] }}
                 </label>
                 <i
-                  class="address-list-del"
+                  class="address-list-del el-icon-delete"
                   @click="clearList(0, item[node_key])"
-                  >x</i
+                  ></i
                 >
               </li>
             </ul>
@@ -266,7 +266,7 @@
             <ul class="address-list-ul">
               <li
                 class="address-list-li"
-                v-for="item of selfCsr"
+                v-for="item of Cc"
                 :key="item[node_key]"
               >
                 <label>
@@ -275,9 +275,9 @@
                   {{ item[addressOptions.suffix] }}
                 </label>
                 <i
-                  class="address-list-del"
+                  class="address-list-del el-icon-delete"
                   @click="clearList(1, item[node_key])"
-                  >x</i
+                  ></i
                 >
               </li>
             </ul>
@@ -314,7 +314,7 @@
             <ul class="address-list-ul">
               <li
                 class="address-list-li"
-                v-for="item of selfMsr"
+                v-for="item of secret_receiver"
                 :key="item[node_key]"
               >
                 <label>
@@ -323,10 +323,10 @@
                   {{ item[addressOptions.suffix] }}
                 </label>
                 <i
-                  class="address-list-del"
+                  class="address-list-del el-icon-delete"
                   @click="clearList(2, item[node_key])"
-                  >x</i
-                >
+                  >
+                  </i>
               </li>
             </ul>
           </div>
@@ -367,9 +367,24 @@ export default {
     };
   },
   props: {
-    sjr: Array,
-    csr: Array,
-    msr: Array,
+    sjr: {
+      type:Array,
+      default:()=>{
+        return []
+      }
+    },
+    csr: {
+      type:Array,
+      default:()=>{
+        return []
+      }
+    },
+    msr: {
+      type:Array,
+      default:()=>{
+        return []
+      }
+    },
     // 宽度
     width: {
       type: String,
@@ -1019,22 +1034,6 @@ export default {
       let [, text] = this.button_text;
       return text;
     },
-    // 收件人
-    selfSjr() {
-      return Array.isArray(this.sjr)
-        ? this.sjr.concat(this.addressee)
-        : this.addressee;
-    },
-    // 抄送人
-    selfCsr() {
-      return Array.isArray(this.csr) ? this.sjr.concat(this.Cc) : this.Cc;
-    },
-    // 密送人
-    selfMsr() {
-      return Array.isArray(this.msr)
-        ? this.sjr.concat(this.secret_receiver)
-        : this.secret_receiver;
-    },
   },
   watch: {
     // 左侧 状态监测
@@ -1142,6 +1141,27 @@ export default {
       this.from_expanded_keys = [..._form];
       let _to = new Set(this.to_expanded_keys.concat(val));
       this.to_expanded_keys = [..._to];
+    },
+    // 收件人默认值监测
+    sjr:{
+      handler(val){
+        this.addressee.push(...val)
+      },
+      immediate: true
+    },
+    // 抄送人默认值监测
+    csr:{
+      handler(val){
+        this.Cc.push(...val)
+      },
+      immediate: true
+    },
+    // 密送人默认值监测
+    msr:{
+      handler(val){
+        this.secret_receiver.push(...val)
+      },
+      immediate: true
     },
   },
 };

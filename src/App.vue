@@ -2,9 +2,11 @@
   <div id="app">
     <img class="vue" src="./assets/logo.png" />
     <router-view />
-    <h4 style="margin-bottom: 20px;">
+    <h4 style="margin-bottom: 20px">
       <label>请打开f12查看移动数据</label>
-      <el-button size="medium" type="info" @click="changeMode">当前模式：{{ mode }}</el-button>
+      <el-button size="medium" type="info" @click="changeMode"
+        >当前模式：{{ mode }}</el-button
+      >
       <el-button size="medium" @click="clearChecked()">清除选中</el-button>
       <el-button size="medium" @click="getChecked()">获取选中</el-button>
       <el-button size="medium" @click="setChecked()">设置选中</el-button>
@@ -16,22 +18,27 @@
         ref="wl-tree-transfer"
         filter
         high-light
-        default-transfer
         :mode="mode"
         :title="title"
         :to_data="toData"
+        :sjr="fromData"
         :from_data="fromData"
         :filterNode="filterNode"
         :defaultProps="defaultProps"
         :defaultCheckedKeys="defaultCheckedKeys"
-        :defaultExpandedKeys="[2,3]"
+        :defaultExpandedKeys="[2, 3]"
         @right-check-change="rightCheckChange"
         @left-check-change="leftCheckChange"
         @removeBtn="remove"
         @addBtn="add"
         node_key="id"
       >
-        <span slot="title-right" class="my-title-right" @click="handleTitleRight">自定义内容</span>
+        <span
+          slot="title-right"
+          class="my-title-right"
+          @click="handleTitleRight"
+          >自定义内容</span
+        >
       </tree-transfer>
     </div>
   </div>
