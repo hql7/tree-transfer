@@ -21,7 +21,6 @@
         :mode="mode"
         :title="title"
         :to_data="toData"
-        :sjr="fromData"
         :from_data="fromData"
         :filterNode="filterNode"
         :defaultProps="defaultProps"
@@ -33,10 +32,7 @@
         @addBtn="add"
         node_key="id"
       >
-        <span
-          slot="title-right"
-          class="my-title-right"
-          @click="handleTitleRight"
+        <span slot="title-right" class="my-title-right" @click="handleTitleRight"
           >自定义内容</span
         >
       </tree-transfer>
@@ -48,6 +44,7 @@
 // import treeTransfer from "el-tree-transfer";
 // import treeTransfer from "@/components/transfer-extend"; // 源码位置
 import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+// import treeTransfer from "../npm/lib/transfer-extend-next/index"; // next源码位置
 
 export default {
   name: "App",
@@ -121,7 +118,7 @@ export default {
           ],
         },
       ], // 穿梭框 - 源数据 - 树形
-      toData: [], // 穿梭框 - 目标数据 - 树形
+      toData: [{ id: 1, pid: 0, name: "测试左侧" }], // 穿梭框 - 目标数据 - 树形
       fromArray: [
         {
           id: "1",
@@ -177,17 +174,13 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.defaultCheckedKeys = [1];
+      // this.defaultCheckedKeys = [1];
     }, 1000);
   },
   methods: {
-    aaa(a, b) {
-      console.log(a, b);
-    },
     // 获取选中
     getChecked() {
       const checkeds = this.$refs["wl-tree-transfer"].getChecked();
-      console.log(checkeds);
     },
     // 设置选中
     setChecked() {
@@ -265,18 +258,10 @@ export default {
         <span class="custom-tree-node">
           <span>{node.label}</span>
           <span>
-            <el-button
-              size="mini"
-              type="text"
-              on-click={() => this.append(data)}
-            >
+            <el-button size="mini" type="text" on-click={() => this.append(data)}>
               Append
             </el-button>
-            <el-button
-              size="mini"
-              type="text"
-              on-click={() => this.remove(node, data)}
-            >
+            <el-button size="mini" type="text" on-click={() => this.remove(node, data)}>
               Delete
             </el-button>
           </span>

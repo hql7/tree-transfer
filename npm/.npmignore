@@ -8,3 +8,4 @@
     yarn.lock
     webpack.config.js
     .babelrc
+    transfer-extend-next/
