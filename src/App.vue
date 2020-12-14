@@ -17,6 +17,7 @@
       <tree-transfer
         ref="wl-tree-transfer"
         filter
+        draggable
         high-light
         :mode="mode"
         :title="title"
@@ -28,10 +29,18 @@
         :defaultExpandedKeys="[2, 3]"
         @right-check-change="rightCheckChange"
         @left-check-change="leftCheckChange"
-        @removeBtn="remove"
-        @addBtn="add"
+        @remove-btn="remove"
+        @add-btn="add"
         node_key="id"
       >
+        <!-- 自定义左侧节点插槽 -->
+        <template #content-left="{ data }">
+          <span>{{ data.name }}</span>
+        </template>
+        <!-- 自定义右侧节点插槽 -->
+        <template #content-right="{ data }">
+          <span>{{ data.name }}</span>
+        </template>
         <span slot="title-right" class="my-title-right" @click="handleTitleRight"
           >自定义内容</span
         >
@@ -51,7 +60,13 @@ export default {
   data() {
     return {
       mode: "transfer", // transfer addressList
-      defaultProps: { label: "name", children: "children" },
+      defaultProps: {
+        label: "name",
+        children: "children",
+        disabled(data) {
+          return data.id === 2;
+        },
+      },
       fromData: [
         {
           id: 1,
