@@ -158,7 +158,7 @@
             @node-drop="nodeDropRight"
           >
             <span class="custom-tree-node" slot-scope="{ node, data }">
-              <slot name="content-left" :node="node" :data="data">
+              <slot name="content-right" :node="node" :data="data">
                 <span>{{ node.label }}</span>
               </slot>
             </span>
@@ -400,6 +400,7 @@ export default {
       Cc: [], // 抄送人列表
       secret_receiver: [], // 密送人列表
       move_up: false, // 通讯录模式 切换右侧
+      strictly_parents: [], // 当使用父子不关联时，将左侧数据向右侧移动时，为了保证在右侧能形成树结构，必须将父节点也移动
     };
   },
   props: {
@@ -612,6 +613,8 @@ export default {
       // let self__keys__ = []; // 当父子不关联时，收集穿梭子节点中，向上查询的到祖先节点，这些祖先节点肯定要穿梭到右侧
       // 父子不关联的写法
       if (this.checkStrictly) {
+        // 清空由左向右移动时自动补充的父节点
+        this.strictly_parents = [];
         this.checkStrictlyTransfer(
           arrayCheckedNodes,
           { children__, pid__, id__, root__ },
@@ -697,10 +700,11 @@ export default {
       }
 
       // 传递信息给父组件
+      const all_move_nodes = nodes.concat(this.strictly_parents);
       emit &&
         this.$emit("add-btn", this.self_from_data, this.self_to_data, {
           keys,
-          nodes,
+          all_move_nodes,
           harfKeys,
           halfNodes,
         });
@@ -920,8 +924,9 @@ export default {
           options.id__,
           options.children__
         );
+        if (!parent_node || !Array.isArray(parent_node[options.children__])) return;
         this.$nextTick(() => {
-          if (parent_node[options.children__].length === 0) {
+          if (!parent_node[options.children__].length) {
             this.$refs[from_ref].remove(parent_node);
           }
         });
@@ -945,6 +950,7 @@ export default {
       });
       // 当授权时既然要在右边出现，必然需要左侧父节点，而删除授权时，移除子权限并不代表想移除父权限
       if (isAdd) {
+        this.strictly_parents.push(item);
         this.$refs[from_ref].remove(item);
       }
       this.findParentInTarget(

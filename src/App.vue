@@ -1,7 +1,16 @@
 <template>
   <div id="app">
-    <img class="vue" src="./assets/logo.png" />
-    <router-view />
+    <h3 class="title">
+      <a href="https://github.com/hql7/tree-transfer" target="_block">GitHub</a>
+      <a href="https://www.npmjs.com/package/el-tree-transfer" target="_block">NPM</a>
+      <a href="https://segmentfault.com/a/1190000015553081" target="_block"
+        >SegmentFault</a
+      >
+      <a href="https://blog.csdn.net/qq_15390381/article/details/80943549" target="_block"
+        >CSDN</a
+      >
+      <a href="https://juejin.im/post/5b3ecae8e51d4519213fae4b" target="_block">掘金</a>
+    </h3>
     <h4 style="margin-bottom: 20px">
       <label>请打开f12查看移动数据</label>
       <el-button size="medium" type="info" @click="changeMode"
@@ -35,7 +44,7 @@
       >
         <!-- 自定义左侧节点插槽 -->
         <template #content-left="{ data }">
-          <span>{{ data.name }}</span>
+          <span>{{ data.id }}</span>
         </template>
         <!-- 自定义右侧节点插槽 -->
         <template #content-right="{ data }">
@@ -51,7 +60,6 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-// import treeTransfer from "@/components/transfer-extend"; // 源码位置
 import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
 // import treeTransfer from "../npm/lib/transfer-extend-next/index"; // next源码位置
 
@@ -309,7 +317,25 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
+h1,
+h2 {
+  font-weight: normal;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+  margin: 0 5px;
+}
+.title {
+  padding: 40px 0;
+}
 .box {
   width: 600px;
   margin: 0 auto;
