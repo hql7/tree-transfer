@@ -12,9 +12,10 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### 重要更新
 
-> 2.4.2 修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；
-> 2.4.0 增加父子不关联穿梭功能
-> 2.3.3 修改穿梭匹配逻辑；增加rootPidValue参数。详细说明见下方版本说明
+> 2.4.3 调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大；优化父子不关联时全选；  
+> 2.4.2 修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；  
+> 2.4.0 增加父子不关联穿梭功能  
+> 2.3.3 修改穿梭匹配逻辑；增加rootPidValue参数。详细说明见下方版本说明  
 
 ## 快速上手
 
@@ -199,13 +200,17 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 | 2 | right-footer | 穿梭框左侧、右侧底部slot |
 | 3 | title-left | 穿梭框标题区左侧、右侧自定义内容 |
 | 4 | title-right | 穿梭框标题区左侧、右侧自定义内容 |
-| 5 | form | 左侧内容区上部slot |
+| 5 | from | 左侧内容区上部slot |
 | 6 | to | 右侧内容区上部slot | 
 | 7 | content-left | 自定义左侧树节点 | 
 | 8 | content-right | 自定义右侧树节点 |
 
 
 ## 版本说明
+
+> 2.4.3 调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大；优化父子不关联时全选；  
+
+> 2.4.2 修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；  
 
 > 2.4.0 增加父子不关联逻辑
 

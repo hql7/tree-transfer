@@ -11,7 +11,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 ### [文档地址](http://docs.wlui.com.cn/) - [在线访问](http://wlui.com.cn/) - [GitHub](https://github.com/hql7/tree-transfer) - [掘金](https://juejin.im/post/5b3ecae8e51d4519213fae4b)
 
 ### 重要更新
-
+> 2.4.3 调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大
 > 2.4.2 修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；
 > 2.4.0 增加父子不关联穿梭功能
 > 2.3.3 修改穿梭匹配逻辑；增加rootPidValue参数。详细说明见下方版本说明
@@ -206,6 +206,10 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 
 ## 版本说明
+
+> 2.4.3 调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大
+
+> 2.4.2 修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；
 
 > 2.4.0 增加父子不关联逻辑
 

@@ -28,6 +28,7 @@
         filter
         draggable
         high-light
+        check-strictly
         :mode="mode"
         :title="title"
         :to_data="toData"
@@ -60,8 +61,9 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
-// import treeTransfer from "../npm/transfer-extend-next/index"; // next源码位置
+// import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+// import treeTransfer from "../npm/transfer-extend-next/index.vue"; // next源码位置
+import treeTransfer from "../npm/dist/treeTransfer.min.js"; // next压缩后代码位置
 
 export default {
   name: "App",
@@ -310,6 +312,8 @@ export default {
 </script>
 
 <style>
+@import "./assets/css/clear.css";
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

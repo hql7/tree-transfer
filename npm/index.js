@@ -1,2 +1,2 @@
-import treeTransfer from "./lib/transfer-extend.vue";
+import treeTransfer from "./transfer-extend-next/index.vue";
 export default treeTransfer;

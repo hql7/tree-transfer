@@ -1,14 +1,37 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
     <component :is="isComponent" v-bind="$props">
-      
+      <template #left-footer>
+        <slot name="left-footer"></slot>
+      </template>
+      <template #right-footer>
+        <slot name="right-footer"></slot>
+      </template>
+      <template #title-left>
+        <slot name="title-left"></slot>
+      </template>
+      <template #title-right>
+        <slot name="title-right"></slot>
+      </template>
+      <template #from>
+        <slot name="from"></slot>
+      </template>
+      <template #to>
+        <slot name="to"></slot>
+      </template>
+      <template #content-left="{ node, data }">
+        <slot name="content-left" :node="node" :data="data"></slot>
+      </template>
+      <template #content-right="{ node, data }">
+        <slot name="content-right" :node="node" :data="data"></slot>
+      </template>
     </component>
   </div>
 </template>
 
 <script>
-import ComponentTransfer from "./components/transfer";
-import ComponentAddress from "./components/address";
+import ComponentTransfer from "./components/transfer.vue";
+import ComponentAddress from "./components/address.vue";
 
 export default {
   name: "WlTransferTree",
@@ -184,6 +207,165 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./assets/css/clear.css";
-@import "./assets/css/index.min.css";
+.wl-transfer {
+  position: relative;
+  overflow: hidden;
+
+  .el-tree {
+    min-width: 100%;
+    display: inline-block !important;
+  }
+
+  .transfer-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .transfer-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .transfer-right-item {
+    height: calc((100% - 41px) / 2);
+  }
+
+  .transfer-right-small {
+    height: 41px;
+  }
+
+  .transfer-right-only {
+    height: 100%;
+  }
+
+  .transfer-main {
+    padding: 10px;
+    height: calc(100% - 41px);
+    box-sizing: border-box;
+    overflow: auto;
+  }
+
+  .transfer-left,
+  .transfer-right {
+    border: 1px solid #ebeef5;
+    width: 40%;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    vertical-align: middle;
+  }
+
+  .transfer-center {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    width: 20%;
+    transform: translateY(-50%);
+    text-align: center;
+  }
+
+  .transfer-center-item {
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .address-list-center {
+    height: 100%;
+  }
+
+  .address-list-center > .transfer-center-item {
+    height: 50%;
+    padding: 70px 10px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .address-list-center > .address-only-item {
+    height: 100%;
+    position: relative;
+  }
+
+  .address-only-item > .address-first-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .transfer-title {
+    border-bottom: 1px solid #ebeef5;
+    padding: 0 15px;
+    height: 40px;
+    line-height: 40px;
+    color: #333;
+    font-size: 16px;
+    background-color: #f5f7fa;
+  }
+
+  .transfer-title .el-checkbox {
+    margin-right: 10px;
+  }
+
+  .filter-tree {
+    margin-bottom: 10px;
+  }
+
+  .address-list-ul {
+    padding-bottom: 20px;
+  }
+
+  .address-list-li {
+    position: relative;
+    padding: 4px 24px 4px 4px;
+    border-radius: 3px;
+    overflow: hidden; /*超出部分隐藏*/
+    white-space: nowrap; /*不换行*/
+    text-overflow: ellipsis; /*超出部分文字以...显示*/
+  }
+
+  .address-list-li:hover {
+    background-color: #f5f7fa;
+  }
+
+  .address-list-li:hover .address-list-del {
+    display: block;
+  }
+
+  .address-list-del {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    margin-top: -10px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #fef0f0;
+    color: #f56c6c;
+    cursor: pointer;
+  }
+
+  .u-clear {
+    float: right;
+    color: #67c23a;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .move_up_img {
+    float: right;
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .move_down_img {
+    transform: rotate(180deg);
+  }
+}
 </style>
