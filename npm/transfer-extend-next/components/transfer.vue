@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import { arrayToTree, valInDeep } from "wl-core";
+import { arrayToTree, valInDeep, flattenDeep } from "wl-core";
 
 export default {
   name: "TransferTree",
@@ -366,20 +366,17 @@ export default {
     },
     // 上部按钮名
     fromButton() {
-      if (this.button_text == undefined) {
-        return;
+      if (Array.isArray(this.button_text)) {
+        return this.button_text[0];
       }
-
-      let [text] = this.button_text;
-      return text;
+      return "";
     },
     // 下部按钮名
     toButton() {
-      if (this.button_text == undefined) {
-        return;
+      if (Array.isArray(this.button_text)) {
+        return this.button_text[1];
       }
-      let [, text] = this.button_text;
-      return text;
+      return "";
     },
   },
   watch: {
@@ -574,6 +571,8 @@ export default {
 
       // 传递信息给父组件
       const all_move_nodes = nodes.concat(this.strictly_parents);
+      let end = (new Date()).valueOf() - start;
+
       emit &&
         this.$emit("add-btn", this.self_from_data, this.self_to_data, {
           keys,
@@ -860,12 +859,12 @@ export default {
     },
     // 源数据 总全选checkbox
     fromAllBoxChange(val) {
-      if (this.self_from_data.length == 0) {
-        return;
-      }
+      if (!this.self_from_data.length) return;
       if (val) {
-        this.from_check_keys = this.self_from_data;
-        this.$refs["from-tree"].setCheckedNodes(this.self_from_data);
+        this.from_check_keys = this.checkStrictly
+          ? flattenDeep(this.self_from_data, this.defaultProps.children)
+          : this.self_from_data;
+        this.$refs["from-tree"].setCheckedNodes(this.from_check_keys);
       } else {
         this.$refs["from-tree"].setCheckedNodes([]);
         this.from_check_keys = [];
@@ -874,11 +873,11 @@ export default {
     },
     // 目标数据 总全选checkbox
     toAllBoxChange(val) {
-      if (this.self_to_data.length == 0) {
-        return;
-      }
+      if (!this.self_to_data.length) return;
       if (val) {
-        this.to_check_keys = this.self_to_data;
+        this.to_check_keys = this.checkStrictly
+          ? flattenDeep(this.self_to_data, this.defaultProps.children)
+          : this.self_to_data;
         this.$refs["to-tree"].setCheckedNodes(this.self_to_data);
       } else {
         this.$refs["to-tree"].setCheckedNodes([]);

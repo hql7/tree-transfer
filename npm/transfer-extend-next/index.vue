@@ -1,6 +1,8 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
-    <component :is="isComponent" v-bind="$props"></component>
+    <component :is="isComponent" v-bind="$props">
+      
+    </component>
   </div>
 </template>
 

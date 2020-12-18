@@ -44,7 +44,7 @@
       >
         <!-- 自定义左侧节点插槽 -->
         <template #content-left="{ data }">
-          <span>{{ data.id }}</span>
+          <span>{{ data.name }}</span>
         </template>
         <!-- 自定义右侧节点插槽 -->
         <template #content-right="{ data }">
@@ -60,8 +60,8 @@
 
 <script>
 // import treeTransfer from "el-tree-transfer";
-// import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
-import treeTransfer from "../npm/transfer-extend-next/index"; // next源码位置
+import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
+// import treeTransfer from "../npm/transfer-extend-next/index"; // next源码位置
 
 export default {
   name: "App",
@@ -141,7 +141,7 @@ export default {
           ],
         },
       ], // 穿梭框 - 源数据 - 树形
-      toData: [{ id: 1, pid: 0, name: "测试左侧" }], // 穿梭框 - 目标数据 - 树形
+      toData: [], // 穿梭框 - 目标数据 - 树形
       fromArray: [
         {
           id: "1",
