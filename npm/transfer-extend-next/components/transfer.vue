@@ -33,9 +33,9 @@
           :icon-class="iconClass"
           :node-key="node_key"
           :load="leftloadNode"
-          :props="defaultProps"
           :data="self_from_data"
           :accordion="accordion"
+          :props="selfDefaultProps"
           :default-expand-all="openAll"
           :highlight-current="highLight"
           :check-strictly="checkStrictly"
@@ -137,8 +137,8 @@
           :lazy="lazyRight"
           :data="self_to_data"
           :node-key="node_key"
-          :props="defaultProps"
           :load="rightloadNode"
+          :props="selfDefaultProps"
           :default-expand-all="openAll"
           :highlight-current="highLight"
           :check-strictly="checkStrictly"
@@ -171,6 +171,7 @@
 <script>
 import { arrayToTree, flattenDeep } from "wl-core";
 import { differenceBy } from "lodash";
+import { findParents, checkDescendantIntegrity } from "../assets/js";
 
 export default {
   name: "TransferTree",
@@ -193,12 +194,7 @@ export default {
       default: () => [],
     },
     // el-tree 配置项
-    defaultProps: {
-      type: Object,
-      default: () => {
-        return { label: "label", children: "children" };
-      },
-    },
+    defaultProps: Object,
     // el-tree node-key 必须唯一
     node_key: {
       type: String,
@@ -282,6 +278,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 父子不关联模式
+    checkStrictlyType: {
+      type: String,
+      default: "authorization",
+      validator: function (value) {
+        /**
+         * @name 父子不关联的三种模式，第一种适合业务授权场景，后两种不存在快速选中需要手选
+         * @param authorization授权模式：左侧选择子节点自动带着父节点；右侧选择父节点自动带着子节点；此模式两侧可能存在相同的非叶子节点
+         * @param puppet木偶模式：纯父子不关联穿梭，但要保持完整的树形结构，只自动带上穿梭到对面拼接所需的骨架结构；此模式两侧可能存在相同的非叶子节点
+         * @param modular积木模式：纯父子不关联穿梭，也不保持完整的树形结构，像积木一个右侧要形成树形则需要把左侧拆除，左侧拆的越多右侧形成的树结构越完整；此模式左右两侧保证严格的唯一性
+         */
+        return ["authorization", "puppet", "modular"].indexOf(value) !== -1;
+      },
+    },
     // 是否每次只打开一个同级树节点
     accordion: {
       type: Boolean,
@@ -323,40 +333,64 @@ export default {
       from_expanded_keys: [], // 源数据展开节点
       from_disabled: true, // 添加按钮是否禁用
       from_check_keys: [], // 源数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
-      form_array_clone: "", // 左侧数据一维化后存储为json格式
+      form_array_clone: [], // 左侧数据一维化后存储为json格式
       to_check_all: false, // 目标数据是否全选
       to_is_indeterminate: false, // 目标数据是否半选
       to_expanded_keys: [], // 目标数据展开节点
       to_disabled: true, // 移除按钮是否禁用
       to_check_keys: [], // 目标数据选中key数组 以此属性关联穿梭按钮，总全选、半选状态
-      to_array_clone: "", // 右侧数据一维化后存储为json格式
+      to_array_clone: [], // 右侧数据一维化后存储为json格式
       filterFrom: "", // 源数据筛选
       filterTo: "", // 目标数据筛选
       strictly_parents: [], // 当使用父子不关联时，将左侧数据向右侧移动时，为了保证在右侧能形成树结构，必须将父节点也移动
+      strictly_transferred: [], // 父子不关联时已经穿梭过的节点记录，用于第一次拼接父节点穿梭后，其他子节点不再拼接父节点
     };
   },
   computed: {
     // 左侧数据
     self_from_data() {
       let from_array = [...this.from_data];
-      return !this.arrayToTree
-        ? from_array
-        : arrayToTree(from_array, {
-            id: this.node_key,
-            pid: this.pid,
-            children: this.defaultProps.children,
-          });
+      if (!this.arrayToTree) {
+        if (this.checkStrictly) {
+          this.form_array_clone = flattenDeep(from_array, this.selfDefaultProps.children);
+        }
+        return from_array;
+      } else {
+        if (this.checkStrictly) {
+          this.form_array_clone = from_array;
+        }
+        return arrayToTree(from_array, {
+          id: this.node_key,
+          pid: this.pid,
+          children: this.selfDefaultProps.children,
+        });
+      }
     },
     // 右侧数据
     self_to_data() {
       let to_array = [...this.to_data];
-      return !this.arrayToTree
+      if (!this.arrayToTree) {
+        if (this.checkStrictly) {
+          this.to_array_clone = flattenDeep(to_array, this.selfDefaultProps.children);
+        }
+        return to_array;
+      } else {
+        if (this.checkStrictly) {
+          this.to_array_clone = to_array;
+        }
+        return arrayToTree(to_array, {
+          id: this.node_key,
+          pid: this.pid,
+          children: this.selfDefaultProps.children,
+        });
+      }
+      /* return !this.arrayToTree
         ? to_array
         : arrayToTree(to_array, {
             id: this.node_key,
             pid: this.pid,
-            children: this.defaultProps.children,
-          });
+            children: this.selfDefaultProps.children,
+          }); */
     },
     // 左侧菜单名
     fromTitle() {
@@ -382,6 +416,14 @@ export default {
       }
       return "";
     },
+    // 配置项
+    selfDefaultProps() {
+      return {
+        label: "label",
+        children: "children",
+        ...this.defaultProps,
+      };
+    },
   },
   watch: {
     // 左侧 状态监测
@@ -391,10 +433,15 @@ export default {
         this.from_disabled = false;
         // 总半选是否开启
         this.from_is_indeterminate = true;
-
         // 总全选是否开启 - 根据选中节点中为根节点的数量是否和源数据长度相等
-        let allCheck = val.filter((item) => item[this.pid] == 0);
-        if (allCheck.length == this.self_from_data.length) {
+        let allCheck = false;
+        if (!this.checkStrictly) {
+          const roots = val.filter((item) => item[this.pid] === this.rootPidValue);
+          allCheck = roots.length === this.self_from_data.length;
+        } else {
+          allCheck = val.length === this.form_array_clone.length;
+        }
+        if (allCheck) {
           // 关闭半选 开启全选
           this.from_is_indeterminate = false;
           this.from_check_all = true;
@@ -415,10 +462,15 @@ export default {
         this.to_disabled = false;
         // 总半选是否开启
         this.to_is_indeterminate = true;
-
         // 总全选是否开启 - 根据选中节点中为根节点的数量是否和源数据长度相等
-        let allCheck = val.filter((item) => item[this.pid] == 0);
-        if (allCheck.length == this.self_to_data.length) {
+        let allCheck = false;
+        if (!this.checkStrictly) {
+          const roots = val.filter((item) => item[this.pid] === this.rootPidValue);
+          allCheck = roots.length === this.self_to_data.length;
+        } else {
+          allCheck = val.length === this.to_array_clone.length;
+        }
+        if (allCheck) {
           // 关闭半选 开启全选
           this.to_is_indeterminate = false;
           this.to_check_all = true;
@@ -477,26 +529,25 @@ export default {
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["from-tree"].getHalfCheckedNodes();
       // 自定义参数读取设置
-      let children__ = this.defaultProps.children || "children";
+      let children__ = this.selfDefaultProps.children || "children";
       let pid__ = this.pid || "pid";
       let id__ = this["node_key"] || "id";
       let root__ = this.rootPidValue || 0;
       // 将目标侧数据拉平为一维数组，查询速度比每个节点去目标侧递归查询快
-      this.to_array_clone = flattenDeep(this.self_to_data, this.defaultProps.children);
+      this.to_array_clone = flattenDeep(
+        this.self_to_data,
+        this.selfDefaultProps.children
+      );
 
       // 父子不关联的写法
       if (this.checkStrictly) {
         this.form_array_clone = flattenDeep(
           this.self_from_data,
-          this.defaultProps.children
+          this.selfDefaultProps.children
         );
         // 清空由左向右移动时自动补充的父节点
         this.strictly_parents = [];
-        this.checkStrictlyTransfer(
-          arrayCheckedNodes,
-          { children__, pid__, id__, root__ },
-          true
-        );
+        this.checkStrictlyAdd(arrayCheckedNodes, { children__, pid__, id__, root__ });
       } else {
         // 第一步：排除在对面已经存在的半选节点，然后将需穿梭半选节点的children设置为[]并穿梭;
         arrayHalfCheckedNodes.forEach((i) => {
@@ -561,25 +612,24 @@ export default {
       // 半选中节点数据
       let arrayHalfCheckedNodes = this.$refs["to-tree"].getHalfCheckedNodes();
       // 自定义参数读取设置
-      let children__ = this.defaultProps.children || "children";
+      let children__ = this.selfDefaultProps.children || "children";
       let pid__ = this.pid || "pid";
       let id__ = this["node_key"] || "id";
       let root__ = this.rootPidValue || 0;
       // 将目标侧数据拉平为一维数组，查询速度比每个节点去目标侧递归查询快
       this.form_array_clone = flattenDeep(
         this.self_from_data,
-        this.defaultProps.children
+        this.selfDefaultProps.children
       );
 
       // 父子不关联的写法
       if (this.checkStrictly) {
-        this.to_array_clone = flattenDeep(this.self_to_data, this.defaultProps.children);
-
-        this.checkStrictlyTransfer(
-          arrayCheckedNodes,
-          { children__, pid__, id__, root__ },
-          false
+        this.to_array_clone = flattenDeep(
+          this.self_to_data,
+          this.selfDefaultProps.children
         );
+
+        this.checkStrictlyRemove(arrayCheckedNodes, { children__, pid__, id__, root__ });
       } else {
         // 第一步：排除在对面已经存在的半选节点，然后将需穿梭半选节点的children设置为[]并穿梭;
         arrayHalfCheckedNodes.forEach((i) => {
@@ -633,32 +683,12 @@ export default {
       this.$refs["to-tree"].setCheckedKeys([]);
     },
     /**
-     * @name 拼接父子能联系起来的数据
+     * @name 父子不关联的add
+     * @param {Array} nodes 选中节点
+     * @param {Object} options 配置项{ children__, pid__, id__, root__ }
      */
-    /**
-     * @name 父子不关联的穿梭
-     * @param {Array} nodes 移动的节点信息
-     * @param {Object} options 字段名配置项{ children__, pid__, id__, root__ }
-     * @param {Boolean} isAdd 是add还是remove
-     */
-    checkStrictlyTransfer(nodes, options, isAdd) {
-      // 根据添加|移除穿梭操作来分配源数据
-      let from_data = [];
-      let to_data = [];
-      let from_ref = "";
-      let to_ref = "";
-      if (isAdd) {
-        from_data = this.form_array_clone;
-        to_data = this.to_array_clone;
-        from_ref = "from-tree";
-        to_ref = "to-tree";
-      } else {
-        from_data = this.to_array_clone;
-        to_data = this.form_array_clone;
-        from_ref = "to-tree";
-        to_ref = "from-tree";
-      }
-      // 将数据转为新数据处理
+    checkStrictlyAdd(nodes, options) {
+      // 第一步：整理选中数据，不知道子节点是都都选中，先将子节点都置空，下一步再组装避免判断每个节点的的子节点应不应该穿梭
       const new_nodes = nodes.map((i) => {
         let new_node = Object.assign({}, i, {
           [options.children__]: [],
@@ -668,92 +698,72 @@ export default {
         });
         return new_node;
       });
-      // 先组合选中节点中能拼接起来的父子节点
-      const assembly_data = new_nodes.reduce((pre, item, idx, arr) => {
+      // 第二步：将对面存在的节点抛弃
+      let notInTargetNodes = differenceBy(new_nodes, this.to_array_clone, options.id__);
+      // 第三步：组装能选中数据中能父子关联的，将子节点插入父节点后只需穿梭父节点
+      const assembly_data = notInTargetNodes.reduce((pre, item, idx, arr) => {
         const find_parent = arr.find((i) => i[options.id__] == item[options.pid__]);
+        // 没找到父节点，将节点保留
         if (!find_parent) return pre.concat(item);
-        Array.isArray(find_parent[options.children__])
-          ? find_parent[options.children__].push(item)
-          : (find_parent[options.children__] = [item]);
+        // 找到父节点的，将节点推入父节点的children，不保留此节点
+        find_parent[options.children__].push(item);
         return pre;
       }, []);
-      // 准备处理数据
+      // 第四步：穿梭组装好的数据
       assembly_data.forEach((i) => {
-        // 查找此节点在对面是否存在，存在即退出此节点的处理
-        const inThere = to_data.some((t) => t[options.id__] === i[options.id__]);
-        if (inThere) {
-          // 当此节点是叶子节点时，删除此节点
-          this.$refs[from_ref].remove(i);
-          return;
-        }
-        // 计算此节点的子节点有没有全部参与穿梭
-        const children_num = Array.isArray(i[options.children__])
-          ? i[options.children__].length
-          : 0;
-        const all_children_transfer = children_num === i.__childrenLength;
-        delete i.__childrenLength;
-        // 对面有此节点的父节点，直接插入到父节点;
-        // 对面无此节点的父节点,从本测找父级再去查对面有没有，直到查到对面有此父级，或者找到本测根节点一起穿梭过去;
-        this.findParentInTarget(i, options, from_data, to_data, from_ref, to_ref, isAdd);
-        // 如果此节点所有子节点都参与本次穿梭，则此节点应从左侧移除
-        if (all_children_transfer) {
-          this.$refs[from_ref].remove(i);
-        }
+        this.$refs["to-tree"].append(i, i[options.pid__]);
       });
+      // 第五步：移除左侧需要移除的节点，将所有叶子节点的pid去重收集起来，然后向上查找需要删除的父祖节点
+      const leafNodes = this.$refs["from-tree"].getCheckedNodes(true);
+      let deWeight = {};
+      for (const i of leafNodes) {
+        this.$refs["from-tree"].remove(i);
+        if (deWeight[i[options.pid__]]) continue;
+        deWeight[i[options.pid__]] = true;
+        this.checkParentsRemove(i[options.pid__], new_nodes, nodes, options);
+      }
+    },
+    // 递归查找需要删除的父节点
+    checkParentsRemove(pidVal, new_nodes, nodes, options) {
+      const parent = new_nodes.find((t) => t[options.id__] === pidVal);
+      if (parent.__childrenLength !== parent[options.children__].length) return;
+      this.$refs["from-tree"].remove(parent);
+      if (parent[options.pid__] !== options.root__) {
+        this.checkParentsRemove(parent[options.pid__], new_nodes, nodes, options);
+      }
     },
     /**
-     * @name 根据节点找到对面存在的祖先节点，或者找到本测的根节点
-     * @param {Object} item 当前节点
-     * @param {options} options 字段名配置项{ children__, pid__, id__, root__ }
-     * @param {Array} from_data 本侧数据
-     * @param {Array} to_data 对侧数据
-     * @param {String} from_ref 来源树dom
-     * @param {String} to_ref 目标树dom
-     * @param {Boolean} isAdd 是否添加
+     * @name 父子不关联的add
+     * @param {Array} nodes 选中节点
+     * @param {Object} options 配置项{ children__, pid__, id__, root__ }
      */
-    findParentInTarget(item, options, from_data, to_data, from_ref, to_ref, isAdd) {
-      // 父节点在对面直接穿梭
-      const parentInThere = to_data.some((t) => t[options.id__] === item[options.pid__]);
-      if (parentInThere) {
-        this.$refs[to_ref].append(item, item[options.pid__]);
-        // 当是授权时，如果父节点下子节点已经穿梭空，则把父节点移除
-        if (!isAdd) return;
-        const parent_node = from_data.find(
-          (t) => t[options.id__] === item[options.pid__]
-        );
-        if (!parent_node) return;
-        this.$nextTick(() => {
-          if (!parent_node[options.children__].length) {
-            this.$refs[from_ref].remove(parent_node);
-          }
+    checkStrictlyRemove(nodes, options) {
+      // 第二步：将对面存在的节点抛弃
+      let notInTargetNodes = differenceBy(nodes, this.from_array_clone, options.id__);
+      // 第一步：整理选中数据，不知道子节点是都都选中，先将子节点都置空，下一步再组装避免判断每个节点的的子节点应不应该穿梭
+      const new_nodes = notInTargetNodes.map((i) => {
+        let new_node = Object.assign({}, i, {
+          [options.children__]: [],
+          __childrenLength: Array.isArray(i[options.children__])
+            ? i[options.children__].length
+            : 0,
         });
-        return;
-      }
-      // 父节点不在对面
-      // 当此节点是根节点时，直接穿梭
-      if (item[options.pid__] === options.root__) {
-        this.$refs[to_ref].append(item);
-        return;
-      }
-      // 当此节点也不根节点，先从本侧数据找到父节点，再看父节点的pid是否在对面，或者直到找到根祖先直接穿梭
-      const parent_node = from_data.find((t) => t[options.id__] === item[options.pid__]);
-      const _parent_node = Object.assign({}, parent_node, {
-        [options.children__]: [item],
+        return new_node;
       });
-      // 当授权时既然要在右边出现，必然需要左侧父节点，而删除授权时，移除子权限并不代表想移除父权限
-      if (isAdd) {
-        this.strictly_parents.push(item);
-        this.$refs[from_ref].remove(item);
-      }
-      this.findParentInTarget(
-        _parent_node,
-        options,
-        from_data,
-        to_data,
-        from_ref,
-        to_ref,
-        isAdd
-      );
+      // 第三步：组装能选中数据中能父子关联的，将子节点插入父节点后只需穿梭父节点
+      const assembly_data = new_nodes.reduce((pre, item, idx, arr) => {
+        const find_parent = arr.find((i) => i[options.id__] == item[options.pid__]);
+        // 没找到父节点，将节点保留
+        if (!find_parent) return pre.concat(item);
+        // 找到父节点的，将节点推入父节点的children，不保留此节点
+        find_parent[options.children__].push(item);
+        return pre;
+      }, []);
+      // 第四步：穿梭组装好的数据
+      assembly_data.forEach((i) => {
+        this.$refs["from-tree"].append(i, i[options.pid__]);
+        this.$refs["to-tree"].remove(i);
+      });
     },
     // 异步加载左侧
     leftloadNode(node, resolve) {
@@ -766,15 +776,60 @@ export default {
     // 源树选中事件 - 是否禁用穿梭按钮
     fromTreeChecked(nodeObj, treeObj) {
       this.from_check_keys = treeObj.checkedNodes;
+      // 父子不关联-授权模式
+      if (
+        this.checkStrictly &&
+        this.checkStrictlyType == "authorization" &&
+        this.from_check_keys.some((i) => i[this.node_key] === nodeObj[this.node_key])
+      ) {
+        this.authorizationAutoCheckLeft(nodeObj);
+      }
       this.$nextTick(() => {
         this.$emit("left-check-change", nodeObj, treeObj, this.from_check_all);
+      });
+    },
+    // 父子不关联-授权模式-左侧选中子节点自动选中父节点
+    authorizationAutoCheckLeft(node) {
+      // 查询所有父节点
+      const parents = findParents(node, this.form_array_clone, {
+        id: this.node_key,
+        parentId: this.pid,
+        // children: this.selfDefaultProps.children,
+        root: this.rootPidValue,
+      });
+      if (!parents.length) return;
+      // 过滤掉已经选中过的父节点
+      const autoAddParents = differenceBy(parents, this.from_check_keys, this.node_key);
+      autoAddParents.forEach((i) => {
+        this.$refs["from-tree"].setChecked(i, true);
+        this.from_check_keys.push(i);
       });
     },
     // 目标树选中事件 - 是否禁用穿梭按钮
     toTreeChecked(nodeObj, treeObj) {
       this.to_check_keys = treeObj.checkedNodes;
+      // 父子不关联-授权模式
+      if (
+        this.checkStrictly &&
+        this.checkStrictlyType == "authorization" &&
+        this.to_check_keys.some((i) => i[this.node_key] === nodeObj[this.node_key])
+      ) {
+        this.authorizationAutoCheckRight(nodeObj);
+      }
       this.$nextTick(() => {
         this.$emit("right-check-change", nodeObj, treeObj, this.to_check_all);
+      });
+    },
+    // 父子不关联-授权模式-右侧选中父节点自动选中子节点
+    authorizationAutoCheckRight(nodeObj) {
+      // 查询所有子节点
+      const children = flattenDeep([nodeObj], this.selfDefaultProps.children);
+      if (!children.length) return;
+      // 过滤掉已经选中过的子节点
+      const autoAddChildren = differenceBy(children, this.to_check_keys, this.node_key);
+      autoAddChildren.forEach((i) => {
+        this.to_check_keys.push(i);
+        this.$refs["to-tree"].setChecked(i, true);
       });
     },
     // 源数据 总全选checkbox
@@ -782,7 +837,7 @@ export default {
       if (!this.self_from_data.length) return;
       if (val) {
         this.from_check_keys = this.checkStrictly
-          ? flattenDeep(this.self_from_data, this.defaultProps.children)
+          ? flattenDeep(this.self_from_data, this.selfDefaultProps.children)
           : this.self_from_data;
         this.$refs["from-tree"].setCheckedNodes(this.from_check_keys);
       } else {
@@ -796,7 +851,7 @@ export default {
       if (!this.self_to_data.length) return;
       if (val) {
         this.to_check_keys = this.checkStrictly
-          ? flattenDeep(this.self_to_data, this.defaultProps.children)
+          ? flattenDeep(this.self_to_data, this.selfDefaultProps.children)
           : this.self_to_data;
         this.$refs["to-tree"].setCheckedNodes(this.to_check_keys);
       } else {
@@ -811,7 +866,7 @@ export default {
         return this.filterNode(value, data, "form");
       }
       if (!value) return true;
-      return data[this.defaultProps.label].indexOf(value) !== -1;
+      return data[this.selfDefaultProps.label].indexOf(value) !== -1;
     },
     // 目标数据筛选
     filterNodeTo(value, data) {
@@ -819,7 +874,7 @@ export default {
         return this.filterNode(value, data, "to");
       }
       if (!value) return true;
-      return data[this.defaultProps.label].indexOf(value) !== -1;
+      return data[this.selfDefaultProps.label].indexOf(value) !== -1;
     },
     // 节点开始拖拽时触发的事件
     nodeDragStartLeft(node, dragEvent) {
@@ -869,6 +924,133 @@ export default {
     nodeDropRight(node, target, location, dragEvent) {
       this.$emit("node-drop", "right", node, target, location, dragEvent);
     },
+    /**
+     * @name 父子不关联的穿梭
+     * @param {Array} nodes 移动的节点信息
+     * @param {Object} options 字段名配置项{ children__, pid__, id__, root__ }
+     * @param {Boolean} isAdd 是add还是remove
+     */
+    /* checkStrictlyTransfer(nodes, options, isAdd) {
+      this.strictly_transferred = [];
+      // 根据添加|移除穿梭操作来分配源数据
+      let from_data = [];
+      let to_data = [];
+      let from_ref = "";
+      let to_ref = "";
+      if (isAdd) {
+        from_data = this.form_array_clone;
+        to_data = this.to_array_clone;
+        from_ref = "from-tree";
+        to_ref = "to-tree";
+      } else {
+        from_data = this.to_array_clone;
+        to_data = this.form_array_clone;
+        from_ref = "to-tree";
+        to_ref = "from-tree";
+      }
+      // 将数据转为新数据处理
+      const new_nodes = nodes.map((i) => {
+        let new_node = Object.assign({}, i, {
+          [options.children__]: [],
+          __childrenLength: Array.isArray(i[options.children__])
+            ? i[options.children__].length
+            : 0,
+        });
+        return new_node;
+      });
+      // 先组合选中节点中能拼接起来的父子节点
+      const assembly_data = new_nodes.reduce((pre, item, idx, arr) => {
+        const find_parent = arr.find((i) => i[options.id__] == item[options.pid__]);
+        if (!find_parent) return pre.concat(item);
+        Array.isArray(find_parent[options.children__])
+          ? find_parent[options.children__].push(item)
+          : (find_parent[options.children__] = [item]);
+        return pre;
+      }, []);
+      // 准备处理数据
+      assembly_data.forEach((i) => {
+        // 查找此节点在对面是否存在，存在即退出此节点的处理
+        const inThere = to_data.some((t) => t[options.id__] === i[options.id__]);
+        if (inThere) {
+          // 当此节点是叶子节点时，删除此节点
+          if (!i.__childrenLength) {
+            this.$refs[from_ref].remove(i);
+          }
+          return;
+        }
+        // 计算此节点的子节点有没有全部参与穿梭
+        const children_num = Array.isArray(i[options.children__])
+          ? i[options.children__].length
+          : 0;
+        const all_children_transfer = children_num === i.__childrenLength;
+        delete i.__childrenLength;
+        // 对面有此节点的父节点，直接插入到父节点;
+        // 对面无此节点的父节点,从本测找父级再去查对面有没有，直到查到对面有此父级，或者找到本测根节点一起穿梭过去;
+        this.findParentInTarget(i, options, from_data, to_data, from_ref, to_ref, isAdd);
+        // 如果此节点所有子节点都参与本次穿梭，则此节点应从左侧移除
+        if (all_children_transfer) {
+          this.$refs[from_ref].remove(i);
+        }
+      });
+    }, */
+    /**
+     * @name 根据节点找到对面存在的祖先节点，或者找到本测的根节点
+     * @param {Object} item 当前节点
+     * @param {options} options 字段名配置项{ children__, pid__, id__, root__ }
+     * @param {Array} from_data 本侧数据
+     * @param {Array} to_data 对侧数据
+     * @param {String} from_ref 来源树dom
+     * @param {String} to_ref 目标树dom
+     * @param {Boolean} isAdd 是否添加
+     */
+    /* findParentInTarget(item, options, from_data, to_data, from_ref, to_ref, isAdd) {
+      // 父节点在对面或者本轮刚把它的父节点穿梭过了，则此节点直接穿梭
+      const parentInThere = to_data.some((t) => t[options.id__] === item[options.pid__]);
+      const parentTransferred = this.strictly_transferred.some(
+        (t) => t[options.id__] === item[options.pid__]
+      );
+      if (parentInThere || parentTransferred) {
+        this.$refs[to_ref].append(item, item[options.pid__]);
+        // 当是授权时，如果父节点下子节点已经穿梭空，则把父节点移除
+        if (!isAdd) return;
+        const parent_node = from_data.find(
+          (t) => t[options.id__] === item[options.pid__]
+        );
+        if (!parent_node) return;
+        this.$nextTick(() => {
+          if (!parent_node[options.children__].length) {
+            this.$refs[from_ref].remove(parent_node);
+          }
+        });
+        return;
+      }
+      // 父节点不在对面
+      // 当此节点是根节点时，直接穿梭
+      if (item[options.pid__] === options.root__) {
+        this.$refs[to_ref].append(item);
+        return;
+      }
+      // 当此节点也不根节点，先从本侧数据找到父节点，再看父节点的pid是否在对面，或者直到找到根祖先直接穿梭
+      const parent_node = from_data.find((t) => t[options.id__] === item[options.pid__]);
+      const _parent_node = Object.assign({}, parent_node, {
+        [options.children__]: [item],
+      });
+      // 当授权时既然要在右边出现，必然需要左侧父节点，而删除授权时，移除子权限并不代表想移除父权限
+      if (isAdd) {
+        this.strictly_parents.push(item);
+      }
+      // 将之前没有的，本轮穿梭过的父节点收集起来，其他子节点不需要再往这个父节点找
+      this.strictly_transferred.push(_parent_node);
+      this.findParentInTarget(
+        _parent_node,
+        options,
+        from_data,
+        to_data,
+        from_ref,
+        to_ref,
+        isAdd
+      );
+    }, */
     // 以下为提供方法 ----------------------------------------------------------------方法--------------------------------------
     /**
      * @name 清空选中节点

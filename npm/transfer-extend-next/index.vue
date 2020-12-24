@@ -1,6 +1,6 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
-    <component :is="isComponent" v-bind="$props">
+    <component :is="isComponent" v-bind="$props" ref="wl-transfer-component">
       <template #left-footer>
         <slot name="left-footer"></slot>
       </template>
@@ -86,12 +86,7 @@ export default {
       default: () => [],
     },
     // el-tree 配置项
-    defaultProps: {
-      type: Object,
-      default: () => {
-        return { label: "label", children: "children" };
-      },
-    },
+    defaultProps: Object,
     // el-tree node-key 必须唯一
     node_key: {
       type: String,
@@ -191,16 +186,88 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 父子不关联模式
+    checkStrictlyType: {
+      type: String,
+      default: "authorization",
+      validator: function (value) {
+        /**
+         * @name 父子不关联的三种模式，第一种适合业务授权场景，后两种不存在快速选中需要手选
+         * @param authorization授权模式：左侧选择子节点自动带着父节点；右侧选择父节点自动带着子节点；此模式两侧可能存在相同的非叶子节点
+         * @param puppet木偶模式：纯父子不关联穿梭，但要保持完整的树形结构，只自动带上穿梭到对面拼接所需的骨架结构；此模式两侧可能存在相同的非叶子节点
+         * @param modular积木模式：纯父子不关联穿梭，也不保持完整的树形结构，像积木一个右侧要形成树形则需要把左侧拆除，左侧拆的越多右侧形成的树结构越完整；此模式左右两侧保证严格的唯一性
+         */
+        return ["authorization", "puppet", "modular"].indexOf(value) !== -1;
+      },
+    },
     // 是否每次只打开一个同级树节点
     accordion: {
       type: Boolean,
       default: false,
     },
+    // 是否在第一次展开某个树节点后才渲染其子节点
+    renderAfterExpand: {
+      type: Boolean,
+      default: true,
+    },
+    // 是否在点击节点的时候展开或者收缩节点
+    expandOnClickNode: {
+      type: Boolean,
+      default: true,
+    },
+    // 是否在点击节点的时候选中节点
+    checkOnClickNode: {
+      type: Boolean,
+      default: false,
+    },
+    // 相邻级节点间的水平缩进，单位为像素
+    indent: {
+      type: Number,
+      default: 16,
+    },
+    // 	自定义树节点的图标
+    iconClass: String,
+    // 是否开启拖拽节点功能
+    draggable: Boolean,
+    // 判断节点能否被拖拽
+    allowDrag: Function,
+    // 拖拽时判定目标节点能否被放置
+    allowDrop: Function,
   },
   computed: {
     // 穿梭框模式
     isComponent() {
       return this.mode == "transfer" ? "ComponentTransfer" : "ComponentAddress";
+    },
+  },
+  methods: {
+    /**
+     * @name 手动调用穿梭
+     * @param {Boolean} useCallBack 是否需要出发emit回调事件
+     */
+    addToAims(useCallBack) {
+      this.$refs["wl-transfer-component"].addToAims(useCallBack);
+    },
+    /**
+     * @name 清空选中节点
+     * @param {String} type left左边 right右边 all全部 默认all
+     */
+    clearChecked(type = "all") {
+      this.$refs["wl-transfer-component"].clearChecked(type);
+    },
+    /**
+     * @name 获取选中数据
+     */
+    getChecked() {
+      this.$refs["wl-transfer-component"].getChecked();
+    },
+    /**
+     * @name 设置选中数据
+     * @param {Array} leftKeys 左侧ids
+     * @param {Array} rightKeys 右侧ids
+     */
+    setChecked(leftKeys = [], rightKeys = []) {
+      this.$refs["wl-transfer-component"].setChecked(leftKeys, rightKeys);
     },
   },
 };

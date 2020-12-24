@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h3 class="title">
+    <!-- <h3 class="title">
       <a href="https://github.com/hql7/tree-transfer" target="_block">GitHub</a>
       <a href="https://www.npmjs.com/package/el-tree-transfer" target="_block">NPM</a>
       <a href="https://segmentfault.com/a/1190000015553081" target="_block"
@@ -19,7 +19,7 @@
       <el-button size="medium" @click="clearChecked()">清除选中</el-button>
       <el-button size="medium" @click="getChecked()">获取选中</el-button>
       <el-button size="medium" @click="setChecked()">设置选中</el-button>
-    </h4>
+    </h4> -->
     <div class="box">
       <!-- lazy -->
       <!-- :lazyFn="lazyFn" -->
@@ -43,17 +43,6 @@
         @add-btn="add"
         node_key="id"
       >
-        <!-- 自定义左侧节点插槽 -->
-        <template #content-left="{ data }">
-          <span>{{ data.name }}</span>
-        </template>
-        <!-- 自定义右侧节点插槽 -->
-        <template #content-right="{ data }">
-          <span>{{ data.name }}</span>
-        </template>
-        <span slot="title-right" class="my-title-right" @click="handleTitleRight"
-          >自定义内容</span
-        >
       </tree-transfer>
     </div>
   </div>
@@ -62,8 +51,8 @@
 <script>
 // import treeTransfer from "el-tree-transfer";
 // import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
-// import treeTransfer from "../npm/transfer-extend-next/index.vue"; // next源码位置
-import treeTransfer from "../npm/dist/treeTransfer.min.js"; // next压缩后代码位置
+import treeTransfer from "../npm/transfer-extend-next/index.vue"; // next源码位置
+// import treeTransfer from "../npm/dist/treeTransfer.min.js"; // next压缩后代码位置
 
 export default {
   name: "App",
@@ -93,7 +82,20 @@ export default {
               id: 3,
               pid: 1,
               name: "11-3",
-              children: [],
+              children: [
+                {
+                  id: "11-3-1",
+                  pid: 3,
+                  name: "11-3-1",
+                  children: [
+                    {
+                      id: "11-3-1-1",
+                      name: "11-3-1-1",
+                      pid: "11-3-1",
+                    },
+                  ],
+                },
+              ],
             },
             {
               id: 4,
@@ -116,7 +118,13 @@ export default {
                   id: 6,
                   pid: 4,
                   name: "11-6",
-                  children: [],
+                  children: [
+                    {
+                      id: "6-1",
+                      pid: 6,
+                      name: "6-1",
+                    },
+                  ],
                 },
               ],
             },
@@ -140,10 +148,23 @@ export default {
               name: "debug11",
               children: [],
             },
+            {
+              id: 71274,
+              pid: 7127,
+              name: "debug33",
+              children: [],
+            },
           ],
         },
       ], // 穿梭框 - 源数据 - 树形
-      toData: [], // 穿梭框 - 目标数据 - 树形
+      toData: [
+        {
+          pid: 0,
+          id: 3333,
+          name: "测试右侧",
+          children: [{ pid: 3333, id: "3333-1", name: "3333-1" }],
+        },
+      ], // 穿梭框 - 目标数据 - 树形
       fromArray: [
         {
           id: "1",
@@ -209,7 +230,7 @@ export default {
     },
     // 设置选中
     setChecked() {
-      this.$refs["wl-tree-transfer"].setChecked([71272], [2]);
+      this.$refs["wl-tree-transfer"].setChecked([3], [2]);
     },
     // 清除选中
     clearChecked() {

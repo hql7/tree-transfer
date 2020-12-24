@@ -645,22 +645,26 @@ export default {
      * @param {String} type left左边 right右边 all全部 默认all
      */
     clearChecked(type = "all") {
-      if (type === "left") {
-        this.$refs["from-tree"].setCheckedKeys([]);
-        this.from_is_indeterminate = false;
-        this.from_check_all = false;
-      } else if (type === "right") {
-        this.$refs["to-tree"].setCheckedKeys([]);
-        this.to_is_indeterminate = false;
-        this.to_check_all = false;
-      } else {
-        this.$refs["from-tree"].setCheckedKeys([]);
-        this.$refs["to-tree"].setCheckedKeys([]);
-        this.from_is_indeterminate = false;
-        this.from_check_all = false;
-        this.to_is_indeterminate = false;
-        this.to_check_all = false;
-      }
+      this.$refs["from-tree"].setCheckedKeys([]);
+      this.from_is_indeterminate = false;
+      this.from_check_all = false;
+    },
+    /**
+     * @name 获取选中数据
+     */
+    getChecked() {
+      // 左侧选中信息
+      let leftKeys = this.$refs["from-tree"].getCheckedKeys();
+      let leftHarfKeys = this.$refs["from-tree"].getHalfCheckedKeys();
+      let leftNodes = this.$refs["from-tree"].getCheckedNodes();
+      let leftHalfNodes = this.$refs["from-tree"].getHalfCheckedNodes();
+
+      return {
+        leftKeys,
+        leftHarfKeys,
+        leftNodes,
+        leftHalfNodes,
+      };
     },
     /**
      * @name 设置选中数据
@@ -669,7 +673,6 @@ export default {
      */
     setChecked(leftKeys = [], rightKeys = []) {
       this.$refs["from-tree"].setCheckedKeys(leftKeys);
-      this.$refs["to-tree"].setCheckedKeys(rightKeys);
     },
   },
 };
