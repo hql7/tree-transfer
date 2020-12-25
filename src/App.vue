@@ -62,9 +62,9 @@ export default {
       defaultProps: {
         label: "name",
         children: "children",
-        disabled(data) {
+        /* disabled(data) {
           return data.id === 2;
-        },
+        }, */
       },
       fromData: [
         {

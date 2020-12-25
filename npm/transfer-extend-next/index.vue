@@ -1,6 +1,20 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
-    <component :is="isComponent" v-bind="$props" ref="wl-transfer-component">
+    <component
+      :is="isComponent"
+      v-bind="$props"
+      ref="wl-transfer-component"
+      @add-btn="handleAddBtn"
+      @remove-btn="handleRemoveBtn"
+      @left-check-change="handleLeftCheckChange"
+      @right-check-change="handleRightCheckChange"
+      @node-drag-start="handleNodeDragStart"
+      @node-drag-enter="handleNodeDragEnter"
+      @node-drag-leave="handleNodeDragLeave"
+      @node-drag-over="handleNodeDragOver"
+      @node-drag-end="handleNodeDragEnd"
+      @node-drop="handleNodeDrop"
+    >
       <template #left-footer>
         <slot name="left-footer"></slot>
       </template>
@@ -241,6 +255,36 @@ export default {
     },
   },
   methods: {
+    handleAddBtn(fromData, toData, obj) {
+      this.$emit("add-btn", fromData, toData, obj);
+    },
+    handleRemoveBtn(fromData, toData, obj) {
+      this.$emit("remove-btn", fromData, toData, obj);
+    },
+    handleLeftCheckChange(nodeObj, treeObj, checkAll) {
+      this.$emit("left-check-change", nodeObj, treeObj, checkAll);
+    },
+    handleRightCheckChange(nodeObj, treeObj, checkAll) {
+      this.$emit("right-check-change", nodeObj, treeObj, checkAll);
+    },
+    handleNodeDragStart(type, node, dragEvent) {
+      this.$emit("node-drag-start", type, node, dragEvent);
+    },
+    handleNodeDragEnter(type, node, target, dragEvent) {
+      this.$emit("node-drag-enter", type, node, target, dragEvent);
+    },
+    handleNodeDragLeave(type, node, leaved, dragEvent) {
+      this.$emit("node-drag-leave", type, node, leaved, dragEvent);
+    },
+    handleNodeDragOver(type, node, leaved, dragEvent) {
+      this.$emit("node-drag-over", type, node, leaved, dragEvent);
+    },
+    handleNodeDragEnd(type, node, target, location, dragEvent) {
+      this.$emit("node-drag-end", type, node, target, location, dragEvent);
+    },
+    handleNodeDrop(type, node, target, location, dragEvent) {
+      this.$emit("node-drop", type, node, target, location, dragEvent);
+    },
     /**
      * @name 手动调用穿梭
      * @param {Boolean} useCallBack 是否需要出发emit回调事件
