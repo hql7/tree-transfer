@@ -674,6 +674,13 @@ export default {
     setChecked(leftKeys = [], rightKeys = []) {
       this.$refs["from-tree"].setCheckedKeys(leftKeys);
     },
+    /**
+     * @name 清除搜索条件
+     * @param {String} type left左边 right右边 all全部 默认all
+     */
+    clearFilter() {
+      this.filterFrom = "";
+    },
   },
 };
 </script>

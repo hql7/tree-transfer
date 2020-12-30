@@ -255,6 +255,7 @@ export default {
     },
   },
   methods: {
+    // -----------------------------------------------emit回调---------------------------------------------
     handleAddBtn(fromData, toData, obj) {
       this.$emit("add-btn", fromData, toData, obj);
     },
@@ -285,6 +286,7 @@ export default {
     handleNodeDrop(type, node, target, location, dragEvent) {
       this.$emit("node-drop", type, node, target, location, dragEvent);
     },
+    // ---------------------------------------方法----------------------------------------------------
     /**
      * @name 手动调用穿梭
      * @param {Boolean} useCallBack 是否需要出发emit回调事件
@@ -312,6 +314,13 @@ export default {
      */
     setChecked(leftKeys = [], rightKeys = []) {
       this.$refs["wl-transfer-component"].setChecked(leftKeys, rightKeys);
+    },
+    /**
+     * @name 清除搜索条件
+     * @param {String} type left左边 right右边 all全部 默认all
+     */
+    clearFilter(type) {
+      this.$refs["wl-transfer-component"].clearFilter(type);
     },
   },
 };

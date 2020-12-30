@@ -349,48 +349,31 @@ export default {
   computed: {
     // 左侧数据
     self_from_data() {
-      let from_array = [...this.from_data];
-      if (!this.arrayToTree) {
-        if (this.checkStrictly) {
-          this.from_array_clone = flattenDeep(from_array, this.selfDefaultProps.children);
-        }
-        return from_array;
-      } else {
-        if (this.checkStrictly) {
-          this.from_array_clone = from_array;
-        }
-        return arrayToTree(from_array, {
-          id: this.node_key,
-          pid: this.pid,
-          children: this.selfDefaultProps.children,
-        });
-      }
-    },
-    // 右侧数据
-    self_to_data() {
-      let to_array = [...this.to_data];
-      if (!this.arrayToTree) {
-        if (this.checkStrictly) {
-          this.to_array_clone = flattenDeep(to_array, this.selfDefaultProps.children);
-        }
-        return to_array;
-      } else {
-        if (this.checkStrictly) {
-          this.to_array_clone = to_array;
-        }
-        return arrayToTree(to_array, {
-          id: this.node_key,
-          pid: this.pid,
-          children: this.selfDefaultProps.children,
-        });
-      }
-      /* return !this.arrayToTree
-        ? to_array
-        : arrayToTree(to_array, {
+      const _form_data = !this.arrayToTree
+        ? this.from_data
+        : arrayToTree(this.from_data, {
             id: this.node_key,
             pid: this.pid,
             children: this.selfDefaultProps.children,
-          }); */
+          });
+      if (this.checkStrictly) {
+        this.from_array_clone = flattenDeep(_form_data, this.selfDefaultProps.children);
+      }
+      return _form_data;
+    },
+    // 右侧数据
+    self_to_data() {
+      const _to_data = !this.arrayToTree
+        ? this.to_data
+        : arrayToTree(this.to_data, {
+            id: this.node_key,
+            pid: this.pid,
+            children: this.selfDefaultProps.children,
+          });
+      if (this.checkStrictly) {
+        this.to_array_clone = flattenDeep(_to_data, this.selfDefaultProps.children);
+      }
+      return _to_data;
     },
     // 左侧菜单名
     fromTitle() {
@@ -1119,6 +1102,20 @@ export default {
     setChecked(leftKeys = [], rightKeys = []) {
       this.$refs["from-tree"].setCheckedKeys(leftKeys);
       this.$refs["to-tree"].setCheckedKeys(rightKeys);
+    },
+    /**
+     * @name 清除搜索条件
+     * @param {String} type left左边 right右边 all全部 默认all
+     */
+    clearFilter(type = "all") {
+      if (type === "left") {
+        this.filterFrom = "";
+      } else if (type === "right") {
+        this.filterTo = "";
+      } else {
+        this.filterFrom = "";
+        this.filterTo = "";
+      }
     },
   },
 };

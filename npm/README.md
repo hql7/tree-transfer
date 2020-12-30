@@ -12,7 +12,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ### 重要更新
 
-> 2.4.5 修复重构错误（请勿使用2.4.0-2.4.4）；增加父子不关联的三种模式；调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大；优化父子不关联时全选；修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；增加父子不关联穿梭功能 
+> 2.4.6 修复重构错误（请勿使用2.4.0-2.4.5）；增加父子不关联的三种模式(其中完成授权模式)；调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大；优化父子不关联时全选；修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；增加父子不关联穿梭功能 
 
 > 2.3.3 修改穿梭匹配逻辑；增加rootPidValue参数。详细说明见下方版本说明  
 
@@ -185,9 +185,11 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 | 序号 | 名称 | 说明 |
 | ---- | ---- | ---- |
-| 1 | clearChecked | 清除选中节点，默认清除全部 `type：string left左边 right右边 all全部 默认all` |
+| 0 | addToAims | 手动调用添加穿梭，用于调整初始数据默认穿梭 function(useCallBack: Boolean) 本次穿梭是否需要触发@add-btn的emit回调 | 
+| 1 | clearChecked | 清除选中节点，默认清除全部 function(type: String) left左边 right右边 all全部 默认all |
 | 2 | getChecked | 获取选中数据 | 
 | 3 | setChecked | 设置选中数据 function(leftKeys = [], rightKeys = []) |
+| 4 | clearFilter | 清除搜索框条件，默认清除全部 function(type: String) left左边 right右边 all全部 默认all | 
 
 > --------------------------------------------------------
 
@@ -207,11 +209,7 @@ el-tree-fransfer 是一个基于 VUE 和 element-ui 的树形穿梭框组件，�
 
 ## 版本说明
 
-> 2.4.3 调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大；优化父子不关联时全选；  
-
-> 2.4.2 修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；  
-
-> 2.4.0 增加父子不关联逻辑
+> 2.4.6 修复重构错误（请勿使用2.4.0-2.4.5）；增加父子不关联的三种模式(其中完成授权模式)；调整组件目录结构；重构穿梭算法，demo数据粗略测试性能提升较大；优化父子不关联时全选；修改事件addBtn为add-btn，removeBtn为remove-btn；增加拖拽；增加自定义节点slot；修复左右同时选中穿梭两次后的数据消失；搜索框增加清空；增加父子不关联穿梭功能 
 
 > 2.3.3 更改判断穿梭目标是否已在对面存在的算法，避免原来str正则意外匹配结果（如children和list两个字段里都有这个id，穿梭移除后，children里的数据没了，list里面数据还在，此时原来的匹配逻辑仍会任务目标已在对面存在而忽略穿梭）；增加`rootPidValue`字段，不再强制将根节点的pid都改为0
 

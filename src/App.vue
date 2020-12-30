@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <h3 class="title">
+    <h3 class="title">
       <a href="https://github.com/hql7/tree-transfer" target="_block">GitHub</a>
       <a href="https://www.npmjs.com/package/el-tree-transfer" target="_block">NPM</a>
       <a href="https://segmentfault.com/a/1190000015553081" target="_block"
@@ -19,7 +19,7 @@
       <el-button size="medium" @click="clearChecked()">清除选中</el-button>
       <el-button size="medium" @click="getChecked()">获取选中</el-button>
       <el-button size="medium" @click="setChecked()">设置选中</el-button>
-    </h4> -->
+    </h4>
     <div class="box">
       <!-- lazy -->
       <!-- :lazyFn="lazyFn" -->
@@ -51,8 +51,8 @@
 <script>
 // import treeTransfer from "el-tree-transfer";
 // import treeTransfer from "../npm/lib/transfer-extend"; // npm源码位置
-import treeTransfer from "../npm/transfer-extend-next/index.vue"; // next源码位置
-// import treeTransfer from "../npm/dist/treeTransfer.min.js"; // next压缩后代码位置
+// import treeTransfer from "../npm/transfer-extend-next/index.vue"; // next源码位置
+import treeTransfer from "../npm/dist/treeTransfer.min.js"; // next打包后代码位置
 
 export default {
   name: "App",
