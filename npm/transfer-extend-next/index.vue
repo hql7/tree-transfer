@@ -50,9 +50,6 @@ import ComponentAddress from "./components/address.vue";
 export default {
   name: "WlTransferTree",
   components: { ComponentTransfer, ComponentAddress },
-  data() {
-    return {};
-  },
   props: {
     sjr: {
       type: Array,
