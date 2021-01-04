@@ -302,7 +302,7 @@ export default {
      * @name 获取选中数据
      */
     getChecked() {
-      this.$refs["wl-transfer-component"].getChecked();
+      return this.$refs["wl-transfer-component"].getChecked();
     },
     /**
      * @name 设置选中数据

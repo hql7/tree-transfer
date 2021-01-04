@@ -227,6 +227,7 @@ export default {
     // 获取选中
     getChecked() {
       const checkeds = this.$refs["wl-tree-transfer"].getChecked();
+      console.log("获取选中：", checkeds);
     },
     // 设置选中
     setChecked() {
