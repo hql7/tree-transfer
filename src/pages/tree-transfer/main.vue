@@ -1,12 +1,19 @@
 <template>
   <div class="wl-transfer transfer" :style="{ width, height }">
     <component
-      ref="wl-transfer-component"
+      ref="wlTransferComponent"
       v-bind="$props"
       :is="activeComponent"
       @add-btn="handleAddBtn"
       @remove-btn="handleRemoveBtn"
-    
+      @left-check-change="handleLeftCheckChange"
+      @right-check-change="handleRightCheckChange"
+      @node-drag-start="handleNodeDragStart"
+      @node-drag-enter="handleNodeDragEnter"
+      @node-drag-leave="handleNodeDragLeave"
+      @node-drag-over="handleNodeDragOver"
+      @node-drag-end="handleNodeDragEnd"
+      @node-drop="handleNodeDrop"
     >
       <template #left-footer>
         <slot name="left-footer"></slot>
@@ -37,10 +44,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, PropType, ref } from "vue";
 import ComponentTransfer from "./components/transfer.vue";
 import ComponentAddress from "./components/address.vue";
-import { ITransferProps } from "./main.type";
+import {
+  ITransferProps,
+  RenderContentFunction,
+  FilterNodeMethodFunction,
+  LoadFunction,
+  AllowDragFunction,
+  AllowDropFunction,
+} from "./main.type";
 
 export default defineComponent({
   name: "TreeTransfer",
@@ -76,11 +90,14 @@ export default defineComponent({
     },
     // 标题
     title: {
-      type: Array,
+      type: Array as PropType<string[]>,
       default: () => ["源列表", "目标列表"],
     },
     // 穿梭按钮名字
-    buttonText: Array,
+    buttonText: {
+      type: Array as PropType<string[]>,
+      default: () => [],
+    },
     // 源数据
     fromData: {
       type: Array,
@@ -119,9 +136,9 @@ export default defineComponent({
       default: false,
     },
     // 左侧自定义树节点
-    renderContentLeft: Function,
+    renderContentLeft: Function as PropType<RenderContentFunction>,
     // 右侧自定义树节点
-    renderContentRight: Function,
+    renderContentRight: Function as PropType<RenderContentFunction>,
     // 穿梭框模式
     mode: {
       type: String,
@@ -159,7 +176,7 @@ export default defineComponent({
       default: "输入关键字进行过滤",
     },
     // 自定义筛选函数
-    filterNode: Function,
+    filterNode: Function as PropType<FilterNodeMethodFunction>,
     // 默认穿梭一次默认选中数据
     defaultTransfer: {
       type: Boolean,
@@ -181,7 +198,7 @@ export default defineComponent({
       default: false,
     },
     // 懒加载的回调函数
-    lazyFn: Function,
+    lazyFn: Function as PropType<LoadFunction>,
     // 是否高亮当前选中节点，默认值是 false。
     highLight: {
       type: Boolean,
@@ -236,24 +253,137 @@ export default defineComponent({
     // 是否开启拖拽节点功能
     draggable: Boolean,
     // 判断节点能否被拖拽
-    allowDrag: Function,
+    allowDrag: Function as PropType<AllowDragFunction>,
     // 拖拽时判定目标节点能否被放置
-    allowDrop: Function,
+    allowDrop: Function as PropType<AllowDropFunction>,
   },
-  emits: ["add-btn", "remove-btn"],
+  emits: [
+    "add-btn",
+    "remove-btn",
+    "left-check-change",
+    "right-check-change",
+    "node-drag-start",
+    "node-drag-enter",
+    "node-drag-leave",
+    "node-drag-over",
+    "node-drag-end",
+    "node-drop",
+  ],
   setup(props: ITransferProps, ctx) {
+    // 分析当前模式引入对应组件
     const activeComponent = computed(() => {
       return props.mode == "transfer" ? "ComponentTransfer" : "ComponentAddress";
     });
+    // emit事件 -------------------------------------------------------------------
+    /**
+     * @name 左->右添加事件
+     * @param {Array} fromData 左侧数据
+     * @param {Array} toData 右侧数据
+     * @param {obj} 当前操作的节点组成的对象
+     */
     const handleAddBtn = (fromData: any[], toData: any[], obj: {}): void => {
-      ctx.$emit("add-btn", fromData, toData, obj);
+      ctx.emit("add-btn", fromData, toData, obj);
     };
+    /**
+     * @name 右->左移除事件
+     * @param {Array} fromData 左侧数据
+     * @param {Array} toData 右侧数据
+     * @param {obj} 当前操作的节点组成的对象
+     */
     const handleRemoveBtn = (fromData: any[], toData: any[], obj: {}): void => {
-      ctx.$emit("remove-btn", fromData, toData, obj);
+      ctx.emit("remove-btn", fromData, toData, obj);
     };
-    return { activeComponent, handleAddBtn, handleRemoveBtn };
+    // 左侧选中事件
+    const handleLeftCheckChange = (
+      nodeObj: any[],
+      treeObj: any[],
+      checkAll: boolean
+    ): void => {
+      ctx.emit("left-check-change", nodeObj, treeObj, checkAll);
+    };
+    const handleRightCheckChange = (
+      nodeObj: Array<any>,
+      treeObj: Array<any>,
+      checkAll: boolean
+    ): void => {
+      ctx.emit("right-check-change", nodeObj, treeObj, checkAll);
+    };
+    const handleNodeDragStart = (
+      type: string,
+      node: object,
+      dragEvent: DragEvent
+    ): void => {
+      ctx.emit("node-drag-start", type, node, dragEvent);
+    };
+    const handleNodeDragEnter = (
+      type: string,
+      node: object,
+      target: object,
+      dragEvent: DragEvent
+    ): void => {
+      ctx.emit("node-drag-enter", type, node, target, dragEvent);
+    };
+    const handleNodeDragLeave = (
+      type: string,
+      node: object,
+      leaved: object,
+      dragEvent: DragEvent
+    ): void => {
+      ctx.emit("node-drag-leave", type, node, leaved, dragEvent);
+    };
+    const handleNodeDragOver = (
+      type: string,
+      node: object,
+      leaved: object,
+      dragEvent: DragEvent
+    ): void => {
+      ctx.emit("node-drag-over", type, node, leaved, dragEvent);
+    };
+    const handleNodeDragEnd = (
+      type: string,
+      node: object,
+      target: object | null,
+      location: string,
+      dragEvent: DragEvent
+    ): void => {
+      ctx.emit("node-drag-end", type, node, target, location, dragEvent);
+    };
+    const handleNodeDrop = (
+      type: string,
+      node: object,
+      target: object,
+      location: string,
+      dragEvent: DragEvent
+    ) => {
+      ctx.emit("node-drop", type, node, target, location, dragEvent);
+    };
+    // ---------------------------------------方法----------------------------------------------------
+    /**
+     * @name 手动调用穿梭
+     * @param {Boolean} useCallBack 是否需要出发emit回调事件
+     */
+    const wlTransferComponent = ref();
+    const addToAims = (useCallBack: boolean): void => {
+      wlTransferComponent.value.addToAims(useCallBack);
+    };
+
+    return {
+      activeComponent,
+      handleAddBtn,
+      handleRemoveBtn,
+      handleLeftCheckChange,
+      handleRightCheckChange,
+      handleNodeDragStart,
+      handleNodeDragEnter,
+      handleNodeDragLeave,
+      handleNodeDragOver,
+      handleNodeDragEnd,
+      handleNodeDrop,
+      wlTransferComponent,
+      addToAims,
+    };
   },
 });
 </script>
 
-<style lang="scss"></style>
+<style src="./css/index.min.css"></style>

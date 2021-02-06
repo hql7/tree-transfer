@@ -10,7 +10,9 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.31",
-    "vue": "^3.0.0"
+    "lodash": "^4.17.20",
+    "vue": "^3.0.0",
+    "wl-core": "^1.1.8"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",

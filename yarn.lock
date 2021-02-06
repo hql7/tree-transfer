@@ -3159,7 +3159,7 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-dayjs@1.x:
+dayjs@1.x, dayjs@^1.8.25:
   version "1.10.4"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
   integrity sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==
@@ -8833,6 +8833,14 @@ which@^2.0.1:
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   dependencies:
     isexe "^2.0.0"
+
+wl-core@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/wl-core/-/wl-core-1.1.8.tgz#a009899a505497bbafc1f9caea7117b4def03b45"
+  integrity sha512-ZzDtSWY0dTPBaEr3M892nRTwG4mMiU5xXJG6cnadQAuH6wzs5yRjsdQiatQt36qfUMwgi4fbU3BOQFN0CH5lCQ==
+  dependencies:
+    big.js "^5.2.2"
+    dayjs "^1.8.25"
 
 word-wrap@~1.2.3:
   version "1.2.3"
