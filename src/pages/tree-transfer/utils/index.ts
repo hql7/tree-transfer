@@ -17,10 +17,10 @@ declare interface Iarr {
 
 function findParents(
   item: object,
-  arr: Array<any>,
+  arr: Array<unknown>,
   options: FindParentsOptions
-): Array<any> {
-  const _parents: Array<any> = [];
+): Array<unknown> {
+  const _parents: Array<unknown> = [];
   const _parentId: string = options.parentId || "parentId";
   const _id: string = options.id || "id";
   const _root: string | number = options.root || 0;
@@ -34,4 +34,8 @@ function findParents(
       return _parents;
     }
   })(item);
+}
+
+export {
+  findParents
 }
