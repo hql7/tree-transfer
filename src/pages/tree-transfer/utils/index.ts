@@ -9,18 +9,13 @@ declare interface FindParentsOptions {
   parentId?: string;
   root?: string | number;
 }
-declare interface Iarr {
-  id: string;
-  parentId: string;
-
-}
 
 function findParents(
   item: object,
-  arr: Array<unknown>,
+  arr: Array<any>,
   options: FindParentsOptions
-): Array<unknown> {
-  const _parents: Array<unknown> = [];
+): Array<any> {
+  const _parents: Array<any> = [];
   const _parentId: string = options.parentId || "parentId";
   const _id: string = options.id || "id";
   const _root: string | number = options.root || 0;

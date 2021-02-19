@@ -1,6 +1,6 @@
 import { ComponentInternalInstance, VNode, h } from 'vue'
 // tree配置项
-declare interface defaultProps {
+export declare interface defaultProps {
   label?: string
   children?: string
   disabled?: boolean
