@@ -15,28 +15,28 @@
       @node-drag-end="handleNodeDragEnd"
       @node-drop="handleNodeDrop"
     >
-      <template #left-footer>
+      <template #left-footer v-if="$slots['left-footer']">
         <slot name="left-footer"></slot>
       </template>
-      <template #right-footer>
+      <template #right-footer v-if="$slots['right-footer']">
         <slot name="right-footer"></slot>
       </template>
-      <template #title-left>
+      <template #title-left v-if="$slots['title-left']">
         <slot name="title-left"></slot>
       </template>
-      <template #title-right>
+      <template #title-right v-if="$slots['title-right']">
         <slot name="title-right"></slot>
       </template>
-      <template #from>
+      <template #from v-if="$slots.from">
         <slot name="from"></slot>
       </template>
-      <template #to>
+      <template #to v-if="$slots.to">
         <slot name="to"></slot>
       </template>
-      <template #content-left="{ node, data }">
+      <template #content-left="{ node, data }" v-if="$slots['content-right']">
         <slot name="content-left" :node="node" :data="data"></slot>
       </template>
-      <template #content-right="{ node, data }">
+      <template #content-right="{ node, data }" v-if="$slots['content-right']">
         <slot name="content-right" :node="node" :data="data"></slot>
       </template>
     </component>
