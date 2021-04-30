@@ -1100,6 +1100,8 @@ export default {
      * @param {Array} rightKeys 右侧ids
      */
     setChecked(leftKeys = [], rightKeys = []) {
+      this.from_disabled = leftKeys.length<=0;
+      this.to_disabled = rightKeys.length<=0;
       this.$refs["from-tree"].setCheckedKeys(leftKeys);
       this.$refs["to-tree"].setCheckedKeys(rightKeys);
     },
