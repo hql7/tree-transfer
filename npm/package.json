@@ -43,7 +43,7 @@
     "babel-preset-es2015": "^6.24.1",
     "css-loader": "^0.28.7",
     "es6-promise": "^4.1.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^7.0.0",
     "postcss-import": "^12.0.1",
     "postcss-url": "^8.0.0",
     "prettier": "1.12.0",
